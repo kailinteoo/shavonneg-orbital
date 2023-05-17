@@ -1,7 +1,8 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Chat from "./pages/Chat";
+
+import Chat from "./screens/Chat";
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
@@ -9,7 +10,7 @@ const Stack = createStackNavigator();
 function ChatStack () {
   return (
     <Stack.Navigator>
-      <Stack.Page name = "Chat" component={Chat} />
+      <Stack.Screen name = "Chat" component={Chat} />
     </Stack.Navigator>
   )
 }
