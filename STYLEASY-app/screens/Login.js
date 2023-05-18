@@ -1,4 +1,4 @@
-/*import React, { useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaview, TouchableOpacity, StatusBar, Alert } from "react-native";
 import { signinWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
@@ -100,4 +100,3 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 }); 
-*/
