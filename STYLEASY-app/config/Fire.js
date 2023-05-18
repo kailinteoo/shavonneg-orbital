@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+/*import firebase from 'firebase';
 
 class Fire {
     constructor() {
@@ -70,11 +70,11 @@ class Fire {
         return (firebase.auth().currentUser || {}).uid;
     }
 }
-export default new firebase();
+export default new firebase();*/
 
 
 
-/*
+
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
@@ -94,4 +94,4 @@ const firebaseConfig = {
 // initialize firebase
 initializeApp(firebaseConfig);
 export const auth = getAuth();
-export const database = getFirestore();*/
+export const database = getFirestore();
