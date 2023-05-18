@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaview, TouchableOpacity, StatusBar, Alert } from "react-native";
 import { signinWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/Firebase";
+import { auth } from "../config/firebase";
 //const backImage = require("../assets/backImage .png");
 
 export default function Login({ navigation }) {
