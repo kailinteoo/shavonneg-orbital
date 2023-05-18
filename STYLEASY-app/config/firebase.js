@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-class firebase {
+class Firebase {
     constructor() {
         this.init()
         this.checkAuth()
@@ -74,8 +74,8 @@ export default new firebase();
 
 
 
-
-/*import { initializeApp } from 'firebase/app';
+/*
+import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import Constants from 'expo-constants';
