@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-class Firebase {
+class firebase {
     constructor() {
         this.init()
         this.checkAuth()
