@@ -1,9 +1,30 @@
-import React from "react";
-// import { Stylesheet, Text, View } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
+import { createAppContainer } from "@react-navigation";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Chat from "./screens/Chat";
+import Login from './screens/LoginScreen';
+import Chat from './screens/Chat';
+
+const AppNavigator = createStackNavigator (
+  {
+    Login: Login,
+    Chat: Chat
+  },
+  {
+    headerMode: "none"
+  }
+);
+
+export default createAppContainer(AppNavigator);
+
+
+
+
+
+
+
+
+
+/*import Chat from "./screens/Chat";
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
@@ -32,4 +53,3 @@ export default function App() {
       <Text> Hi smartcookies </Text>
     </View>*/
     
-}
