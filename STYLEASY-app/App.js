@@ -1,7 +1,7 @@
 import { createAppContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Login from './pages/Login';
+import Login from './screens/Login';
 import Chat from './screens/Chat';
 
 const AppNavigator = createStackNavigator (

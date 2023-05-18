@@ -49,7 +49,7 @@ class firebase {
         return {
             _id, 
             createdAt,
-            text.
+            text,
             user
         };
     };

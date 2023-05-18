@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform, KeyboardAvoidingView, SafeAreaView } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
-import firebase from "../config/firebase";
+import firebase from "../config/Firebase";
 
 export default class Chat extends React.Component {
 
@@ -11,13 +11,13 @@ export default class Chat extends React.Component {
 
     get user() {
         return {
-            _id: firebase.uid,
+            _id: Firebase.uid,
             name: this.props.navigation.state.params.name
         };
     }
 
     componentDidMount() {
-        firebase.get(message =>
+        Firebase.get(message =>
             this.setState(previous => ({
                 messages: GiftedChat.append(previous.message, message)
             }))
@@ -25,12 +25,12 @@ export default class Chat extends React.Component {
     }
 
     componentWillUnmount() {
-        firebase.Off();
+        Firebase.Off();
     }
 
 
     render() {
-        const chat = <GiftedChat message = {this.state.messages} onSend={firebase.send} user={this.user} />;
+        const chat = <GiftedChat message = {this.state.messages} onSend={Firebase.send} user={this.user} />;
 
         if (Platform.OS === "android") {
             return (
