@@ -10,26 +10,26 @@ import Signup from "./screens/Signup"
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
 
-function ChatStack () {
+function LoginStack () {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name = "Signup" component = {Signup} />
+      <Stack.Screen name = "Login" component = {Login} />
     </Stack.Navigator>
   )
 }
+
 
 // IF YOU WANT TO ADD MORE NAVIGATION, YOU CAN ADD IT INSIDE THIS NAVIGATION CONTAINER
 function RootNavigator () {
   return (
     <NavigationContainer>
-      <ChatStack />
+      <LoginStack />
     </NavigationContainer>
   )
 }
 
 export default function App() {
-  return (
-       <RootNavigator />
- 
-  )
+  return <RootNavigator />
+
 }
