@@ -1,24 +1,3 @@
-//VERSION 2
-/*import { createAppContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import Login from './screens/Login';
-import Chat from './screens/Chat';
-
-const AppNavigator = createStackNavigator (
-  {
-    Login: Login,
-    Chat: Chat
-  },
-  {
-    headerMode: "none"
-  }
-);
-
-export default createAppContainer(AppNavigator);
-*/
-
-//VERSION 1
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
