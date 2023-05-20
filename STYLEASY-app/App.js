@@ -1,4 +1,5 @@
-/*import { createAppContainer } from "@react-navigation/native";
+//VERSION 2
+import { createAppContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from './screens/Login';
@@ -14,9 +15,10 @@ const AppNavigator = createStackNavigator (
   }
 );
 
-export default createAppContainer(AppNavigator);*/
+export default createAppContainer(AppNavigator);
 
-
+//VERSION 1
+/*
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -49,5 +51,4 @@ export default function App() {
     /*<View style={Stylesheet.NavigationContainer}>
       <Text> Hi smartcookies </Text>
     </View>*/
-}
   

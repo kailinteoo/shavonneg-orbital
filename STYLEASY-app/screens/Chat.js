@@ -1,4 +1,5 @@
-/*import React from "react";
+//VERSION 2
+import React from "react";
 import { Platform, KeyboardAvoidingView, SafeAreaView } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import Fire from "../config/Fire";
@@ -43,8 +44,10 @@ export default class Chat extends React.Component {
             {chat}
         </SafeAreaView>
     }
-}*/
+}
 
+//VERSION 1
+/*
 import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 
@@ -52,4 +55,4 @@ export default function Chat() {
     return (
         <GiftedChat />
     )
-}
+}*/
