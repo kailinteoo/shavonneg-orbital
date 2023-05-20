@@ -22,7 +22,7 @@ function ChatStack () {
 function RootNavigator () {
   return (
     <NavigationContainer>
-      <LoginStack />
+      <ChatStack />
     </NavigationContainer>
   )
 }

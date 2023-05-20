@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaview, TouchableOpacity, StatusBar, Alert } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
 import { signInWithEmailAndPassword, signinWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
-//const backImage =  required("../assests/backImage.png:");
+
 
 export default function Login({ navigation }) {
 
@@ -19,9 +19,9 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image source={backImage} style={styles.backImage} />
+            <Image source={require('../assets/icon.png')} style={styles.backImage} />
             <View style={styles.whiteSheet} />
-            <SafeAreaview style={styles.form}>
+            <SafeAreaView style={styles.form}>
                 <Text style={styles.title}>Login</Text>
                 <TextInput
                     style={styles.input}
@@ -47,56 +47,15 @@ export default function Login({ navigation }) {
                     <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 18}}> Log In</Text>
                 </TouchableOpacity>
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
-                    <Text style={{color: 'gray', fontweight: '600', fontSize: 14}}> Don't have an account? </Text>
+                    <Text style={{color: 'gray', fontWeight: '600', fontSize: 14}}> Don't have an account? </Text>
                     <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                     <Text style={{color: '#f57c00', fontWeight: '600', fontSize: 14}}> Sign Up</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaview>
+            </SafeAreaView>
         </View>
     )
 }
-
-
-
-
-
-/*export default class LoginScreen extends React.Component { 
-    state = {
-        name: ""
-    }
-
-    continue = () => {
-        this.props.navigation.navigate("Chat", {name: this.state.name})
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <View style={{ marginHorizontal: 32}}>
-                    <Text style={styles.title}>Username</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        placeholder="DesignIntoCode" 
-                        onChangeText={name => { 
-                            this.setState({ name });
-                        }} 
-                        value={this.state.name}
-                    />
-                </View>
-                <View style={{alignItems: "flex-end", marginTop: 64}}>
-                    <TouchableOpacity style={styles.continue} onPress={this.continue}>
-                        <Ionicons 
-                            name="md-arrow-round-forward" 
-                            size={24}
-                            color="#FFF"
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-    }
-}*/
 
 const styles = StyleSheet.create({
     container: { 
@@ -105,7 +64,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 36, 
-        fontweight: 'bold', 
+        fontWeight: 'bold', 
         color: "orange", 
         alignSelf: "center", 
         paddingBottom: 24,
@@ -115,7 +74,7 @@ const styles = StyleSheet.create({
         height: 58, 
         marginBottom: 20, 
         fontSize: 16, 
-        borderRadlus: 10, 
+        borderRadius: 10, 
         padding: 12, 
     },
     backImage: {
