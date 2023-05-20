@@ -3,14 +3,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Chat from "./screens/Chat";
+import Login from "./screens/Login"
+import Signup from "./screens/Signup"
+
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
 
 function ChatStack () {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name = "Chat" component = {Chat} />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name = "Signup" component = {Signup} />
     </Stack.Navigator>
   )
 }
@@ -19,15 +22,14 @@ function ChatStack () {
 function RootNavigator () {
   return (
     <NavigationContainer>
-      <ChatStack />
+      <LoginStack />
     </NavigationContainer>
   )
 }
 
 export default function App() {
-  return <RootNavigator />
-
-    /*<View style={Stylesheet.NavigationContainer}>
-      <Text> Hi smartcookies </Text>
-    </View>*/
+  return (
+       <RootNavigator />
+ 
+  )
 }
