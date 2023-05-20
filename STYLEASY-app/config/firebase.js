@@ -1,5 +1,5 @@
 //VERSION 2
-import firebase from 'firebase';
+/*import firebase from 'firebase';
 
 class Fire {
     constructor() {
@@ -72,9 +72,10 @@ class Fire {
     }
 }
 export default new firebase();
+*/
 
 //VERSION 1
-/*import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import Constants from 'expo-constants';
@@ -93,5 +94,5 @@ const firebaseConfig = {
 // initialize firebase
 initializeApp(firebaseConfig);
 export const auth = getAuth();
-export const database = getFirestore();*/
+export const database = getFirestore();
 
