@@ -26,7 +26,7 @@
     "undefined": "react-navigation/native"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.21.4"
   },
   "private": true
 }
