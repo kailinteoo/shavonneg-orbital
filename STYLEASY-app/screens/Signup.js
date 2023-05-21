@@ -19,7 +19,7 @@ const Signup = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/icon.png')} style={styles.backImage} />
+            <Image source={require('../assets/Signup.png')} style={styles.backImage} />
             <View style={styles.whiteSheet} />
             <SafeAreaView style={styles.form}>
                 <Text style={styles.title}>Sign Up</Text>
