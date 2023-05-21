@@ -8,16 +8,17 @@ import Chat from "./screens/Chat";
 import Login from "./screens/Login"
 import Signup from "./screens/Signup"
 import Home from "./screens/Home";
+import { auth } from "./config/firebase";
 
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
-const onAuthStateChanged = createContext({});
+const AuthenticatedUserContext = createContext({});
 
 const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   return (
-    <AuthenticatedUserContext.Provider value={[user, setUser]}>
+    <AuthenticatedUserContext.Provider value={{user, setUser}}>
       {children}
     </AuthenticatedUserContext.Provider>
   )
@@ -34,7 +35,7 @@ function ChatStack () {
 
 function AuthStack () {
   return (
-    <Stack.Navigator defaultScreenOptions={Login}>
+    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
       <Stack.Screen name = "Login" component = {Login} />
       <Stack.Screen name = "Signup" component = {Signup} />
     </Stack.Navigator>
@@ -71,6 +72,10 @@ function RootNavigator () {
 }
 
 export default function App() {
-  return <RootNavigator />
+  return (
+    <AuthenticatedUserProvider>
+      <RootNavigator />  
+    </AuthenticatedUserProvider>
+  )
 
 }
