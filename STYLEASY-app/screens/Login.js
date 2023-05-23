@@ -63,17 +63,17 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: { 
         flex: 1, 
-        backgroundColor: "#fff",
+        backgroundColor: "#fdf5e6",
     },
     title: {
         fontSize: 36, 
         fontWeight: 'bold', 
-        color: "orange", 
+        color: "#e9967a", 
         alignSelf: "center", 
         paddingBottom: 24,
     },
     input: {
-        backgroundColor: "#F6F7FB",
+        backgroundColor: "#fffaf0",
         height: 58, 
         marginBottom: 20, 
         fontSize: 16, 
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         height: '75%',
         position: "absolute",
         bottom: 0, 
-        backgroundColor: '#fff',
+        backgroundColor: '#faebd7',
         borderTopLeftRadius: 60,
     },
     form: {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
     },
     button: {
-        backgroundColor: '#f57c00',
+        backgroundColor: '#e9967a',
         height: 58, 
         borderRadius: 10, 
         justifyContent: 'center', 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         width:70, 
         height:70,
         borderRadius: 70 / 2,
-        backgroundColor: "#9075E3",
+        backgroundColor: "#fffaf0",
         alignItems: "center",
         justifyContent: "center"
     }

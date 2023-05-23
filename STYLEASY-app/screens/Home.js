@@ -13,7 +13,7 @@ const Home = () => {
     useEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
-                <FontAwesome name="search" size={24} color={colors.gray} style={{marginLeft: 15}}/>
+                <FontAwesome name="search" size={24} color={'#ffa07a'} style={{marginLeft: 15}}/>
             ),
             headerRight: () => (
                 <Image
@@ -35,7 +35,7 @@ const Home = () => {
                 onPress={() => navigation.navigate("Chat")}
                 style={styles.chatButton}
             >
-                <Entypo name="chat" size={24} color={colors.lightGray} />
+                <Entypo name="chat" size={24} color={'#fdf5e6'} />
             </TouchableOpacity>
         </View>
     );
@@ -48,16 +48,16 @@ const Home = () => {
             flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'flex-end',
-            backgroundColor: '#fff',
+            backgroundColor: '#fdf5e6',
         },
         chatButton: {
-            backgroundColor: colors.primary,
+            backgroundColor: '#e9967a',
             height: 50,
             width: 50,
             borderRadius: 25,
             alignItems: 'center',
             justifyContent: 'center',
-            shadowColor: colors.primary,
+            shadowColor: '#faf0e6',
             shadowOffset: {
                 width: 0,
                 height: 2,
@@ -68,3 +68,18 @@ const Home = () => {
             marginBottom: 50,
         }
     });
+
+    /*
+    //for bottom tabs 
+    export default function Home({ navigation }) {
+        return (
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text
+                    onPress={() => navigation.navigate('Chat')}
+                    style={{ fontSize: 26, fontWeight: 'bold'}}>Chat</Text>
+            </View>
+        );
+
+        return thisHome;
+      }
+      */
