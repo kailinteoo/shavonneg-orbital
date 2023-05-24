@@ -69,6 +69,13 @@ function RootNavigator () {
       { user ? <ChatStack /> : <AuthStack />}
     </NavigationContainer>
   )
+
+  //Added this below for Bottom Tabs Navigator
+  return (
+    <NavigationContainer>
+      <Tabs /> 
+    </NavigationContainer>
+  )
 }
 
 export default function App() {
