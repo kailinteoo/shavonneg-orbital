@@ -5,9 +5,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { onAuthStateChanged } from "firebase/auth";
 
 import Chat from "./screens/Chat";
-import Login from "./screens/Login"
-import Signup from "./screens/Signup"
+import Login from "./screens/Login";
+import Signup from "./screens/Signup";
 import Home from "./screens/Home";
+import Wardrobe from "./screens/Wardrobe";
+import FittingRoom from "./screens/FittingRoom";
+import Collection from "./screens/Collection";
+import Community from "./screens/Community";
+import LearnMore from "./screens/LearnMore";
 import { auth } from "./config/firebase";
 
 
@@ -29,6 +34,11 @@ function ChatStack () {
     <Stack.Navigator defaultScreenOptions={Home}>
       <Stack.Screen name = "Home" component = {Home} />
       <Stack.Screen name = "Chat" component = {Chat} />
+      <Stack.Screen name = "Wardrobe" component = {Wardrobe} />
+      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
+      <Stack.Screen name = "Collection" component = {Collection} />
+      <Stack.Screen name = "Community" component = {Community} />
+      <Stack.Screen name = "LearnMore" component = {LearnMore} />
     </Stack.Navigator>
   )
 }

@@ -68,7 +68,7 @@ const Home = () => {
                 <Text style={{marginBottom: 0, marginLeft: -5}}>LEARN MORE</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
+            <TouchableOpacity 
                 onPress={() => navigation.navigate("Wardrobe")}
                 style={styles.wardrobeButton}
             >
