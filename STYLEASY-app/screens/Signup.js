@@ -19,8 +19,8 @@ const Signup = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/Signup.png')} style={styles.backImage} />
-            <View style={styles.whiteSheet} />
+
+            <View  />
             <SafeAreaView style={styles.form}>
                 <Text style={styles.title}>Sign Up</Text>
                 <TextInput
@@ -45,7 +45,7 @@ const Signup = ({ navigation }) => {
                 />
                 <TouchableOpacity style={styles.button} onPress={onHandleSignup}>
                 <View style={{alignItems: 'center', alignSelf: 'center'}}>
-                    <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 18}}> Sign Up</Text>
+                    <Text style={{fontWeight: 'bold', color: 'white', fontSize: 18}}> Sign Up</Text>
                 </View>
                 </TouchableOpacity>
                 <View style={{marginTop: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     backImage: {
         width: "100%", 
-        height: 340, 
+        height: 340,
         position: "absolute", 
         top: 0, 
         resizeMode: 'cover',

@@ -19,8 +19,8 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/icon.png')} style={styles.backImage} />
-            <View style={styles.whiteSheet} />
+            
+            <View />
             <SafeAreaView style={styles.form}>
                 <Text style={styles.title}>Login</Text>
                 <TextInput
