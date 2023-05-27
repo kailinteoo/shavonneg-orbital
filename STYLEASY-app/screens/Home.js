@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../colors";
@@ -62,6 +62,7 @@ const Home = () => {
             <Text style={{marginRight: 50, marginBottom: 70}}>will help you to eliminate all fashion woes</Text>        
 
             <TouchableOpacity
+
                 onPress={() => navigation.navigate("LearnMore")}
                 style={styles.LearnMoreButton}
             >
@@ -70,30 +71,30 @@ const Home = () => {
 
             <TouchableOpacity 
                 onPress={() => navigation.navigate("Wardrobe")}
-                style={styles.wardrobeButton}
+                style={styles.wardrobeButton} 
             >
-                <Text style={{marginBottom: -50, marginLeft: -65}}>WARDROBE</Text>
+                <Text style={{marginBottom: -50, marginLeft: -65, color:'white', fontWeight:'bold'}}>WARDROBE</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("Collection")}
                 style={styles.collectionButton}
             >
-                <Text style={{marginBottom: -50, marginLeft: -60}}>COLLECTION</Text>
+                <Text style={{marginBottom: -50, marginLeft: -60, color:'white', fontWeight:'bold'}}>COLLECTION</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("FittingRoom")}
-                style={styles.FittingRoomButton}
             >
-                <Text style={{marginBottom: -140, marginLeft: -30}}>FITTING ROOM</Text>
+                <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
+                <Text style={{marginBottom: -140, marginLeft: -30, color:'white', fontWeight:'bold'}}>FITTING ROOM</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("Community")}
-                style={styles.CommunityButton}
             >
-                <Text style={{marginBottom: -130, marginLeft: -220}}>COMMUNITY</Text>
+                <ImageBackground source={require('../assets/c.png')} style={styles.CommunityButton}>
+                <Text style={{marginBottom: -130, marginLeft: -220, color:'white', fontWeight:'bold'}}>COMMUNITY</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -132,6 +133,7 @@ const Home = () => {
             shadowRadius: 8,
             marginRight: 230,
             marginBottom: 10,
+
         },
         wardrobeButton: {
             backgroundColor: '#e9967a',

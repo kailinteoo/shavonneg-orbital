@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {
   Avatar,
@@ -169,3 +169,4 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
 });
+*/

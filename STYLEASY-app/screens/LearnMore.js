@@ -11,9 +11,9 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from "../colors";
 
-export default function Wardrobe() {
-    const navigation = useNavigation();
+const LearnMore = () => {
 
+    const navigation = useNavigation();
     const onSignOut = () => {
         signOut(auth).catch(error => console.log(error));
     };
@@ -27,9 +27,26 @@ export default function Wardrobe() {
                     }}
                     onPress={onSignOut}
                 >
-                    <AntDesign name="logout" size={24} color={colors.gray} style={{marginRight: 10}}/>
+                    <AntDesign name="logout" size={24} color={colors.black} style={{marginRight: 10}}/>
                 </TouchableOpacity>
               )
             });
-          }, [navigation]);      
-}
+          }, [navigation]);     
+          
+          return (
+            <View style = {styles.container}>
+                <Text style={{marginRight: 150, marginBottom: 90, color:'black', fontWeight:'bold', fontSize:'40'}}>WHO ARE WE?</Text>  
+            </View>
+    );
+};
+
+export default LearnMore;
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            backgroundColor: '#fdf5e6',
+        }
+    });
