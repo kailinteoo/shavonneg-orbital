@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect,
     useCallback
 } from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground} from "react-native";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
 import { useNavigation } from "@react-navigation/native";
@@ -35,7 +35,7 @@ const LearnMore = () => {
           
           return (
             <View style = {styles.container}>
-                <Text style={{marginRight: 150, marginBottom: 90, color:'black', fontWeight:'bold', fontSize:'40'}}>WHO ARE WE?</Text>  
+                <Text style={{marginRight: 80, marginBottom: 500, color:'black', fontWeight:'bold', fontSize:'30'}}>WHO ARE WE?</Text>  
             </View>
     );
 };
