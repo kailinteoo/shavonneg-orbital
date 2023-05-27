@@ -117,7 +117,7 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfileScreen;
+export default ProfilePage;
 
 const styles = StyleSheet.create({
   container: {

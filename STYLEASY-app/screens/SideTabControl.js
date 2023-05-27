@@ -6,9 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Home from './Home';
-import ProfilePage from './ProfilePage';
-import UpdateProfile from './UpdateProfile';
+import HomeScreen from './Home';
+import ChatScreen from './Chat';
+import ProfileScreen from './ProfilePage';
+import UpdateProfileScreen from './UpdateProfile';
 
 import {useTheme, Avatar} from 'react-native-paper';
 import {View} from 'react-native-animatable';
@@ -17,15 +18,16 @@ import CardListScreen from './CardListScreen';
 import CardItemDetails from './CardItemDetails';
 
 const HomeStack = createStackNavigator();
-const Profile = createStackNavigator();
+const ChatStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
-const SideTab = () => (
+const MainTabScreen = () => (
   <Tab.Navigator initialRouteName="Home" activeColor="#fff">
     <Tab.Screen
       name="Home"
-      component={Home}
+      component={HomeStackScreen}
       options={{
         tabBarLabel: 'Home',
         tabBarColor: '#FF6347',
@@ -34,10 +36,20 @@ const SideTab = () => (
         ),
       }}
     />
-    /*
+    <Tab.Screen
+      name="Notifications"
+      component={NotificationStackScreen}
+      options={{
+        tabBarLabel: 'Updates',
+        tabBarColor: '#1f65ff',
+        tabBarIcon: ({color}) => (
+          <Icon name="ios-notifications" color={color} size={26} />
+        ),
+      }}
+    />
     <Tab.Screen
       name="Profile"
-      component={Profile}
+      component={ProfileStackScreen}
       options={{
         tabBarLabel: 'Profile',
         tabBarColor: '#694fad',
@@ -60,12 +72,12 @@ const SideTab = () => (
   </Tab.Navigator>
 );
 
-export default SideTab;
+export default MainTabScreen;
 
-const HomeScreen = ({navigation}) => {
+const HomeStackScreen = ({navigation}) => {
   const {colors} = useTheme();
   return (
-    <Home.Navigator
+    <HomeStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.background,
@@ -138,15 +150,43 @@ const HomeScreen = ({navigation}) => {
           headerTintColor: '#fff'
         })}
       />
-    </Home.Navigator>
+    </HomeStack.Navigator>
   );
 };
 
-const ProfilePage = ({navigation}) => {
+const ChatStackScreen = ({navigation}) => (
+  <ChatStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#1f65ff',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}>
+    <ChatStack.Screen
+      name="Chat"
+      component={ChatScreen}
+      options={{
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#1f65ff"
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
+  </ChatStack.Navigator>
+);
+
+const ProfileStackScreen = ({navigation}) => {
   const {colors} = useTheme();
 
   return (
-    <Profile.Navigator
+    <ProfileStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.background,
@@ -155,9 +195,9 @@ const ProfilePage = ({navigation}) => {
         },
         headerTintColor: colors.text,
       }}>
-      <Profile.Screen
+      <ProfileStack.Screen
         name="Profile"
-        component={ProfilePage}
+        component={ProfileScreen}
         options={{
           title: '',
           headerLeft: () => (
@@ -178,19 +218,19 @@ const ProfilePage = ({navigation}) => {
                 size={25}
                 backgroundColor={colors.background}
                 color={colors.text}
-                onPress={() => navigation.navigate('EditProfile')}
+                onPress={() => navigation.navigate('UpdateProfile')}
               />
             </View>
           ),
         }}
       />
-      <Profile.Screen
-        name="EditProfile"
+      <ProfileStack.Screen
+        name="UpdateProfile"
         options={{
-          title: 'Edit Profile',
+          title: 'Update Profile',
         }}
-        component={UpdateProfile}
+        component={UpdateProfileScreen}
       />
-    </Profile.Navigator>
+    </ProfileStack.Navigator>
   );
 };
