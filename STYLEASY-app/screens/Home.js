@@ -66,28 +66,28 @@ const Home = () => {
                 onPress={() => navigation.navigate("LearnMore")}
                 style={styles.LearnMoreButton}
             >
-                <Text style={{marginBottom: 0, marginLeft: -5}}>LEARN MORE</Text>
+                <Text style={textstyles.LearnMore}>LEARN MORE</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("Collection")}
             >
                 <ImageBackground source={require('../assets/collection.png')} style={styles.collectionButton}>
-                <Text style={{marginBottom: -90, marginLeft: -190, color:'white', fontWeight:'bold', fontSize:'20'}}>COLLECTION</Text></ImageBackground>
+                <Text style={textstyles.Collection}>COLLECTION</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("FittingRoom")}
             >
                 <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
-                <Text style={{marginBottom: -100, marginLeft: -170, color:'white', fontWeight:'bold', fontSize:'20'}}>FITTING ROOM</Text></ImageBackground>
+                <Text style={textstyles.FittingRoom}>FITTING ROOM</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("Community")}
             >
                 <ImageBackground source={require('../assets/community.png')} style={styles.CommunityButton}>
-                <Text style={{marginBottom: -90, marginLeft: -190, color:'white', fontWeight:'bold', fontSize:'20'}}>COMMUNITY</Text></ImageBackground>
+                <Text style={textstyles.Community}>COMMUNITY</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -197,6 +197,39 @@ const Home = () => {
         }
     });
 
+    const textstyles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            backgroundColor: '#fdf5e6',
+        },
+        LearnMore: {
+            marginBottom: 0, 
+            marginLeft: -5
+        },
+        Collection: {
+            marginBottom: -90, 
+            marginLeft: -190, 
+            color:'white', 
+            fontWeight:'bold', 
+            fontSize:'20'
+        },
+        FittingRoom: {
+            marginBottom: -100, 
+            marginLeft: -170, 
+            color:'white', 
+            fontWeight:'bold', 
+            fontSize:'20'
+        },
+        Community: {
+            marginBottom: -90, 
+            marginLeft: -190, 
+            color:'white', 
+            fontWeight:'bold', 
+            fontSize:'20'
+        }
+    });
                              
 
     /*

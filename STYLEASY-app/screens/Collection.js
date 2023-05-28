@@ -39,10 +39,10 @@ const Collection = () => {
     return (
         <View style = {styles.container}>
 
-            <Text style={{marginRight: 60, marginBottom: 90, color:'black', fontWeight:'bold', fontSize:'40'}}>COLLECTION</Text>  
-            <Text style={{marginBottom: -15, marginRight: 220, color:'black', fontWeight:'bold', fontSize:'12'}}>NEWLY SAVED</Text> 
-            <Text style={{marginBottom: 5, marginRight: 30, color:'black', fontWeight:'bold', fontSize:'12'}}>CURRENT FAVORITE</Text>   
-            <Text style={{marginTop: 375, marginBottom:-390, marginRight: 115, color:'black', fontWeight:'bold', fontSize:'12'}}>DAILY OUTFIT CHOICES</Text>  
+            <Text style={textstyles.Collection}>COLLECTION</Text>  
+            <Text style={textstyles.NewlySaved}>NEWLY SAVED</Text> 
+            <Text style={textstyles.CurrentFav}>CURRENT FAVORITE</Text>   
+            <Text style={textstyles.Daily}>DAILY OUTFIT CHOICES</Text>  
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("NewlySaved")}
@@ -125,5 +125,43 @@ const Collection = () => {
             shadowRadius: 8,
             marginRight: 20,
             marginBottom: 160,
+        }
+    });
+
+    const textstyles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            backgroundColor: '#fdf5e6',
+        },
+        Collection: {
+            marginRight: 60, 
+            marginBottom: 90, 
+            color:'black', 
+            fontWeight:'bold', 
+            fontSize:40
+        },
+        NewlySaved: {
+            marginBottom: -15, 
+            marginRight: 220, 
+            color:'black', 
+            fontWeight:'bold', 
+            fontSize:12
+        },
+        CurrentFav: {
+            marginBottom: 5, 
+            marginRight: 30, 
+            color:'black', 
+            fontWeight: 'bold', 
+            fontSize:12
+        },
+        Daily: {
+            marginTop: 375, 
+            marginBottom:-390, 
+            marginRight: 115, 
+            color:'black', 
+            fontWeight:'bold', 
+            fontSize:12
         }
     });

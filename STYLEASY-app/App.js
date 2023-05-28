@@ -8,7 +8,6 @@ import Chat from "./screens/Chat";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import Home from "./screens/Home";
-import Wardrobe from "./screens/Wardrobe";
 import FittingRoom from "./screens/FittingRoom";
 import Collection from "./screens/Collection";
 import Community from "./screens/Community";
@@ -36,7 +35,6 @@ function ChatStack () {
     <Stack.Navigator defaultScreenOptions={Home}>
       <Stack.Screen name = "Home" component = {Home} />
       <Stack.Screen name = "Chat" component = {Chat} />
-      <Stack.Screen name = "Wardrobe" component = {Wardrobe} />
       <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
       <Stack.Screen name = "Collection" component = {Collection} />
       <Stack.Screen name = "Community" component = {Community} />
