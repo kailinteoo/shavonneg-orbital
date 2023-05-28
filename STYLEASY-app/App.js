@@ -12,7 +12,6 @@ import FittingRoom from "./screens/FittingRoom";
 import Collection from "./screens/Collection";
 import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
-import SideTabControl from "./screens/SideTabControl";
 import { auth } from "./config/firebase";
 ;
 
