@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from '../screens/Home';
 import Chat from '../screens/Chat';
 //import FittingRoom from './scr`eens/FittingRoom'
-//import Wardrobe from './screens/Wardrobe'
+//import Wardrobe from './screens/Wardrobe';
 
 //const homeName = 'Home';
 //const chatName = 'Chat';
@@ -49,6 +49,7 @@ const Tabs = () => {
         <Tab.Navigator>
             <Tab.Screen name="Home" component={Home}/>
             <Tab.Screen name="Chat" component={Chat}/>
+ 
 
         </Tab.Navigator>
     );

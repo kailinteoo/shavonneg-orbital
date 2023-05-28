@@ -5,10 +5,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { onAuthStateChanged } from "firebase/auth";
 
 import Chat from "./screens/Chat";
-import Login from "./screens/Login"
-import Signup from "./screens/Signup"
+import Login from "./screens/Login";
+import Signup from "./screens/Signup";
 import Home from "./screens/Home";
+import FittingRoom from "./screens/FittingRoom";
+import Collection from "./screens/Collection";
+import Community from "./screens/Community";
+import LearnMore from "./screens/LearnMore";
 import { auth } from "./config/firebase";
+;
 
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
@@ -29,6 +34,10 @@ function ChatStack () {
     <Stack.Navigator defaultScreenOptions={Home}>
       <Stack.Screen name = "Home" component = {Home} />
       <Stack.Screen name = "Chat" component = {Chat} />
+      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
+      <Stack.Screen name = "Collection" component = {Collection} />
+      <Stack.Screen name = "Community" component = {Community} />
+      <Stack.Screen name = "LearnMore" component = {LearnMore} />
     </Stack.Navigator>
   )
 }
@@ -67,6 +76,13 @@ function RootNavigator () {
   return (
     <NavigationContainer>
       { user ? <ChatStack /> : <AuthStack />}
+    </NavigationContainer>
+  )
+
+  //Added this below for Bottom Tabs Navigator
+  return (
+    <NavigationContainer>
+      <Tabs /> 
     </NavigationContainer>
   )
 }
