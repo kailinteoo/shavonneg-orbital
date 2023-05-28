@@ -73,7 +73,7 @@ const Collection = () => {
             flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'flex-end',
-            backgroundColor: '#fdf5e6',
+            backgroundColor: '',
         },
         NewlySavedButton: {
             backgroundColor: '#e9967a',

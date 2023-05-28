@@ -33,7 +33,7 @@ const Home = () => {
 
             headerLeft: () => (
                 <Image
-                    source={require('../assets/favicon.png')}
+                    source={require('../assets/sidebar.png')}
                     style={{
                         width: 40,
                         height: 40,
@@ -52,14 +52,14 @@ const Home = () => {
             <Image
                 source={require('../assets/logo.png')}
                 style={{
-                    width: 280,
-                    height: 30,
-                    marginRight: 40,
+                    width: 80,
+                    height: 80,
+                    marginRight: 145,
                     marginBottom: 8
                 }}
             />
 
-            <Text style={{marginRight: 50, marginBottom: 40}}>will help you to eliminate all fashion woes</Text>        
+            <Text style={textstyles.Header}>will help you to eliminate all fashion woes</Text>        
 
             <TouchableOpacity
 
@@ -108,7 +108,7 @@ const Home = () => {
             flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'flex-end',
-            backgroundColor: '#fdf5e6',
+            backgroundColor: 'white',
         },
         LearnMoreButton: {
             backgroundColor: 'bisque',
@@ -176,7 +176,7 @@ const Home = () => {
             shadowOpacity: .9,
             shadowRadius: 8,
             marginRight: 20,
-            marginBottom: 25,
+            marginBottom: 15,
         },
         chatButton: {
             backgroundColor: '#e9967a',
@@ -228,6 +228,10 @@ const Home = () => {
             color:'white', 
             fontWeight:'bold', 
             fontSize:'20'
+        },
+        Header: {
+            marginRight: 50, 
+            marginBottom: 20
         }
     });
                             
