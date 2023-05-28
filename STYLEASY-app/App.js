@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { onAuthStateChanged } from "firebase/auth";
 
 import Chat from "./screens/Chat";
@@ -12,12 +13,14 @@ import FittingRoom from "./screens/FittingRoom";
 import Collection from "./screens/Collection";
 import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
+import Profile from "./screens/Profile";
 import { auth } from "./config/firebase";
 ;
 
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator(); 
 const AuthenticatedUserContext = createContext({});
 
 const AuthenticatedUserProvider = ({ children }) => {
@@ -31,7 +34,8 @@ const AuthenticatedUserProvider = ({ children }) => {
 
 function ChatStack () {
   return (
-    <Stack.Navigator defaultScreenOptions={Home}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}
+    initialRouteName="Home">
       <Stack.Screen name = "Home" component = {Home} />
       <Stack.Screen name = "Chat" component = {Chat} />
       <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
@@ -51,6 +55,21 @@ function AuthStack () {
   )
 }
 
+function DrawerNavigator() {
+  const { user } = useContext(AuthenticatedUserContext);
+
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Chat" component={Chat} />
+      <Stack.Screen name = "Fitting Room" component = {FittingRoom} />
+      <Stack.Screen name = "Collection" component = {Collection} />
+      <Stack.Screen name = "Community" component = {Community} />
+      <Stack.Screen name = "Learn More" component = {LearnMore} />
+      <Stack.Screen name = "My Profile" component = {Profile} />
+    </Drawer.Navigator>
+  );
+}
 
 // IF YOU WANT TO ADD MORE NAVIGATION, YOU CAN ADD IT INSIDE THIS NAVIGATION CONTAINER
 function RootNavigator () {
@@ -75,16 +94,10 @@ function RootNavigator () {
 
   return (
     <NavigationContainer>
-      { user ? <ChatStack /> : <AuthStack />}
+      { user ? <DrawerNavigator /> : <AuthStack />}
     </NavigationContainer>
   )
 
-  //Added this below for Bottom Tabs Navigator
-  return (
-    <NavigationContainer>
-      <Tabs /> 
-    </NavigationContainer>
-  )
 }
 
 export default function App() {

@@ -230,19 +230,4 @@ const Home = () => {
             fontSize:'20'
         }
     });
-                             
-
-    /*
-    //for bottom tabs 
-    export default function Home({ navigation }) {
-        return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text
-                    onPress={() => navigation.navigate('Chat')}
-                    style={{ fontSize: 26, fontWeight: 'bold'}}>Chat</Text>
-            </View>
-        );
-
-        return thisHome;
-      }
-      */
+                            
