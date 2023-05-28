@@ -61,7 +61,7 @@ export default LearnMore;
             backgroundColor: '#fdf5e6',
         },
         HeaderOne: {
-            marginTop: 50, 
+            marginTop: 55, 
             marginLeft: 60,
             color:'black', 
             fontWeight: 'bold', 
