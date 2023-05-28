@@ -213,21 +213,21 @@ const Home = () => {
             marginLeft: -190, 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:'20'
+            fontSize:20
         },
         FittingRoom: {
             marginBottom: -100, 
             marginLeft: -170, 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:'20'
+            fontSize:20
         },
         Community: {
             marginBottom: -90, 
             marginLeft: -190, 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:'20'
+            fontSize:20
         },
         Header: {
             marginRight: 50, 
