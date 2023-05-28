@@ -59,7 +59,7 @@ const Home = () => {
                 }}
             />
 
-            <Text style={{marginRight: 50, marginBottom: 70}}>will help you to eliminate all fashion woes</Text>        
+            <Text style={{marginRight: 50, marginBottom: 40}}>will help you to eliminate all fashion woes</Text>        
 
             <TouchableOpacity
 
@@ -69,32 +69,25 @@ const Home = () => {
                 <Text style={{marginBottom: 0, marginLeft: -5}}>LEARN MORE</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-                onPress={() => navigation.navigate("Wardrobe")}
-                style={styles.wardrobeButton} 
-            >
-                <Text style={{marginBottom: -50, marginLeft: -65, color:'white', fontWeight:'bold'}}>WARDROBE</Text>
-            </TouchableOpacity>
-
             <TouchableOpacity
                 onPress={() => navigation.navigate("Collection")}
-                style={styles.collectionButton}
             >
-                <Text style={{marginBottom: -50, marginLeft: -60, color:'white', fontWeight:'bold'}}>COLLECTION</Text>
+                <ImageBackground source={require('../assets/collection.png')} style={styles.collectionButton}>
+                <Text style={{marginBottom: -90, marginLeft: -190, color:'white', fontWeight:'bold', fontSize:'20'}}>COLLECTION</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("FittingRoom")}
             >
                 <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
-                <Text style={{marginBottom: -140, marginLeft: -30, color:'white', fontWeight:'bold'}}>FITTING ROOM</Text></ImageBackground>
+                <Text style={{marginBottom: -100, marginLeft: -170, color:'white', fontWeight:'bold', fontSize:'20'}}>FITTING ROOM</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("Community")}
             >
-                <ImageBackground source={require('../assets/c.png')} style={styles.CommunityButton}>
-                <Text style={{marginBottom: -130, marginLeft: -220, color:'white', fontWeight:'bold'}}>COMMUNITY</Text></ImageBackground>
+                <ImageBackground source={require('../assets/community.png')} style={styles.CommunityButton}>
+                <Text style={{marginBottom: -90, marginLeft: -190, color:'white', fontWeight:'bold', fontSize:'20'}}>COMMUNITY</Text></ImageBackground>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -133,29 +126,11 @@ const Home = () => {
             shadowRadius: 8,
             marginRight: 230,
             marginBottom: 10,
-
-        },
-        wardrobeButton: {
-            backgroundColor: '#e9967a',
-            height: 85,
-            width: 175,
-            borderRadius: 2,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 10,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 180,
-            marginBottom: 10,
         },
         collectionButton: {
             backgroundColor: '#e9967a',
-            height: 85,
-            width: 175,
+            height: 130,
+            width: 335,
             borderRadius: 2,
             alignItems: 'center',
             justifyContent: 'center',
@@ -166,14 +141,14 @@ const Home = () => {
             },
             shadowOpacity: .9,
             shadowRadius: 8,
-            marginRight: 180,
-            marginBottom: -180,
+            marginRight: 20,
+            marginBottom: 15,
         },
         FittingRoomButton: {
             backgroundColor: '#e9967a',
-            height: 180,
-            width: 150,
-            borderRadius: 2,
+            height: 130,
+            width: 335,
+            borderRadius: 55,
             alignItems: 'center',
             justifyContent: 'center',
             shadowColor: '#faf0e6',
@@ -184,13 +159,13 @@ const Home = () => {
             shadowOpacity: .9,
             shadowRadius: 8,
             marginRight: 20,
-            marginBottom: 20,
+            marginBottom: 15,
         },
         CommunityButton: {
             backgroundColor: '#e9967a',
-            height: 170,
+            height: 130,
             width: 335,
-            borderRadius: 15,
+            borderRadius: 55,
             alignItems: 'center',
             justifyContent: 'center',
             shadowColor: '#faf0e6',
@@ -201,7 +176,7 @@ const Home = () => {
             shadowOpacity: .9,
             shadowRadius: 8,
             marginRight: 20,
-            marginBottom: 40,
+            marginBottom: 25,
         },
         chatButton: {
             backgroundColor: '#e9967a',
