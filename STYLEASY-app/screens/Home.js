@@ -31,16 +31,6 @@ const Home = () => {
                 </TouchableOpacity>
               ),
 
-            headerLeft: () => (
-                <Image
-                    source={require('../assets/sidebar.png')}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        marginLeft: 20,
-                    }}
-                />
-            ),
 
         });
     }, [navigation]);
