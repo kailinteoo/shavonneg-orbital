@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground} from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground, Dimensions} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../colors";
@@ -8,6 +8,8 @@ import { signOut } from 'firebase/auth';
 import { AntDesign } from '@expo/vector-icons';
 import { auth, database } from '../config/firebase';
 const shirtImageUrl =  "https://assets.teenvogue.com/photos/63a1d9ab2a5a6a5343246ed9/4:3/w_1600%2Cc_limit/BELLA%2520AIYANA%2520LEDE.jpg"
+const{width, height} = Dimensions.get('window');
+
 
 const Home = () => {
 
@@ -80,12 +82,6 @@ const Home = () => {
                 <Text style={textstyles.Community}>COMMUNITY</Text></ImageBackground>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Chat")}
-                style={styles.chatButton}
-            >
-                <Entypo name="chat" size={24} color={'#fdf5e6'} />
-            </TouchableOpacity>
 
         </View>
     );
@@ -96,9 +92,11 @@ const Home = () => {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
+            aspectRatio: 5.3/10,
             justifyContent: 'flex-end',
             alignItems: 'flex-end',
             backgroundColor: 'white',
+
         },
         LearnMoreButton: {
             backgroundColor: 'bisque',
@@ -166,24 +164,7 @@ const Home = () => {
             shadowOpacity: .9,
             shadowRadius: 8,
             marginRight: 20,
-            marginBottom: 15,
-        },
-        chatButton: {
-            backgroundColor: '#e9967a',
-            height: 50,
-            width: 50,
-            borderRadius: 25,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 50,
+            marginBottom: 105,
         }
     });
 
