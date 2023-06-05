@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect,
     useCallback
 } from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, View, SafeAreaView, Button, StyleSheet, Text } from "react-native";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
 import { useNavigation } from "@react-navigation/native";
@@ -32,4 +32,42 @@ export default function Profile() {
               )
             });
           }, [navigation]);      
+    
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.userInfo}>
+                <View>
+                    <Text style={styles.title}>Username</Text>
+                </View>
+            </View>
+        </SafeAreaView>
+    )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    userInfo: {
+        paddingHorizontal: 30, 
+        marginBottom: 25, 
+    }, 
+    title: {
+        fontsize: 24,
+        fontweight: 'bold', 
+    },
+    caption: {
+        fontSize: 14, 
+        lineHeight: 14, 
+        fontweight: '500',
+    },
+    row: {
+        flexDirection: 'row',
+        marginBottom: '10',
+    },
+    infoBoxWrapper: {
+        width: '50%', 
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
