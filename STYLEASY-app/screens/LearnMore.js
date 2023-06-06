@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect,
     useCallback
 } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground, ScrollView} from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground, ScrollView, SafeAreaView} from "react-native";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
 import { useNavigation } from "@react-navigation/native";
@@ -35,6 +35,7 @@ const LearnMore = () => {
           
           return (
             <View style = {styles.container}>
+                <SafeAreaView style={styles.form}>
                 <ScrollView>
                     <Text style={styles.HeaderOne}>Who Are We</Text>  
                     <Text style={styles.HeaderTwo}>We are a team of two software engineers, working together to make our app come to life. We made this app in hopes that we can make styling clothes an easy and brainless process, reducing the time needed to try different outfit combinations to find the best fit for the occasion.</Text>  
@@ -47,6 +48,7 @@ const LearnMore = () => {
                     <Text style={styles.HeaderFive}>3. Community </Text>
                     <Text style={styles.HeaderTwo}>Our app lets you talk to your friends, family, or even like-minded users of our app to bring together a community of fashion enthusiasts.</Text>
                 </ScrollView>
+                </SafeAreaView>
             </View>
     );
 };
@@ -56,13 +58,12 @@ export default LearnMore;
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             backgroundColor: '#fdf5e6',
         },
         HeaderOne: {
             marginTop: 55, 
-            marginLeft: 60,
+            marginLeft: "20%",
             color:'black', 
             fontWeight: 'bold', 
             fontSize:30,
@@ -101,5 +102,10 @@ export default LearnMore;
             fontWeight: 'bold', 
             fontSize:20,
             width: 300,
+        },
+        form: {
+            flex: 1, 
+            justifyContent: 'center', 
+            marginHorizontal: 30,
         },
     });

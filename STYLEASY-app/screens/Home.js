@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground, Dimensions} from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, ImageBackground, Dimensions, SafeAreaView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../colors";
@@ -40,132 +40,108 @@ const Home = () => {
 
     return (
         <View style = {styles.container}>
+            <View />
+            <SafeAreaView style={styles.form}>
 
-            <Image
-                source={require('../assets/logo.png')}
-                style={{
-                    width: 80,
-                    height: 80,
-                    marginRight: 145,
-                    marginBottom: 8
-                }}
-            />
+                <View>
+                <Image
+                    source={require('../assets/logo.png')}
+                    style={{
+                        width: "40%", 
+                        height: "40%", 
+                        resizeMode: 'contain',
+                        alignSelf:  'center',
+                    }}
+                />
 
-            <Text style={textstyles.Header}>will help you to eliminate all fashion woes</Text>        
+                <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center'}}>
+                    <Text style={{color: 'black', fontWeight: '600', fontSize: 12}}> WILL HELP YOU TO ELIMINATE ALL FASHION WOES </Text>
+                </View>        
 
-            <TouchableOpacity
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("LearnMore")}
+                    style={styles.LearnMoreButton}
+                >
+                    <Text style={textstyles.LearnMore}>LEARN MORE</Text>
+                </TouchableOpacity>
 
-                onPress={() => navigation.navigate("LearnMore")}
-                style={styles.LearnMoreButton}
-            >
-                <Text style={textstyles.LearnMore}>LEARN MORE</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Collection")}
+                >
+                    <ImageBackground source={require('../assets/collection.png')} style={styles.collectionButton}>
+                    <Text style={textstyles.Collection}>COLLECTION</Text></ImageBackground>
+                </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Collection")}
-            >
-                <ImageBackground source={require('../assets/collection.png')} style={styles.collectionButton}>
-                <Text style={textstyles.Collection}>COLLECTION</Text></ImageBackground>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("FittingRoom")}
+                >
+                    <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
+                    <Text style={textstyles.FittingRoom}>FITTING ROOM</Text></ImageBackground>
+                </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate("FittingRoom")}
-            >
-                <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
-                <Text style={textstyles.FittingRoom}>FITTING ROOM</Text></ImageBackground>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Community")}
-            >
-                <ImageBackground source={require('../assets/community.png')} style={styles.CommunityButton}>
-                <Text style={textstyles.Community}>COMMUNITY</Text></ImageBackground>
-            </TouchableOpacity>
-
-
-        </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Community")}
+                >
+                    <ImageBackground source={require('../assets/community.png')} style={styles.CommunityButton}>
+                    <Text style={textstyles.Community}>COMMUNITY</Text></ImageBackground>
+                </TouchableOpacity>
+            </View>
+            </SafeAreaView>
+            <StatusBar barStyle="light-content" />
+         </View>
     );
-    };
+}
 
     export default Home;
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            aspectRatio: 5.3/10,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
             backgroundColor: 'white',
 
         },
         LearnMoreButton: {
             backgroundColor: 'bisque',
-            height: 35,
-            width: 125,
-            borderRadius: 10,
+            height: 35, 
+            width: 120,
+            borderRadius: 2, 
+            justifyContent: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 10,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 230,
-            marginBottom: 10,
+            marginTop: "5%",
         },
         collectionButton: {
-            backgroundColor: '#e9967a',
             height: 130,
-            width: 335,
-            borderRadius: 2,
+            borderRadius: 2, 
+            justifyContent: 'center', 
+            alignItens: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 15,
+            marginTop: "5%",
+
         },
         FittingRoomButton: {
             backgroundColor: '#e9967a',
             height: 130,
-            width: 335,
             borderRadius: 55,
+            justifyContent: 'center', 
+            alignItens: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 15,
+            marginTop: "5%",  
         },
         CommunityButton: {
             backgroundColor: '#e9967a',
             height: 130,
-            width: 335,
             borderRadius: 55,
+            justifyContent: 'center', 
+            alignItens: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 105,
-        }
+            marginTop: "5%",
+        },
+        form: {
+            flex: 1, 
+            justifyContent: 'center', 
+            marginHorizontal: "5%",
+            marginVertical: "-50%",
+        },
     });
 
     const textstyles = StyleSheet.create({
@@ -181,28 +157,27 @@ const Home = () => {
         },
         Collection: {
             marginBottom: -90, 
-            marginLeft: -190, 
+            marginRight: "5%", 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:20
+            fontSize:25,
         },
         FittingRoom: {
             marginBottom: -100, 
-            marginLeft: -170, 
+            marginRight: "5%", 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:20
+            fontSize:25,
         },
         Community: {
             marginBottom: -90, 
-            marginLeft: -190, 
+            marginRight: "5%", 
             color:'white', 
             fontWeight:'bold', 
-            fontSize:20
+            fontSize:25,
         },
         Header: {
-            marginRight: 50, 
-            marginBottom: 20
+            alignSelf: 'center',
         }
     });
                             
