@@ -30,18 +30,6 @@ const Home = () => {
                     <AntDesign name="logout" size={24} color={colors.black} style={{marginRight: 5}}/>
                 </TouchableOpacity>
               ),
-
-            headerLeft: () => (
-                <Image
-                    source={require('../assets/sidebar.png')}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        marginLeft: 20,
-                    }}
-                />
-            ),
-
         });
     }, [navigation]);
 

@@ -37,7 +37,14 @@ export default function Profile() {
         <SafeAreaView style={styles.container}>
             <View style={styles.userInfo}>
                 <View>
-                    <Text style={styles.title}>Username</Text>
+                    <Text style={[styles.caption, {
+              marginTop:20,
+              marginBottom: 1,
+            }]}>Username</Text>
+                    <Text style={[styles.title, {
+              marginTop:15,
+              marginBottom: 5,
+            }]}>@username</Text>
                 </View>
             </View>
         </SafeAreaView>
@@ -47,6 +54,9 @@ export default function Profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '',
     },
     userInfo: {
         paddingHorizontal: 30, 
