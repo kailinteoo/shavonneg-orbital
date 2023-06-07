@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground} from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, ImageBackground, Dimensions, SafeAreaView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../colors";
@@ -7,7 +7,8 @@ import { Entypo } from "@expo/vector-icons";
 import { signOut } from 'firebase/auth';
 import { AntDesign } from '@expo/vector-icons';
 import { auth, database } from '../config/firebase';
-const shirtImageUrl =  "https://assets.teenvogue.com/photos/63a1d9ab2a5a6a5343246ed9/4:3/w_1600%2Cc_limit/BELLA%2520AIYANA%2520LEDE.jpg"
+
+
 
 const Home = () => {
 
@@ -30,196 +31,127 @@ const Home = () => {
                     <AntDesign name="logout" size={24} color={colors.black} style={{marginRight: 5}}/>
                 </TouchableOpacity>
               ),
+
+
         });
     }, [navigation]);
 
+    // Get the device screen dimensions
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    // Calculate the logo size based on the screen dimensions
+    const logoSize = Math.min(windowWidth * 0.4, windowHeight * 0.3);
+
+    // Calculate the button width based on the screen dimensions
+    const buttonWidth = windowWidth * 0.8;
+
+    // Calculate the font size for the label based on the screen width
+    const labelFontSize = windowWidth * 0.03;
+
+    // Calculate the margin bottom based on the screen height
+    const marginBottom = windowHeight * 0.1; // Adjust the percentage as desired
+
 
     return (
-        <View style = {styles.container}>
+        <View style={styles.container}>
+            <View style={styles.topContainer}>
+                <Image source={require('../assets/logo.png')} style={[styles.logo, {width: logoSize, height:logoSize}]} />
+                <Text style={[styles.label, { fontSize: labelFontSize }]}>WILL HELP YOU TO ELIMINATE ALL FASHION WOES</Text>
+            </View>
 
-            <Image
-                source={require('../assets/logo.png')}
-                style={{
-                    width: 80,
-                    height: 80,
-                    marginRight: 145,
-                    marginBottom: 8
-                }}
-            />
+            <View style={styles.middleContainer}>
+                <TouchableOpacity style={styles.LearnMoreButton}>
+                    <Text style={styles.LearnMoreButtonText}>Learn More</Text>
+                </TouchableOpacity>
+            </View>
 
-            <Text style={textstyles.Header}>will help you to eliminate all fashion woes</Text>        
+            <View style={styles.bottomContainer}>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("Collection")}>
+                    <ImageBackground source={require('../assets/collection.png')} style={styles.buttonBackground}>
+                        <Text style={styles.buttonText}>COLLECTION</Text>
+                    </ImageBackground>
+                </TouchableOpacity>
 
-            <TouchableOpacity
+                <View style={styles.gap} />
 
-                onPress={() => navigation.navigate("LearnMore")}
-                style={styles.LearnMoreButton}
-            >
-                <Text style={textstyles.LearnMore}>LEARN MORE</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("FittingRoom")}>
+                    <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.buttonBackground}>
+                        <Text style={styles.buttonText}>FITTING ROOM</Text>
+                    </ImageBackground>
+                </TouchableOpacity>
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Collection")}
-            >
-                <ImageBackground source={require('../assets/collection.png')} style={styles.collectionButton}>
-                <Text style={textstyles.Collection}>COLLECTION</Text></ImageBackground>
-            </TouchableOpacity>
+                <View style={styles.gap} />
 
-            <TouchableOpacity
-                onPress={() => navigation.navigate("FittingRoom")}
-            >
-                <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.FittingRoomButton}>
-                <Text style={textstyles.FittingRoom}>FITTING ROOM</Text></ImageBackground>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Community")}
-            >
-                <ImageBackground source={require('../assets/community.png')} style={styles.CommunityButton}>
-                <Text style={textstyles.Community}>COMMUNITY</Text></ImageBackground>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Chat")}
-                style={styles.chatButton}
-            >
-                <Entypo name="chat" size={24} color={'#fdf5e6'} />
-            </TouchableOpacity>
-
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("Community")}>
+                    <ImageBackground source={require('../assets/community.png')} style={styles.buttonBackground}>
+                        <Text style={styles.buttonText}>COMMUNITY</Text>
+                    </ImageBackground>
+                </TouchableOpacity>
+            </View>
         </View>
     );
-    };
+};
 
-    export default Home;
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20,
             backgroundColor: 'white',
-        },
-        LearnMoreButton: {
-            backgroundColor: 'bisque',
-            height: 35,
-            width: 125,
-            borderRadius: 10,
+          },
+          topContainer: {
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 10,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 230,
+            marginBottom: 20,
+          },
+          logo: {
+            resizeMode: 'contain',
+            alignItems: 'center', 
+            alignSelf: 'center'
+          },
+          label: {
+            fontWeight: 'bold',
+            marginTop: 30,
+            textAlign: "center",
+          },
+          middleContainer: {
+            alignItems: "flex-start",
+            alignSelf: "center",
             marginBottom: 10,
-        },
-        collectionButton: {
-            backgroundColor: '#e9967a',
-            height: 130,
-            width: 335,
-            borderRadius: 2,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 15,
-        },
-        FittingRoomButton: {
-            backgroundColor: '#e9967a',
-            height: 130,
-            width: 335,
-            borderRadius: 55,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 15,
-        },
-        CommunityButton: {
-            backgroundColor: '#e9967a',
-            height: 130,
-            width: 335,
-            borderRadius: 55,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 15,
-        },
-        chatButton: {
-            backgroundColor: '#e9967a',
-            height: 50,
-            width: 50,
-            borderRadius: 25,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 50,
-        }
-    });
+          },
+          LearnMoreButton: {
+            paddingHorizontal: 5,
+            paddingVertical: 5,
+            borderRadius: 5,
+            backgroundColor: 'bisque',
+          },
+          LearnMoreButtonText: {
+            color: 'black',
+            fontWeight: 'bold',
+          },
+          bottomContainer: {
+            alignItems: 'stretch',
 
-    const textstyles = StyleSheet.create({
-        container: {
+          },
+          Button: {
+            borderRadius: 5,
+            justifyContent: 'center',
+          },
+          buttonBackground: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-            backgroundColor: '#fdf5e6',
-        },
-        LearnMore: {
-            marginBottom: 0, 
-            marginLeft: -5
-        },
-        Collection: {
-            marginBottom: -90, 
-            marginLeft: -190, 
-            color:'white', 
-            fontWeight:'bold', 
-            fontSize:20
-        },
-        FittingRoom: {
-            marginBottom: -100, 
-            marginLeft: -170, 
-            color:'white', 
-            fontWeight:'bold', 
-            fontSize:20
-        },
-        Community: {
-            marginBottom: -90, 
-            marginLeft: -190, 
-            color:'white', 
-            fontWeight:'bold', 
-            fontSize:20
-        },
-        Header: {
-            marginRight: 50, 
-            marginBottom: 20
-        }
-    });
-                            
+            resizeMode: 'cover',
+            justifyContent: 'center',
+          },
+          buttonText: {
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          gap: {
+            height: 20, // Adjust the height as needed
+          },
+        });
+        
+        
+        export default Home;                    

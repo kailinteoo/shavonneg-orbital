@@ -37,7 +37,6 @@ function ChatStack () {
     <Stack.Navigator screenOptions={{ headerShown: false }}
     initialRouteName="Home">
       <Stack.Screen name = "Home" component = {Home} />
-      <Stack.Screen name = "Chat" component = {Chat} />
       <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
       <Stack.Screen name = "Collection" component = {Collection} />
       <Stack.Screen name = "Community" component = {Community} />
@@ -61,11 +60,10 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Chat" component={Chat} />
-      <Stack.Screen name = "Fitting Room" component = {FittingRoom} />
+      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
       <Stack.Screen name = "Collection" component = {Collection} />
       <Stack.Screen name = "Community" component = {Community} />
-      <Stack.Screen name = "Learn More" component = {LearnMore} />
+      <Stack.Screen name = "LearnMore" component = {LearnMore} />
       <Stack.Screen name = "My Profile" component = {Profile} />
     </Drawer.Navigator>
   );

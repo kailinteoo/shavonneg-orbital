@@ -10,6 +10,7 @@ import { auth, database } from '../config/firebase';
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from "../colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Collection = () => { 
 
@@ -38,11 +39,13 @@ const Collection = () => {
 
     return (
         <View style = {styles.container}>
+            <View />
 
+            <SafeAreaView style={styles.form}>
             <Text style={textstyles.Collection}>COLLECTION</Text>  
             <Text style={textstyles.NewlySaved}>NEWLY SAVED</Text> 
-            <Text style={textstyles.CurrentFav}>CURRENT FAVORITE</Text>   
-            <Text style={textstyles.Daily}>DAILY OUTFIT CHOICES</Text>  
+            <Text style={textstyles.CurrentFav}>CURRENTFAV</Text>
+
 
             <TouchableOpacity
                 onPress={() => navigation.navigate("NewlySaved")}
@@ -61,107 +64,78 @@ const Collection = () => {
             >
                 <ImageBackground source={require('../assets/daily.png')}  style={styles.DailyButton}/>
             </TouchableOpacity>
-
+            </SafeAreaView>
         </View>
     );
-    };
+}
 
     export default Collection;
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
             backgroundColor: '',
         },
         NewlySavedButton: {
-            backgroundColor: '#e9967a',
-            height: 180,
-            width: 175,
+            height: "60%",
+            width: "70%",
             borderRadius: 2,
+            justifyContent: 'center', 
+            alignItens: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 180,
-            marginBottom: -180,
+            paddingLeft: 20,
+            paddingTop: 20,
+            marginHorizontal: 30, //space between the picture and the side blank space
         },
         CurrentFavButton: {
-            backgroundColor: '#e9967a',
-            height: 180,
-            width: 150,
+            height: "70%",
+            width: "70%",
             borderRadius: 2,
+            justifyContent: 'center', 
+            alignItens: 'center', 
             alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 20,
+            paddingLeft: 20,
+            paddingTop: 20,
+            marginHorizontal: 40, //space between the picture and the side blank space
+            marginVertical: 40,
+            marginLeft: 40,
         },
-        DailyButton: {
-            backgroundColor: '#e9967a',
-            height: 170,
-            width: 335,
-            borderRadius: 2,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#faf0e6',
-            shadowOffset: {
-                width: 0,
-                height: 0,
-            },
-            shadowOpacity: .9,
-            shadowRadius: 8,
-            marginRight: 20,
-            marginBottom: 160,
-        }
+
     });
 
     const textstyles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
             backgroundColor: '#fdf5e6',
         },
         Collection: {
-            marginRight: 60, 
-            marginBottom: 90, 
             color:'black', 
             fontWeight:'bold', 
-            fontSize:40
+            fontSize:40,
+            alignSelf: "center", 
+            paddingBottom: 24,
+            alignSelf: 'center',
+            marginTop: "-25%",
+            marginBottom: "15%",
         },
         NewlySaved: {
-            marginBottom: -15, 
-            marginRight: 220, 
+            marginRight: "25%", 
             color:'black', 
             fontWeight:'bold', 
-            fontSize:12
+            fontSize:12,
+            alignItems: "center",
+            marginHorizontal: 30, //space between the word and the side blank space
+            marginVertical: 10, //space between the word and the picture
+            marginTop: "25%", //space between the word and the top blank space
         },
         CurrentFav: {
-            marginBottom: 5, 
-            marginRight: 30, 
-            color:'black', 
-            fontWeight: 'bold', 
-            fontSize:12
-        },
-        Daily: {
-            marginTop: 375, 
-            marginBottom:-390, 
-            marginRight: 115, 
+            marginRight: "25%", 
             color:'black', 
             fontWeight:'bold', 
-            fontSize:12
+            fontSize:12,
+            alignItems: "center",
+            marginHorizontal: 30, //space between the word and the side blank space
+            marginVertical: 10, //space between the word and the picture
+            marginTop: "25%", //space between the word and the top blank space
         }
     });
