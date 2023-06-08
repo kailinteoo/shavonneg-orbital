@@ -1,9 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useLayoutEffect,
-    useCallback
-} from "react";
+import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
@@ -11,7 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from "../colors";
 
-export default function Wardrobe() {
+
+const Community = () => {
     const navigation = useNavigation();
 
     const onSignOut = () => {
@@ -27,9 +23,13 @@ export default function Wardrobe() {
                     }}
                     onPress={onSignOut}
                 >
-                    <AntDesign name="logout" size={24} color={colors.gray} style={{marginRight: 10}}/>
+                    <AntDesign name="logout" size={24} color={colors.black} style={{marginRight: 10}}/>
                 </TouchableOpacity>
               )
             });
           }, [navigation]);      
 }
+
+export default Community;
+
+
