@@ -14,6 +14,8 @@ import Collection from "./screens/Collection";
 import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
+import Camera from "./screens/Camera";
+import UpdateProfile from "./screens/UpdateProfile";
 import { auth } from "./config/firebase";
 ;
 
@@ -41,6 +43,8 @@ function ChatStack () {
       <Stack.Screen name = "Collection" component = {Collection} />
       <Stack.Screen name = "Community" component = {Community} />
       <Stack.Screen name = "LearnMore" component = {LearnMore} />
+      <Stack.Screen name = "Camera" component = {Camera} />
+      <Stack.Screen name = "Update Profile" component = {UpdateProfile} />
     </Stack.Navigator>
   )
 }
