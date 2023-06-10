@@ -56,13 +56,18 @@ function AuthStack () {
 }
 
 function DrawerNavigator() {
-  const { user } = useContext(AuthenticatedUserContext);
+  const { user } = useContext(Chat);
 
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
+<<<<<<< Updated upstream
       <Drawer.Screen name="Chat" component={Chat} />
       <Stack.Screen name = "Fitting Room" component = {FittingRoom} />
+=======
+      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
+      <Stack.Screen name = "Chat" component = {Chat} />
+>>>>>>> Stashed changes
       <Stack.Screen name = "Collection" component = {Collection} />
       <Stack.Screen name = "Community" component = {Community} />
       <Stack.Screen name = "Learn More" component = {LearnMore} />

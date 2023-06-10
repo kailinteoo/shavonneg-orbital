@@ -11,11 +11,18 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from "../colors";
 
+<<<<<<< Updated upstream
 export default function Profile() {
   const navigation = useNavigation();
 
   const onSignOut = () => {
       signOut(auth).catch(error => console.log(error));
+=======
+const ProfilePage = ({ navigation }) => {
+  
+  const handleUpdateProfile = () => {
+    navigation.navigate('UpdateProfile');
+>>>>>>> Stashed changes
   };
 
   useLayoutEffect(() => {
