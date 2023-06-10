@@ -47,7 +47,7 @@ const LearnMore = () => {
           <View style={styles.gap} />
           <Text style={[styles.HeaderFour, { fontSize: labelFontSize }]}>Our app consists of three major components</Text>
           <View style={styles.gap} />
-          <Text style={[styles.HeaderFive, { fontSize: labelFontSize }]}>1. Wardrobe</Text>
+          <Text style={[styles.HeaderFive, { fontSize: labelFontSize }]}>1. Collection</Text>
           <Text style={[styles.HeaderTwo, { fontSize: labelFontSize }]}>
             Inside your wardrobe, you will be able to view your entire inventory of clothes, as well as look at your saved outfits to refer
             them for future use.

@@ -14,7 +14,6 @@ import Collection from "./screens/Collection";
 import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
-import UpdateProfile from "./screens/UpdateProfile";
 import { auth } from "./config/firebase";
 ;
 

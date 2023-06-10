@@ -41,7 +41,7 @@ const Home = () => {
     const windowHeight = Dimensions.get('window').height;
 
     // Calculate the logo size based on the screen dimensions
-    const logoSize = Math.min(windowWidth * 0.4, windowHeight * 0.3);
+    const logoSize = Math.min(windowWidth * 0.3, windowHeight * 0.3);
 
     // Calculate the button width based on the screen dimensions
     const buttonWidth = windowWidth * 0.8;
@@ -51,7 +51,7 @@ const Home = () => {
 
     // Calculate the font size for the button text based on the screen width
     const textFontSize = windowWidth * 0.05;
-    const textHeight = windowHeight * 0.1;
+    const textHeight = windowHeight * 0.12;
 
     // Calculate the margin bottom based on the screen height
     const marginBottom = windowHeight * 0.1; // Adjust the percentage as desired
@@ -60,18 +60,18 @@ const Home = () => {
     return (
         <View style={styles.container}>
             <View style={styles.topContainer}>
-                <Image source={require('../assets/logo.png')} style={[styles.logo, {width: logoSize, height:logoSize}]} />
+                <Image source={require('../assets/logo1.png')} style={[styles.logo, {width: logoSize, height:logoSize}]} />
                 <Text style={[styles.label, { fontSize: labelFontSize }]}>WILL HELP YOU TO ELIMINATE ALL FASHION WOES</Text>
             </View>
 
             <View style={styles.middleContainer}>
                 <TouchableOpacity style={styles.LearnMoreButton} onPress={() => navigation.navigate("LearnMore")}>
-                    <Text style={styles.LearnMoreButtonText}>Learn More</Text>
+                    <Text style={styles.LearnMoreButtonText}>HOW TO USE THE APP</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.bottomContainer}>
-                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("Collection")}>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.17}]} onPress={() => navigation.navigate("Collection")}>
                     <ImageBackground source={require('../assets/collection.png')} style={styles.buttonBackground}>
                         <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>COLLECTION</Text>
                     </ImageBackground>
@@ -79,7 +79,7 @@ const Home = () => {
 
                 <View style={styles.gap} />
 
-                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("FittingRoom")}>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.17}]} onPress={() => navigation.navigate("FittingRoom")}>
                     <ImageBackground source={require('../assets/FittingRoom.png')} style={styles.buttonBackground}>
                         <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>FITTING ROOM</Text>
                     </ImageBackground>
@@ -87,7 +87,7 @@ const Home = () => {
 
                 <View style={styles.gap} />
 
-                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.15}]} onPress={() => navigation.navigate("Community")}>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.17}]} onPress={() => navigation.navigate("Community")}>
                     <ImageBackground source={require('../assets/community.png')} style={styles.buttonBackground}>
                         <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>COMMUNITY</Text>
                     </ImageBackground>
@@ -108,7 +108,7 @@ const Home = () => {
           },
           topContainer: {
             alignItems: 'center',
-            marginBottom: 20,
+            marginBottom: 25,
           },
           logo: {
             resizeMode: 'contain',
@@ -123,7 +123,7 @@ const Home = () => {
           middleContainer: {
             alignItems: "flex-start",
             alignSelf: "center",
-            marginBottom: 10,
+            marginBottom: 15,
           },
           LearnMoreButton: {
             paddingHorizontal: 5,
