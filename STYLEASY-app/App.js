@@ -14,45 +14,42 @@ import Collection from "./screens/Collection";
 import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
+import Camera from "./screens/Camera";
 import { auth } from "./config/firebase";
-;
 
-
-// SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator(); 
+const Drawer = createDrawerNavigator();
 const AuthenticatedUserContext = createContext({});
 
 const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   return (
-    <AuthenticatedUserContext.Provider value={{user, setUser}}>
+    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
       {children}
     </AuthenticatedUserContext.Provider>
-  )
-}
+  );
+};
 
-function ChatStack () {
+function ChatStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}
-    initialRouteName="Home">
-      <Stack.Screen name = "Home" component = {Home} />
-      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
-      <Stack.Screen name = "Collection" component = {Collection} />
-      <Stack.Screen name = "Community" component = {Community} />
-      <Stack.Screen name = "LearnMore" component = {LearnMore} />
-      <Stack.Screen name = "Update Profile" component = {UpdateProfile} />
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="FittingRoom" component={FittingRoom} />
+      <Stack.Screen name="Collection" component={Collection} />
+      <Stack.Screen name="Community" component={Community} />
+      <Stack.Screen name="LearnMore" component={LearnMore} />
+      <Stack.Screen name="Update Profile" component={UpdateProfile} />
     </Stack.Navigator>
-  )
+  );
 }
 
-function AuthStack () {
+function AuthStack() {
   return (
     <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
-      <Stack.Screen name = "Login" component = {Login} />
-      <Stack.Screen name = "Signup" component = {Signup} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
-  )
+  );
 }
 
 function DrawerNavigator() {
@@ -61,49 +58,46 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
-      <Stack.Screen name = "FittingRoom" component = {FittingRoom} />
-      <Stack.Screen name = "Collection" component = {Collection} />
-      <Stack.Screen name = "Community" component = {Community} />
-      <Stack.Screen name = "LearnMore" component = {LearnMore} />
-      <Stack.Screen name = "My Profile" component = {Profile} />
+      <Drawer.Screen name="FittingRoom" component={FittingRoom} />
+      <Drawer.Screen name="Collection" component={Collection} />
+      <Drawer.Screen name="Community" component={Community} />
+      <Drawer.Screen name="LearnMore" component={LearnMore} />
+      <Drawer.Screen name="My Profile" component={Profile} />
+      <Drawer.Screen name="Camera" component={Camera} />
     </Drawer.Navigator>
   );
 }
 
-// IF YOU WANT TO ADD MORE NAVIGATION, YOU CAN ADD IT INSIDE THIS NAVIGATION CONTAINER
-function RootNavigator () {
+function RootNavigator() {
   const { user, setUser } = useContext(AuthenticatedUserContext);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth,
-      async authenticatedUser => {
-        authenticatedUser ? setUser(authenticatedUser) : setUser(null);
-        setLoading(false);
-      }
-    );
+    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+      authenticatedUser ? setUser(authenticatedUser) : setUser(null);
+      setLoading(false);
+    });
     return () => unsubscribe();
   }, [user]);
-  if(loading) {
+
+  if (loading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
 
   return (
     <NavigationContainer>
-      { user ? <DrawerNavigator /> : <AuthStack />}
+      {user ? <DrawerNavigator /> : <AuthStack />}
     </NavigationContainer>
-  )
-
+  );
 }
 
 export default function App() {
   return (
     <AuthenticatedUserProvider>
-      <RootNavigator />  
+      <RootNavigator />
     </AuthenticatedUserProvider>
-  )
-
+  );
 }

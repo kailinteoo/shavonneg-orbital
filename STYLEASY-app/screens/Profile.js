@@ -2,7 +2,7 @@ import React, {
     useState,
     useEffect,
     useLayoutEffect,
-    useCallback
+    useCallback 
 } from "react";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 50,
-    backgroundColor: '#ffffff', // Light mode background
+    backgroundColor: '#e6e6fa', // Light mode background
     fontFamily: 'Helvetica', // Sans-serif font
   },
   profileContainer: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     width: 250,
     marginBottom: 10,
     paddingVertical: 15,
-    backgroundColor: '#ffb6c1', // Pink button color
+    backgroundColor: '#7b68ee', // Purple button color
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica', // Sans-serif font
   },
   logoutButton: {
-    backgroundColor: '#ffb6c1', // Pink button color
+    backgroundColor: '#7b68ee', // Purple button color
   },
   logoutButtonText: {
     color: '#ffffff', // White button text color
