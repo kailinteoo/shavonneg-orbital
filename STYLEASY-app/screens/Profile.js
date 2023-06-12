@@ -41,11 +41,11 @@ const ProfilePage = () => {
   
 
   const handleUpdateProfile = async () => {
-    navigation.navigate("UpdateProfile");
+    // Update user profile in Firebase
     const user = auth.currentUser;
     const userId = user.uid;
     const userDocRef = doc(database, "users", userId);
-
+  
     try {
       const userDocSnapshot = await getDoc(userDocRef);
       if (userDocSnapshot.exists()) {
@@ -54,7 +54,20 @@ const ProfilePage = () => {
           phone,
           email,
         });
+  
+        // Update the user display name
+        await updateProfile(auth.currentUser, {
+          displayName: username,
+        });
+  
         console.log("Profile updated successfully!");
+  
+        // Update the state variables in the Profile page
+        setName(name);
+        setPhone(phone);
+        setEmail(email);
+  
+        // Navigate back to the Profile page
         navigation.goBack();
       } else {
         console.log("User document not found.");
@@ -63,6 +76,7 @@ const ProfilePage = () => {
       console.log("Error updating profile:", error);
     }
   };
+  
 
   const handleLogout = () => {
     signOut(auth)
