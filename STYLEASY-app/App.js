@@ -17,6 +17,7 @@ import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import UpdateProfile from "./screens/UpdateProfile";
 import { auth } from "./config/firebase";
+import UpdateProfile from "./screens/UpdateProfile";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -41,7 +42,7 @@ function ChatStack() {
       <Stack.Screen name="Collection" component={Collection} />
       <Stack.Screen name="Community" component={Community} />
       <Stack.Screen name="LearnMore" component={LearnMore} />
-      <Stack.Screen name="Update Profile" component={UpdateProfile} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
     </Stack.Navigator>
   );
 }
@@ -49,9 +50,18 @@ function ChatStack() {
 
 function AuthStack() {
   return (
-    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
     </Stack.Navigator>
   );
 }
@@ -67,8 +77,9 @@ function DrawerNavigator() {
       <Drawer.Screen name="Community" component={Community} />
       <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="LearnMore" component={LearnMore} />
-      <Drawer.Screen name="My Profile" component={Profile} />
-      <Drawer.Screen name="Update Profile" component={UpdateProfile} />
+      <Drawer.Screen name="Profile" component={ProfileStack} />
+      <Drawer.Screen name="Camera" component={Camera} />
+      <Drawer.Screen name="UpdateProfile" component={UpdateProfile} />
     </Drawer.Navigator>
   );
 }
@@ -76,11 +87,13 @@ function DrawerNavigator() {
 function RootNavigator() {
   const { user, setUser } = useContext(AuthenticatedUserContext);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, [user]);
 

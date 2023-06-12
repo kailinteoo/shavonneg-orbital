@@ -1,33 +1,64 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { auth, database } from '../config/firebase';
+import { useNavigation } from '@react-navigation/native';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function UpdateProfile({ navigation }) {
   const { colors } = useTheme();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const userId = auth.currentUser?.uid;
 
-  const handleUpdateProfile = () => {
-    const user = auth.currentUser;
-    const userId = user.uid;
-    const userRef = database.ref('users/' + userId);
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userDocRef = doc(database, 'users', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
 
-    userRef.update({
-      firstName,
-      lastName,
-      phone,
-      email,
-    })
-    .then(() => {
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setUsername(userData.Username);
+          setName(userData.Name);
+          setPassword(userData.password);
+          setEmail(userData.email);
+        } else {
+          console.log('User document not found.');
+        }
+      } catch (error) {
+        console.log('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const handleUpdateProfile = async () => {
+    try {
+      // Verify email before updating profile
+      const user = auth.currentUser;
+      const credential = auth.EmailAuthProvider.credential(user.email, email);
+      await user.reauthenticateWithCredential(credential);
+  
+      const userDocRef = doc(database, 'users', userId);
+      await updateDoc(userDocRef, {
+        Username: username,
+        Name: name,
+        password: password,
+        email: email,
+      });
+  
       console.log('Profile updated successfully!');
-      navigation.goBack();
-    })
-    .catch(error => {
+      navigation.navigate('Profile'); // Navigate back to the Profile page
+    } catch (error) {
       console.log('Error updating profile:', error);
-    });
+    }
   };
 
   return (
@@ -37,37 +68,37 @@ export default function UpdateProfile({ navigation }) {
       </TouchableOpacity>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>First Name</Text>
+          <Text style={styles.label}>Change Username</Text>
           <TextInput
             style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="Enter your first name"
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Enter your new Username"
             placeholderTextColor={colors.placeholder}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Last Name</Text>
+          <Text style={styles.label}>Change Name</Text>
           <TextInput
             style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-            placeholder="Enter your last name"
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter your new name"
             placeholderTextColor={colors.placeholder}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Phone</Text>
+          <Text style={styles.label}>Change Password</Text>
           <TextInput
             style={styles.input}
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="Enter your phone number"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Enter your new password"
             placeholderTextColor={colors.placeholder}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Confirm by Email</Text>
           <TextInput
             style={styles.input}
             value={email}
@@ -87,24 +118,21 @@ export default function UpdateProfile({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    paddingHorizontal: windowWidth * 0.04,
   },
   backButton: {
-    marginTop: 20,
+    marginTop: windowHeight * 0.02,
     alignSelf: 'flex-start',
   },
   backButtonText: {
-    color: '#7b68ee',
-    fontSize: 16,
+    color: '#9370db',
+    fontSize: windowWidth * 0.04,
   },
   form: {
-    marginTop: 40,
-    width: '100%',
-    maxWidth: 400,
+    marginTop: windowHeight * 0.04,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.02,
   },
   label: {
     marginBottom: 5,
@@ -116,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   button: {
-    backgroundColor: '#7b68ee',
+    backgroundColor: '#9370db',
     paddingVertical: 12,
     borderRadius: 4,
     alignItems: 'center',
