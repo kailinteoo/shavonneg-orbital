@@ -15,7 +15,10 @@ import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import { auth } from "./config/firebase";
+<<<<<<< Updated upstream
 ;
+=======
+>>>>>>> Stashed changes
 
 
 // SEND THE USER TO LOGINPAGE OR CHATPAGE OR WTV PAGE
