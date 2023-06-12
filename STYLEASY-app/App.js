@@ -17,7 +17,6 @@ import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import UpdateProfile from "./screens/UpdateProfile";
 import { auth } from "./config/firebase";
-import UpdateProfile from "./screens/UpdateProfile";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
