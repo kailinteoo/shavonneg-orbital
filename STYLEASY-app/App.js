@@ -16,6 +16,7 @@ import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import { auth } from "./config/firebase";
+import UpdateProfile from "./screens/UpdateProfile";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -38,7 +39,7 @@ function ChatStack() {
       <Stack.Screen name="Collection" component={Collection} />
       <Stack.Screen name="Community" component={Community} />
       <Stack.Screen name="LearnMore" component={LearnMore} />
-      <Stack.Screen name="Update Profile" component={UpdateProfile} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
     </Stack.Navigator>
   );
 }
@@ -62,8 +63,9 @@ function DrawerNavigator() {
       <Drawer.Screen name="Collection" component={Collection} />
       <Drawer.Screen name="Community" component={Community} />
       <Drawer.Screen name="LearnMore" component={LearnMore} />
-      <Drawer.Screen name="My Profile" component={Profile} />
+      <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Camera" component={Camera} />
+      <Drawer.Screen name="UpdateProfile" component={UpdateProfile} />
     </Drawer.Navigator>
   );
 }

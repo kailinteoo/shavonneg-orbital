@@ -41,7 +41,7 @@ const Home = () => {
     const windowHeight = Dimensions.get('window').height;
 
     // Calculate the logo size based on the screen dimensions
-    const logoSize = Math.min(windowWidth * 0.3, windowHeight * 0.3);
+    const logoSize = Math.min(windowWidth * 0.5, windowHeight * 0.5);
 
     // Calculate the button width based on the screen dimensions
     const buttonWidth = windowWidth * 0.8;
@@ -87,7 +87,7 @@ const Home = () => {
 
                 <View style={styles.gap} />
 
-                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.17}]} onPress={() => navigation.navigate("Community")}>
+                <TouchableOpacity style={[styles.Button, {width: buttonWidth, height: windowHeight * 0.17, marginBottom: windowHeight*0.1 }]} onPress={() => navigation.navigate("Community")}>
                     <ImageBackground source={require('../assets/community.png')} style={styles.buttonBackground}>
                         <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>COMMUNITY</Text>
                     </ImageBackground>
