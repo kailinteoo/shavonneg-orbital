@@ -134,6 +134,7 @@ const Home = () => {
           LearnMoreButtonText: {
             color: 'black',
             fontWeight: 'bold',
+            fontFamily: "Helvetica",
           },
           bottomContainer: {
             alignItems: 'stretch',
@@ -152,6 +153,7 @@ const Home = () => {
             color: 'white',
             fontWeight: 'bold',
             alignSelf: "center",
+            fontFamily: "Helvetica",
           },
           gap: {
             height: 20, // Adjust the height as needed

@@ -77,7 +77,6 @@ function DrawerNavigator() {
       <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="LearnMore" component={LearnMore} />
       <Drawer.Screen name="Profile" component={ProfileStack} />
-      <Drawer.Screen name="UpdateProfile" component={UpdateProfile} />
     </Drawer.Navigator>
   );
 }
