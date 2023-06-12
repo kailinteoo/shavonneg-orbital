@@ -42,6 +42,7 @@ const ProfilePage = () => {
 
   const handleUpdateProfile = async () => {
     // Update user profile in Firebase
+    navigation.navigate("UpdateProfile");
     const user = auth.currentUser;
     const userId = user.uid;
     const userDocRef = doc(database, "users", userId);
