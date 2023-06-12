@@ -15,6 +15,7 @@ import Community from "./screens/Community";
 import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
+import UpdateProfile from "./screens/UpdateProfile";
 import { auth } from "./config/firebase";
 
 const Stack = createStackNavigator();
@@ -30,6 +31,8 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 };
 
+//OLD NAVIGATION
+/*
 function ChatStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
@@ -42,6 +45,7 @@ function ChatStack() {
     </Stack.Navigator>
   );
 }
+*/
 
 function AuthStack() {
   return (
@@ -54,16 +58,17 @@ function AuthStack() {
 
 function DrawerNavigator() {
   const { user } = useContext(AuthenticatedUserContext);
-
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="FittingRoom" component={FittingRoom} />
+      <Drawer.Screen name="Camera" component={Camera} />
       <Drawer.Screen name="Collection" component={Collection} />
       <Drawer.Screen name="Community" component={Community} />
+      <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="LearnMore" component={LearnMore} />
       <Drawer.Screen name="My Profile" component={Profile} />
-      <Drawer.Screen name="Camera" component={Camera} />
+      <Drawer.Screen name="Update Profile" component={UpdateProfile} />
     </Drawer.Navigator>
   );
 }

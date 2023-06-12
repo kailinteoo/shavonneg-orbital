@@ -1,23 +1,14 @@
-import React, {
-    useState,
-    useEffect,
-    useLayoutEffect,
-    useCallback 
-} from "react";
 import { signOut } from 'firebase/auth';
 import { auth, database } from '../config/firebase';
-import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from '@expo/vector-icons';
-import colors from "../colors";
 import { View, Image, TouchableOpacity, StyleSheet, Text} from 'react-native';
 
 const ProfilePage = ({ navigation }) => {
-  const handleUpdateProfile = () => {
-    navigation.navigate('UpdateProfile');
-  };
-
   const handleLogout = () => {
     signOut(auth).catch(error => console.log(error));
+  };
+
+  const handleUpdateProfile = () => {
+    navigation.navigate('UpdateProfile');
   };
 
   const handleSettings = () => {
