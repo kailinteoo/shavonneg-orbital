@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
 import { signInWithEmailAndPassword, signinWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function Login({ navigation }) {

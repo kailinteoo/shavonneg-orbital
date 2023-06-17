@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { auth, database } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { View, Image, TouchableOpacity, StyleSheet, Text } from "react-native";
-import { doc, getDoc, setDoc, collection, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfilePage = () => {
+
+const Profile = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState(""); // Add this line
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const user = auth.currentUser;
       const userId = user.uid;
-      const userDocRef = doc(database, "users", userId);
+      const userDocRef = doc(db, "users", userId);
 
       try {
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
-          setPhone(userData.phone);
+          setPassword(userData.password);
           setEmail(userData.email);
-          setUsername(user.displayName);
-          setName(userData.name); // Set the name from the user document
+          setUsername(userData.username);
+          setName(userData.name);
         } else {
           console.log("User document not found.");
         }
@@ -37,46 +39,18 @@ const ProfilePage = () => {
 
     fetchUserProfile();
   }, []);
-  
-  
 
   const handleUpdateProfile = async () => {
-    // Update user profile in Firebase
-    navigation.navigate("UpdateProfile");
-    const user = auth.currentUser;
-    const userId = user.uid;
-    const userDocRef = doc(database, "users", userId);
-  
-    try {
-      const userDocSnapshot = await getDoc(userDocRef);
-      if (userDocSnapshot.exists()) {
-        await updateDoc(userDocRef, {
-          name,
-          phone,
-          email,
-        });
-  
-        // Update the user display name
-        await updateProfile(auth.currentUser, {
-          displayName: username,
-        });
-  
-        console.log("Profile updated successfully!");
-  
-        // Update the state variables in the Profile page
-        setName(name);
-        setPhone(phone);
-        setEmail(email);
-  
-        // Navigate back to the Profile page
-        navigation.goBack();
-      } else {
-        console.log("User document not found.");
-      }
-    } catch (error) {
-      console.log("Error updating profile:", error);
-    }
+    navigation.navigate("UpdateProfile", {
+      onProfileUpdate: (updatedName, updatedUsername) => {
+        setName(updatedName);
+        setUsername(updatedUsername);
+        console.log('Profile updated:', updatedName, updatedUsername);
+      },
+    });
   };
+  
+
   
 
   const handleLogout = () => {
@@ -100,8 +74,7 @@ const ProfilePage = () => {
           source={require("../assets/newly.png")}
           style={styles.profileImage}
         />
-        <Text style={styles.name}> {name}</Text>
-        <Text style={styles.username}>Username: {auth.currentUser.displayName}</Text>
+        <Text style={styles.name}> Username: {auth.currentUser.displayName}</Text>
       </View>
       <TouchableOpacity onPress={handleUpdateProfile} style={styles.button}>
         <Text style={styles.buttonText}>Update Profile</Text>
@@ -138,8 +111,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   name: {
-    marginTop: 10,
-    fontSize: 20,
+    marginTop: 1,
+    fontSize: 15,
     fontWeight: "bold",
     color: "#000000", // Light mode text color
   },
@@ -175,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfilePage;
+export default Profile;

@@ -14,6 +14,8 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Collection = () => {
   const navigation = useNavigation();
@@ -39,10 +41,15 @@ const Collection = () => {
     });
   }, [navigation, width]);
 
+  // Get the device screen dimensions
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   const buttonSize = width * 0.4; // Adjust the button size based on the screen width
   const textSize = width * 0.1; // Adjust the text size based on the screen width
   const marginTopPercentage = 0.01; // Adjust the desired percentage for the gap above the text
   const marginTop = height * marginTopPercentage; // Calculate the margin-top based on the screen height
+  const textFontSize = windowWidth * 0.04;
+  const textHeight = windowHeight * 0.12;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,18 +63,21 @@ const Collection = () => {
 
       <View style={styles.buttonsContainer}>
       <TouchableOpacity style={[styles.CurrentFav, { width: buttonSize, height: buttonSize }]}>
-          <Image source={require('../assets/current.png')} style={styles.buttonImage} />
+          <ImageBackground source={require('../assets/current.png')} style={styles.buttonImage}></ImageBackground>
+          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>CURRENT FAV</Text>
         </TouchableOpacity>
 
         <View style={styles.buttonGap} />
 
         <TouchableOpacity style={[styles.NewlySaved, { width: buttonSize, height: buttonSize }]}>
-          <Image source={require('../assets/newly.png')} style={styles.buttonImage} />
+          <ImageBackground source={require('../assets/newly.png')} style={styles.buttonImage}></ImageBackground>
+          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>NEWLY SAVED</Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={[styles.Daily, { width: width * 0.82, height: buttonSize }]}>
-        <Image source={require('../assets/daily.png')} style={styles.buttonImage} />
+        <ImageBackground source={require('../assets/daily.png')} style={styles.buttonImage}></ImageBackground>
+        <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>DAILY OUTFIT</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -105,6 +115,14 @@ const styles = StyleSheet.create({
   },
   gap: {
     height: 80, // Adjust the height as needed
+  },
+  buttonText: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: "center",
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 15, // Adjust the font size as needed
   },
 });
 

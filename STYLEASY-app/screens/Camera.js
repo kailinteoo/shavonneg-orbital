@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null);

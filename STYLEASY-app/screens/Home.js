@@ -7,6 +7,8 @@ import { Entypo } from "@expo/vector-icons";
 import { signOut } from 'firebase/auth';
 import { AntDesign } from '@expo/vector-icons';
 import { auth, database } from '../config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 

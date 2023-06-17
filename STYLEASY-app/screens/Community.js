@@ -1,63 +1,108 @@
-// CommunityScreen.js
+import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { TouchableOpacity, Text, View, Button, StyleSheet, Image } from "react-native";
+import { signOut } from 'firebase/auth';
+import { auth, database } from '../config/firebase';
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from '@expo/vector-icons';
+import colors from "../colors";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const chats = [
-  { id: 1, name: 'Chat 1' },
-  { id: 2, name: 'Chat 2' },
-  { id: 3, name: 'Chat 3' }
-];
-
-const CommunityScreen = () => {
+const Community = () => {
   const navigation = useNavigation();
 
-  const navigateToChat = (chatId) => {
-    navigation.navigate('Chat', { chatId });
+  const onSignOut = () => {
+    signOut(auth).catch(error => console.log(error));
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{
+            marginRight: 10
+          }}
+          onPress={onSignOut}
+        >
+          <AntDesign name="logout" size={24} color={colors.black} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
+      )
+    });
+  }, [navigation]);
+
+  const handleChatPress = (username) => {
+    navigation.navigate('Chat', { username });
+  };
+
+  const users = [
+    {
+      username: "John Doe",
+      profilePicture: require("../assets/community.png"),
+      lastMessage: "Hello there!"
+    },
+    {
+      username: "Jane Smith",
+      profilePicture: require("../assets/community.png"),
+      lastMessage: "How are you?"
+    },
+    {
+      username: "Bob Johnson",
+      profilePicture: require("../assets/community.png"),
+      lastMessage: "I'm excited for the event!"
+    }
+  ];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Chat List</Text>
-      {chats.map((chat) => (
+      {users.map((user, index) => (
         <TouchableOpacity
-          key={chat.id}
-          style={styles.chatItem}
-          onPress={() => navigateToChat(chat.id)}
+          key={index}
+          style={styles.chatButton}
+          onPress={() => handleChatPress(user.username)}
         >
-          <Text style={styles.chatItemText}>{chat.name}</Text>
+          <Image source={user.profilePicture} style={styles.profilePicture} />
+          <View style={styles.chatContent}>
+            <Text style={styles.username}>{user.username}</Text>
+            <Text style={styles.lastMessage}>{user.lastMessage}</Text>
+          </View>
         </TouchableOpacity>
       ))}
     </View>
   );
 };
 
+export default Community;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40, // Added to align the content to the top
+  },
+  chatButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    fontFamily: "Helvetica",
+  profilePicture: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 12
   },
-  chatItem: {
-    marginBottom: 16,
-    padding: 16,
-    backgroundColor: '#e6e6fa',
-    borderRadius: 8,
-    width: '100%', // Make the button span the entire width
+  chatContent: {
+    flex: 1,
+    justifyContent: 'center'
   },
-  chatItemText: {
+  username: {
     fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: "Helvetica",
+    fontWeight: 'bold'
   },
+  lastMessage: {
+    color: colors.gray
+  }
 });
 
-export default CommunityScreen;
+
+

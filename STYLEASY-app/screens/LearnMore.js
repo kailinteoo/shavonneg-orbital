@@ -5,6 +5,8 @@ import { auth, database } from '../config/firebase';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LearnMore = () => {
   const navigation = useNavigation();

@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { auth, database } from '../config/firebase';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function UpdateProfile({ navigation }) {
+export default function UpdateProfile() {
   const { colors } = useTheme();
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const userId = auth.currentUser?.uid;
+
+  const navigation = useNavigation();
+  const route = useRoute();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -24,8 +28,8 @@ export default function UpdateProfile({ navigation }) {
 
         if (userDocSnapshot.exists()) {
           const userData = userDocSnapshot.data();
-          setUsername(userData.Username);
-          setName(userData.Name);
+          setUsername(userData.username);
+          setName(userData.name);
           setPassword(userData.password);
           setEmail(userData.email);
         } else {
@@ -43,23 +47,26 @@ export default function UpdateProfile({ navigation }) {
     try {
       // Verify email before updating profile
       const user = auth.currentUser;
-      const credential = auth.EmailAuthProvider.credential(user.email, email);
+      const credential = auth.EmailAuthProvider.credential(email);
       await user.reauthenticateWithCredential(credential);
   
       const userDocRef = doc(database, 'users', userId);
       await updateDoc(userDocRef, {
-        Username: username,
-        Name: name,
+        username: username,
+        name: name,
         password: password,
-        email: email,
       });
   
       console.log('Profile updated successfully!');
-      navigation.navigate('Profile'); // Navigate back to the Profile page
+      // After the update is successful, navigate back to the "Profile" page
+      navigation.goBack();
+      // Call the onProfileUpdate function passed as a route parameter
+      route.params.onProfileUpdate(name, username);
     } catch (error) {
       console.log('Error updating profile:', error);
     }
   };
+  
 
   return (
     <View style={styles.container}>
