@@ -1,70 +1,51 @@
-import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
-import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, ImageBackground, SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
-import { signOut } from 'firebase/auth';
-import { auth, database } from '../config/firebase';
+import React from 'react';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-import colors from '../colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const images = [
+  { id: 1, source: require('../assets/current.png'), header: 'Step 1: Take a picture', text: 'Take a picture of your clothes and save it to your collection!' },
+  { id: 2, source: require('../assets/current.png'), header: 'Step 2: Make an outfit', text: 'Choose the clothes you want to match and make an outfit.' },
+  { id: 3, source: require('../assets/current.png'), header: 'Step 3: Save to collection', text: 'Save your favourites into your collection!' },
+];
 
-const LearnMore = () => {
+const App = () => {
   const navigation = useNavigation();
-  const onSignOut = () => {
-    signOut(auth).catch((error) => console.log(error));
+
+  const handleBackPress = () => {
+    navigation.goBack();
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={{
-            marginRight: 10,
-          }}
-          onPress={onSignOut}
-        >
-          <AntDesign name="logout" size={24} color={colors.black} style={{ marginRight: 10 }} />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
-  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
-
-  const labelFontSize = windowWidth * 0.03;
+  const renderItem = ({ item }) => (
+    <View style={styles.slide}>
+      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+      <Image source={item.source} style={styles.image} />
+      <Text style={styles.header}>{item.header}</Text>
+      <Text style={styles.text}>{item.text}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.form}>
-        <ScrollView>
-          <Text style={[styles.HeaderOne, { fontSize: labelFontSize }]}>Who Are We</Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderTwo, { fontSize: labelFontSize }]}>
-            We are a team of two software engineers, working together to make our app come to life. We made this app in hopes that we can make
-            styling clothes an easy and brainless process, reducing the time needed to try different outfit combinations to find the best fit
-            for the occasion.
-          </Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderThree, { fontSize: labelFontSize }]}>How to use our app?</Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderFour, { fontSize: labelFontSize }]}>Our app consists of three major components</Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderFive, { fontSize: labelFontSize }]}>1. Collection</Text>
-          <Text style={[styles.HeaderTwo, { fontSize: labelFontSize }]}>
-            Inside your wardrobe, you will be able to view your entire inventory of clothes, as well as look at your saved outfits to refer
-            them for future use.
-          </Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderFive, { fontSize: labelFontSize }]}>2. Fitting Room</Text>
-          <Text style={[styles.HeaderTwo, { fontSize: labelFontSize }]}>Here, we let you personalise your outfits without having to try them on!</Text>
-          <View style={styles.gap} />
-          <Text style={[styles.HeaderFive, { fontSize: labelFontSize }]}>3. Community </Text>
-          <Text style={[styles.HeaderTwo, { fontSize: labelFontSize }]}>
-            Our app lets you talk to your friends, family, or even like-minded users of our app to bring together a community of fashion
-            enthusiasts.
-          </Text>
-        </ScrollView>
-      </SafeAreaView>
+      <Swiper
+        showsButtons={false}
+        autoplay={true}
+        dotStyle={styles.dot}
+        activeDotStyle={styles.activeDot}
+      >
+        {images.map((image) => (
+          <View key={image.id} style={styles.slide}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <Text style={styles.backButtonText}>BACK</Text>
+            </TouchableOpacity>
+            <Image source={image.source} style={styles.image} />
+            <Text style={styles.header}>{image.header}</Text>
+            <Text style={styles.text}>{image.text}</Text>
+          </View>
+        ))}
+      </Swiper>
     </View>
   );
 };
@@ -72,48 +53,53 @@ const LearnMore = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fdf5e6',
   },
-  HeaderOne: {
-    color: 'black',
-    fontWeight: 'bold',
-    alignSelf: "center",
-  },
-  HeaderTwo: {
-    textAlign: 'justify',
-    color: 'black',
-    fontSize: 12,
-  },
-  HeaderThree: {
-    textAlign: 'center',
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-  HeaderFour: {
-    textAlign: 'justify',
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 12,
-    alignSelf: "center",
-  },
-  HeaderFive: {
-    textAlign: 'justify',
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  form: {
+  slide: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 60,
-    marginVertical: 50,
+    alignItems: 'center',
   },
-  gap: {
-    height: 30, // Adjust the height as needed
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  image: {
+    width: '100%',
+    height: '70%',
+    resizeMode: 'cover',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginHorizontal: 20,
+  },
+  dot: {
+    backgroundColor: '#999',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 3,
+  },
+  activeDot: {
+    backgroundColor: '#333',
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    margin: 3,
   },
 });
 
-export default LearnMore;
-
+export default App;
