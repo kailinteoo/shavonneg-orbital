@@ -1,120 +1,150 @@
 import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
-import * as Permissions from 'expo-permissions';
-import { useState, useEffect, useRef } from 'react';
-import { Button, View, Image, StyleSheet, ToastAndroid } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CameraScreen = ({ navigation }) => {
-  const [cameraPermission, setCameraPermission] = useState(null);
-  const [mediaLibraryPermission, setMediaLibraryPermission] = useState(null);
+
+export default function CameraScreen() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
+  const cameraRef = useRef(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    askPermissions();
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
   }, []);
 
-  const askPermissions = async () => {
-    const { status: cameraStatus } = await Permissions.askAsync(Permissions.CAMERA);
-    const { status: mediaLibraryStatus } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-    setCameraPermission(cameraStatus === 'granted');
-    setMediaLibraryPermission(mediaLibraryStatus === 'granted');
+  const flipCamera = () => {
+    setType(
+      type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    );
   };
 
-  const handleTakePhoto = async () => {
-    if (cameraPermission && mediaLibraryPermission) {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-
-      if (status === 'granted') {
-        const photo = await takePhoto();
-
-        if (photo) {
-          setCapturedPhoto(photo);
-        }
-      } else {
-        console.log('Camera permission not granted');
-      }
-    } else {
-      console.log('Permissions not granted');
-    }
-  };
-
-  const takePhoto = async () => {
+  const takePicture = async () => {
     if (cameraRef.current) {
       const { uri } = await cameraRef.current.takePictureAsync();
-      return { uri };
+      setCapturedPhoto(uri);
+      showSaveConfirmation();
     }
   };
 
-  const saveToAppGallery = async () => {
-    const albumName = 'My App Gallery'; // Name of your custom gallery
-
-    try {
-      const album = await MediaLibrary.getAlbumAsync(albumName);
-
-      if (album) {
-        await MediaLibrary.createAssetAsync(capturedPhoto.uri, album, false);
-        showToast('Saved to Collection');
-      } else {
-        const asset = await MediaLibrary.createAssetAsync(capturedPhoto.uri);
-        await MediaLibrary.createAlbumAsync(albumName, asset, false);
-        showToast('Saved to Collection');
-      }
-    } catch (error) {
-      console.log('Error saving photo to app gallery:', error);
-    }
+  const showSaveConfirmation = () => {
+    Alert.alert(
+      'Save to Collection',
+      'Do you want to save this photo to your collection?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: resetPhoto,
+        },
+        {
+          text: 'Save',
+          onPress: saveToCollection,
+        },
+      ]
+    );
   };
 
-  const showToast = (message) => {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
+  const resetPhoto = () => {
+    setCapturedPhoto(null);
   };
 
-  const cameraRef = useRef(null);
+  const saveToCollection = () => {
+    navigation.navigate('Collection', { capturedPhoto });
+    resetPhoto();
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return (
+      <View style={styles.container}>
+        <Text>No access to camera</Text>
+      </View>
+    );
+  }
 
   return (
-    <>
-      <Camera style={{ flex: 1 }} ref={cameraRef}>
-        {/* Camera view */}
+    <View style={styles.container}>
+      <Camera style={styles.camera} type={type} ref={cameraRef}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.flipButton} onPress={flipCamera}>
+            <Ionicons name="camera-reverse-outline" size={28} color="#fff" />
+          </TouchableOpacity>
+        </View>
+        {!capturedPhoto && (
+          <TouchableOpacity style={styles.captureButton} onPress={takePicture} />
+        )}
       </Camera>
       {capturedPhoto && (
-        <View style={styles.overlayContainer}>
-          <Image style={styles.overlayImage} source={{ uri: capturedPhoto.uri }} />
-          <View style={styles.buttonContainer}>
-            <Button title="Save to Collection" onPress={saveToAppGallery} />
-          </View>
+        <View style={styles.previewContainer}>
+          <TouchableOpacity style={styles.previewImageWrapper} onPress={resetPhoto}>
+            <Ionicons name="close-outline" size={28} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={showSaveConfirmation}>
+            <Ionicons name="save-outline" size={28} color="#fff" />
+          </TouchableOpacity>
         </View>
       )}
-      {!capturedPhoto && <Button title="Take Photo" onPress={handleTakePhoto} />}
-    </>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  overlayContainer: {
+  container: {
     flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  overlayImage: {
-    width: '100%',
-    height: '100%',
+  camera: {
+    flex: 1,
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 20,
+    top: 16,
+    left: 16,
+  },
+  flipButton: {
+    marginRight: 16,
   },
   captureButton: {
+    position: 'absolute',
+    alignSelf: 'center',
+    marginBottom: 32,
     width: 80,
     height: 80,
     borderRadius: 40,
     borderWidth: 6,
     borderColor: '#fff',
     backgroundColor: 'transparent',
+    bottom: 0,
+  },
+  previewContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  previewImageWrapper: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  saveButton: {
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });
-
-export default CameraScreen;

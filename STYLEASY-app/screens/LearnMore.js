@@ -1,105 +1,105 @@
-import React, {
-    useState,
-    useEffect,
-    useLayoutEffect,
-    useCallback
-} from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground, ScrollView} from "react-native";
-import { signOut } from 'firebase/auth';
-import { auth, database } from '../config/firebase';
-import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from '@expo/vector-icons';
-import colors from "../colors";
+import React from 'react';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import Swiper from 'react-native-swiper';
+import { useNavigation } from '@react-navigation/native';
 
-const LearnMore = () => {
+const images = [
+  { id: 1, source: require('../assets/current.png'), header: 'Step 1: Take a picture', text: 'Take a picture of your clothes and save it to your collection!' },
+  { id: 2, source: require('../assets/current.png'), header: 'Step 2: Make an outfit', text: 'Choose the clothes you want to match and make an outfit.' },
+  { id: 3, source: require('../assets/current.png'), header: 'Step 3: Save to collection', text: 'Save your favourites into your collection!' },
+];
 
-    const navigation = useNavigation();
-    const onSignOut = () => {
-        signOut(auth).catch(error => console.log(error));
-    };
+const App = () => {
+  const navigation = useNavigation();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity
-                    style={{
-                        marginRight: 10
-                    }}
-                    onPress={onSignOut}
-                >
-                    <AntDesign name="logout" size={24} color={colors.black} style={{marginRight: 10}}/>
-                </TouchableOpacity>
-              )
-            });
-          }, [navigation]);     
-          
-          return (
-            <View style = {styles.container}>
-                <ScrollView>
-                    <Text style={styles.HeaderOne}>Who Are We</Text>  
-                    <Text style={styles.HeaderTwo}>We are a team of two software engineers, working together to make our app come to life. We made this app in hopes that we can make styling clothes an easy and brainless process, reducing the time needed to try different outfit combinations to find the best fit for the occasion.</Text>  
-                    <Text style={styles.HeaderThree}>How to use our app?</Text>
-                    <Text style={styles.HeaderFour}>Our app consists of three major components</Text>
-                    <Text style={styles.HeaderFive}>1. Wardrobe</Text>
-                    <Text style={styles.HeaderTwo}>Inside your wardrobe, you will be able to view your entire inventory of clothes, as well as look at your saved outfits to refer them for future use.</Text>
-                    <Text style={styles.HeaderFive}>2. Fitting Room</Text>
-                    <Text style={styles.HeaderTwo}>Here, we let you personalise your outfits without having to try them on!</Text>
-                    <Text style={styles.HeaderFive}>3. Community </Text>
-                    <Text style={styles.HeaderTwo}>Our app lets you talk to your friends, family, or even like-minded users of our app to bring together a community of fashion enthusiasts.</Text>
-                </ScrollView>
-            </View>
-    );
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.slide}>
+      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+      <Image source={item.source} style={styles.image} />
+      <Text style={styles.header}>{item.header}</Text>
+      <Text style={styles.text}>{item.text}</Text>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <Swiper
+        showsButtons={false}
+        autoplay={true}
+        dotStyle={styles.dot}
+        activeDotStyle={styles.activeDot}
+      >
+        {images.map((image) => (
+          <View key={image.id} style={styles.slide}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <Text style={styles.backButtonText}>BACK</Text>
+            </TouchableOpacity>
+            <Image source={image.source} style={styles.image} />
+            <Text style={styles.header}>{image.header}</Text>
+            <Text style={styles.text}>{image.text}</Text>
+          </View>
+        ))}
+      </Swiper>
+    </View>
+  );
 };
 
-export default LearnMore;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  image: {
+    width: '100%',
+    height: '70%',
+    resizeMode: 'cover',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginHorizontal: 20,
+  },
+  dot: {
+    backgroundColor: '#999',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 3,
+  },
+  activeDot: {
+    backgroundColor: '#333',
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    margin: 3,
+  },
+});
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-            backgroundColor: '#fdf5e6',
-        },
-        HeaderOne: {
-            marginTop: 50, 
-            marginLeft: 60,
-            color:'black', 
-            fontWeight: 'bold', 
-            fontSize:30,
-        },
-        HeaderTwo: {
-            textAlign: 'justify',
-            marginTop: 10,
-            marginRight: 30,
-            color:'black',
-            fontSize:12,
-            width: 300,
-        },
-        HeaderThree: {
-            textAlign: 'center',
-            marginTop: 40,
-            marginRight: 40,
-            color:'black',
-            fontWeight: 'bold', 
-            fontSize:30,
-            width: 300,
-        },
-        HeaderFour: {
-            textAlign: 'justify',
-            marginTop: 10,
-            marginLeft: 8,
-            color:'black',
-            fontWeight: 'bold', 
-            fontSize:12,
-            width: 300,
-        },
-        HeaderFive: {
-            textAlign: 'justify',
-            marginTop: 20,
-            marginLeft: 20,
-            color:'black',
-            fontWeight: 'bold', 
-            fontSize:20,
-            width: 300,
-        },
-    });
+export default App;

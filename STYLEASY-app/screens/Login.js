@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
 import { signInWithEmailAndPassword, signinWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function Login({ navigation }) {
@@ -63,17 +65,17 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: { 
         flex: 1, 
-        backgroundColor: "#fdf5e6",
+        backgroundColor: "#fff",
     },
     title: {
         fontSize: 36, 
         fontWeight: 'bold', 
-        color: "#e9967a", 
+        color: "#7b68ee", 
         alignSelf: "center", 
         paddingBottom: 24,
     },
     input: {
-        backgroundColor: "#fffaf0",
+        backgroundColor: "#e6e6fa",
         height: 58, 
         marginBottom: 20, 
         fontSize: 16, 
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
     },
     button: {
-        backgroundColor: '#e9967a',
+        backgroundColor: '#7b68ee',
         height: 58, 
         borderRadius: 10, 
         justifyContent: 'center', 
