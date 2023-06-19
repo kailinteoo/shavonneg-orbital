@@ -111,15 +111,14 @@ const Home = () => {
           topContainer: {
             alignItems: 'center',
             marginBottom: 25,
+            paddingTop: 50,
           },
           logo: {
             resizeMode: 'contain',
-            alignItems: 'center', 
             alignSelf: 'center'
           },
           label: {
             fontWeight: 'bold',
-            marginTop: 30,
             textAlign: "center",
           },
           middleContainer: {

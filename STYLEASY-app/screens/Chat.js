@@ -107,7 +107,9 @@ export default function Chat() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   backButton: {
     flexDirection: "row",

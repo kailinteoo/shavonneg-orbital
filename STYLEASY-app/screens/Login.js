@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
-import { signInWithEmailAndPassword, signinWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, database } from "../config/firebase";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+
 
 
 
@@ -18,6 +20,8 @@ export default function Login({ navigation }) {
                 .catch((err) => Alert.alert("Login error", err.message));
         }
     };
+
+
 
     return (
         <View style={styles.container}>
