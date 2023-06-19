@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerItem, DrawerItemList } from "@react-navigation/drawer";
 import { onAuthStateChanged } from "firebase/auth";
+import { Ionicons } from '@expo/vector-icons';
 
 import Chat from "./screens/Chat";
 import Login from "./screens/Login";
@@ -68,14 +69,116 @@ function ProfileStack() {
 function DrawerNavigator() {
   const { user } = useContext(AuthenticatedUserContext);
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="FittingRoom" component={FittingRoom} />
-      <Drawer.Screen name="Camera" component={Camera} />
-      <Drawer.Screen name="Collection" component={Collection} />
-      <Drawer.Screen name="Community" component={Community} />
-      <Drawer.Screen name="Chat" component={Chat} />
-      <Drawer.Screen name="LearnMore" component={LearnMore} />
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerContent: (props) => <CustomDrawerContent {...props} />,
+      }}
+      drawerContentOptions={{
+        activeBackgroundColor: "#ffffff",
+        activeTintColor: "#6a1b9a",
+        labelStyle: styles.drawerLabel,
+      }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'home' : 'home-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="FittingRoom"
+        component={FittingRoom}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'shirt' : 'shirt-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'camera' : 'camera-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Collection"
+        component={Collection}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'albums' : 'albums-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Community"
+        component={Community}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'people' : 'people-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'chatbubble' : 'chatbubble-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="LearnMore"
+        component={LearnMore}
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'book' : 'book-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
       <Drawer.Screen name="Profile" component={ProfileStack} />
     </Drawer.Navigator>
   );
@@ -116,3 +219,27 @@ export default function App() {
     </AuthenticatedUserProvider>
   );
 }
+
+const CustomDrawerContent = (props) => {
+  return (
+    <ScrollView style={styles.drawerContent} {...props}>
+      <DrawerItemList {...props} />
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  drawerContent: {
+    flex: 1,
+    backgroundColor: '#d1c4e9', // Light purple background color
+    paddingTop: 50,
+  },
+  drawerLabel: {
+    color: '#4a148c', // Darker purple font color
+    marginLeft: -16,
+    fontWeight: 'bold',
+  },
+  drawerIcon: {
+    marginRight: 10,
+  },
+});
