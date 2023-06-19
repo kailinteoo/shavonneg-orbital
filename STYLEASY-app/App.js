@@ -72,12 +72,6 @@ function DrawerNavigator() {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        drawerContent: (props) => <CustomDrawerContent {...props} />,
-      }}
-      drawerContentOptions={{
-        activeBackgroundColor: "#ffffff",
-        activeTintColor: "#6a1b9a",
-        labelStyle: styles.drawerLabel,
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
@@ -152,20 +146,6 @@ function DrawerNavigator() {
         }}
       />
       <Drawer.Screen
-        name="Chat"
-        component={Chat}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'chatbubble' : 'chatbubble-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="LearnMore"
         component={LearnMore}
         options={{
@@ -179,7 +159,20 @@ function DrawerNavigator() {
           ),
         }}
       />
-      <Drawer.Screen name="Profile" component={ProfileStack} />
+      <Drawer.Screen 
+        name="Profile" 
+        component={ProfileStack} 
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
