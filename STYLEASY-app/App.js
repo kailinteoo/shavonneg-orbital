@@ -173,6 +173,20 @@ function DrawerNavigator() {
           ),
         }}
       />
+      <Drawer.Screen 
+        name="Chat" 
+        component={Chat} 
+        options={{
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color={color}
+              style={styles.drawerIcon}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
