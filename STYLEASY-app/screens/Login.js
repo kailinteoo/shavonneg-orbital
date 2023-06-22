@@ -43,8 +43,6 @@ const Login = () => {
     
                     if (password === storedPassword) {
                         console.log("Login success");
-                        await AsyncStorage.setItem('isLoggedIn', 'true');
-                        navigation.navigate("Home");
                         // Perform navigation or other actions upon successful login
                     } else {
                         Alert.alert("Login error", "Invalid email or password");
