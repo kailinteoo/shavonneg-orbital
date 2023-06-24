@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { auth, db } from "../config/firebase";
+import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { View, Image, TouchableOpacity, StyleSheet, Text, Dimensions } from "react-native";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -15,13 +15,14 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("Loading..."); // Set initial value to indicate loading
+  
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const user = auth.currentUser;
       const userId = user.uid;
-      const userDocRef = doc(db, "users", userId);
+      const userDocRef = doc(database, "users", userId);
 
       try {
         const userDocSnapshot = await getDoc(userDocRef);
@@ -34,6 +35,7 @@ const Profile = () => {
         } else {
           console.log("User document not found.");
         }
+        setUsername(userData.username); // Set the username outside the if block
       } catch (error) {
         console.log("Error fetching user profile:", error);
       }

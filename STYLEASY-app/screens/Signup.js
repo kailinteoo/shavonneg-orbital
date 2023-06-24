@@ -5,6 +5,8 @@ import { auth, storage } from '../config/firebase';
 import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { database } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import 'firebase/storage';
+
 
 
 const Signup = ({ navigation }) => {
@@ -15,6 +17,7 @@ const Signup = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const animatedValue = new Animated.Value(0);
+
 
   // Register the listener for onAnimatedValueUpdate
   animatedValue.addListener((value) => {
@@ -66,15 +69,14 @@ const Signup = ({ navigation }) => {
             const user = userCredential.user;
   
             updateProfile(user, {
-              displayName: name,
+              displayName: username,
             })
               .then(() => {
                 const name = user.displayName;
                 const userDocRef = doc(database, "users", user.uid);
                 registerUser(username, profilePicture);
                 console.log("Sign up success");
-                navigation.navigate("Profile");
-  
+
                 setDoc(userDocRef, {
                   name: name,
                   username: username,
@@ -85,7 +87,7 @@ const Signup = ({ navigation }) => {
                     // Call registerUser function here
                     registerUser(username, profilePicture);
                     console.log("Sign up success");
-                    navigation.navigate("Profile");
+
                   })
                   .catch((error) => {
                     console.log("Error creating user document:", error);

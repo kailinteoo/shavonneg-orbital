@@ -73,7 +73,6 @@ export default function UpdateProfile() {
           <Text style={styles.label}>Change Username</Text>
           <TextInput
             style={styles.input}
-            value={username}
             onChangeText={setUsername}
             placeholder="Enter your new Username"
             placeholderTextColor={colors.placeholder}
@@ -83,7 +82,6 @@ export default function UpdateProfile() {
           <Text style={styles.label}>Change Name</Text>
           <TextInput
             style={styles.input}
-            value={name}
             onChangeText={setName}
             placeholder="Enter your new name"
             placeholderTextColor={colors.placeholder}
