@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, TouchableOpacity, StatusBar, Alert} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, database} from "../config/firebase";
@@ -44,6 +44,7 @@ const Login = () => {
     
                     if (password === storedPassword) {
                         console.log("Login success");
+                        navigation.navigate('Home');
                         // Perform navigation or other actions upon successful login
                     } else {
                         Alert.alert("Login error", "Invalid email or password");
@@ -95,8 +96,8 @@ const Login = () => {
                 </View>
             </SafeAreaView>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: { 
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
 });
 
 export default Login;  
+
 
 
 
