@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 export default{
   "expo": {
+    "plugins": ["expo-image-picker"],
     "name": "STYLEASY-app",
     "slug": "STYLEASY-app",
     "version": "1.0.0",
