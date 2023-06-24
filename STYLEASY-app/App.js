@@ -32,22 +32,6 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 };
 
-//OLD NAVIGATION
-/*
-function ChatStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="FittingRoom" component={FittingRoom} />
-      <Stack.Screen name="Collection" component={Collection} />
-      <Stack.Screen name="Community" component={Community} />
-      <Stack.Screen name="LearnMore" component={LearnMore} />
-      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-    </Stack.Navigator>
-  );
-}
-*/
-
 function AuthStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -63,131 +47,6 @@ function ProfileStack() {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
     </Stack.Navigator>
-  );
-}
-
-function DrawerNavigator() {
-  const { user } = useContext(AuthenticatedUserContext);
-  return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-    >
-      <Drawer.Screen
-        name="Home"
-        component={Home}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'home' : 'home-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="FittingRoom"
-        component={FittingRoom}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'shirt' : 'shirt-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Camera"
-        component={Camera}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'camera' : 'camera-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Collection"
-        component={Collection}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'albums' : 'albums-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Community"
-        component={Community}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'people' : 'people-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="LearnMore"
-        component={LearnMore}
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'book' : 'book-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Profile" 
-        component={ProfileStack} 
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'person' : 'person-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Chat" 
-        component={Chat} 
-        options={{
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'person' : 'person-outline'}
-              size={size}
-              color={color}
-              style={styles.drawerIcon}
-            />
-          ),
-        }}
-      />
-    </Drawer.Navigator>
   );
 }
 
@@ -214,7 +73,129 @@ function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {user ? <DrawerNavigator /> : <AuthStack />}
+      {user ? (
+        <Drawer.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          drawerContent={(props) => <CustomDrawerContent {...props} />}
+        >
+          <Drawer.Screen
+            name="Home"
+            component={Home}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'home' : 'home-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="FittingRoom"
+            component={FittingRoom}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'shirt' : 'shirt-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Camera"
+            component={Camera}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'camera' : 'camera-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Collection"
+            component={Collection}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'albums' : 'albums-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Community"
+            component={Community}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'people' : 'people-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="LearnMore"
+            component={LearnMore}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'book' : 'book-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen 
+            name="Profile" 
+            component={ProfileStack} 
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'person' : 'person-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen 
+            name="Chat" 
+            component={Chat} 
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'chatbox' : 'chatbox-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+        </Drawer.Navigator>
+      ) : (
+        <AuthStack />
+      )}
     </NavigationContainer>
   );
 }
