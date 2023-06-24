@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
-import { View, Image, TouchableOpacity, StyleSheet, Text, Dimensions } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Dimensions } from "react-native";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

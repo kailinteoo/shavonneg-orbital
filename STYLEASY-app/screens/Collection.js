@@ -18,7 +18,6 @@ import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Collection = () => {
@@ -51,10 +50,10 @@ const Collection = () => {
   const windowHeight = Dimensions.get('window').height;
   const buttonSize = width * 0.4; // Adjust the button size based on the screen width
   const textSize = width * 0.1; // Adjust the text size based on the screen width
-  const marginTopPercentage = 0.01; // Adjust the desired percentage for the gap above the text
+  const marginTopPercentage = 0.08; // Adjust the desired percentage for the gap above the text
   const marginTop = height * marginTopPercentage; // Calculate the margin-top based on the screen height
   const textFontSize = windowWidth * 0.04;
-  const textHeight = windowHeight * 0.12;
+  const textHeight = windowHeight * 0.2;
 
   useEffect(() => {
     (async () => {
@@ -118,9 +117,6 @@ const Collection = () => {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Button title="Pick images from camera roll" onPress={pickImages} />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {images.map((image, index) => (
-              <Image key={index} source={{ uri: image }} style={{ width: 100, height: 100, margin: 5 }} />
-            ))}
           </View>
         </View>
 

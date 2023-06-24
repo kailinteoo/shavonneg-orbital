@@ -50,6 +50,15 @@ function ProfileStack() {
   );
 }
 
+function CommunityStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Community" component={Community} />
+      <Stack.Screen name="Chat" component={Chat} />
+    </Stack.Navigator>
+  );
+}
+
 function RootNavigator() {
   const { user, setUser } = useContext(AuthenticatedUserContext);
   const [loading, setLoading] = useState(true);
@@ -138,7 +147,7 @@ function RootNavigator() {
           />
           <Drawer.Screen
             name="Community"
-            component={Community}
+            component={CommunityStack}
             options={{
               drawerIcon: ({ focused, color, size }) => (
                 <Ionicons
@@ -171,20 +180,6 @@ function RootNavigator() {
               drawerIcon: ({ focused, color, size }) => (
                 <Ionicons
                   name={focused ? 'person' : 'person-outline'}
-                  size={size}
-                  color={color}
-                  style={styles.drawerIcon}
-                />
-              ),
-            }}
-          />
-          <Drawer.Screen 
-            name="Chat" 
-            component={Chat} 
-            options={{
-              drawerIcon: ({ focused, color, size }) => (
-                <Ionicons
-                  name={focused ? 'chatbox' : 'chatbox-outline'}
                   size={size}
                   color={color}
                   style={styles.drawerIcon}

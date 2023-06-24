@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
-import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { Dimensions } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import {
   collection,
@@ -14,6 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage } from '../config/firebase'; // Assuming you have a separate Firebase configuration file
+
 
 
 const windowWidth = Dimensions.get("window").width;
@@ -125,5 +128,6 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.04,
   },
 });
+
 
 

@@ -6,7 +6,6 @@ import { auth, database} from "../config/firebase";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { JSON } from 'react-native';
 
 
 const Login = () => {
@@ -45,7 +44,7 @@ const Login = () => {
     
                     if (password === storedPassword) {
                         console.log("Login success");
-                        navigation.navigate("Home");
+                        // Perform navigation or other actions upon successful login
                     } else {
                         Alert.alert("Login error", "Invalid email or password");
                     }
@@ -157,7 +156,9 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Login;
+export default Login;  
+
+
 
 
 
