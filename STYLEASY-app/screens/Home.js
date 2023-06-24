@@ -14,7 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
 
-
     const navigation = useNavigation();
     const onSignOut = () => {
         signOut(auth).catch(error => console.log(error));
