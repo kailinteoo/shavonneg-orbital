@@ -17,14 +17,15 @@ import colors from "../colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storage } from '../config/firebase'; // Assuming you have a separate Firebase configuration file
 
-
-
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function Chat() {
+export default function Chat({ route }) {
   const [messages, setMessages] = useState([]);
+  const [username, setUsername] = useState("");
   const navigation = useNavigation();
+
+  const { user } = route.params;
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -50,12 +51,28 @@ export default function Chat() {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const userDocRef = collection(database, "users", user.userId);
+        const userDocSnapshot = await getDocs(userDocRef);
+        const userData = userDocSnapshot.docs[0].data();
+        if (userData) {
+          setUsername(userData.username);
+        }
+      } catch (error) {
+        console.log('Error fetching username:', error);
+      }
+    };
+
+    fetchUsername();
+  }, [user]);
+
   useLayoutEffect(() => {
     const collectionRef = collection(database, "chats");
     const q = query(collectionRef, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("snapshot");
       setMessages(
         snapshot.docs.map((doc) => ({
           _id: doc.id,
@@ -92,6 +109,10 @@ export default function Chat() {
         />
       </TouchableOpacity>
       
+      <View style={styles.usernameContainer}>
+        <Text style={styles.usernameText}>CHAT {username}</Text>
+      </View>
+
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -127,7 +148,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: windowWidth * 0.04,
   },
+  usernameContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  usernameText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
+
 
 
 
