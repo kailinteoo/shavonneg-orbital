@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
-import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { Dimensions } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import {
   collection,
@@ -14,14 +15,17 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { storage } from '../config/firebase'; // Assuming you have a separate Firebase configuration file
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function Chat() {
+export default function Chat({ route }) {
   const [messages, setMessages] = useState([]);
+  const [username, setUsername] = useState("");
   const navigation = useNavigation();
+
+  const { user } = route.params;
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -47,12 +51,28 @@ export default function Chat() {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const userDocRef = collection(database, "users", user.userId);
+        const userDocSnapshot = await getDocs(userDocRef);
+        const userData = userDocSnapshot.docs[0].data();
+        if (userData) {
+          setUsername(userData.username);
+        }
+      } catch (error) {
+        console.log('Error fetching username:', error);
+      }
+    };
+
+    fetchUsername();
+  }, [user]);
+
   useLayoutEffect(() => {
     const collectionRef = collection(database, "chats");
     const q = query(collectionRef, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("snapshot");
       setMessages(
         snapshot.docs.map((doc) => ({
           _id: doc.id,
@@ -89,6 +109,10 @@ export default function Chat() {
         />
       </TouchableOpacity>
       
+      <View style={styles.usernameContainer}>
+        <Text style={styles.usernameText}>CHAT {username}</Text>
+      </View>
+
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -107,7 +131,9 @@ export default function Chat() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingTop: 50,
+    paddingBottom: 30,
   },
   backButton: {
     flexDirection: "row",
@@ -122,6 +148,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: windowWidth * 0.04,
   },
+  usernameContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  usernameText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
+
+
 
 

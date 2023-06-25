@@ -45,23 +45,18 @@ export default function UpdateProfile() {
 
   const handleUpdateProfile = async () => {
     try {
-      // Verify email before updating profile
-      const user = auth.currentUser;
-      const credential = auth.EmailAuthProvider.credential(email);
-      await user.reauthenticateWithCredential(credential);
-  
       const userDocRef = doc(database, 'users', userId);
       await updateDoc(userDocRef, {
         username: username,
         name: name,
         password: password,
       });
-  
+
       console.log('Profile updated successfully!');
-      // After the update is successful, navigate back to the "Profile" page
-      navigation.goBack();
       // Call the onProfileUpdate function passed as a route parameter
       route.params.onProfileUpdate(name, username);
+      // After the update is successful, navigate back to the "Profile" page
+      navigation.goBack();
     } catch (error) {
       console.log('Error updating profile:', error);
     }
@@ -78,7 +73,6 @@ export default function UpdateProfile() {
           <Text style={styles.label}>Change Username</Text>
           <TextInput
             style={styles.input}
-            value={username}
             onChangeText={setUsername}
             placeholder="Enter your new Username"
             placeholderTextColor={colors.placeholder}
@@ -88,7 +82,6 @@ export default function UpdateProfile() {
           <Text style={styles.label}>Change Name</Text>
           <TextInput
             style={styles.input}
-            value={name}
             onChangeText={setName}
             placeholder="Enter your new name"
             placeholderTextColor={colors.placeholder}
@@ -126,6 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: windowWidth * 0.04,
+    paddingTop: 50,
   },
   backButton: {
     marginTop: windowHeight * 0.02,

@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, ImageBackground, Dimensions, SafeAreaView} from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, ImageBackground, SafeAreaView} from 'react-native';
+import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../colors";
@@ -8,12 +9,13 @@ import { signOut } from 'firebase/auth';
 import { AntDesign } from '@expo/vector-icons';
 import { auth, database } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage } from '../config/firebase'; // Assuming you have a separate Firebase configuration file
+
 
 
 
 
 const Home = () => {
-
 
     const navigation = useNavigation();
     const onSignOut = () => {
@@ -111,15 +113,14 @@ const Home = () => {
           topContainer: {
             alignItems: 'center',
             marginBottom: 25,
+            paddingTop: 50,
           },
           logo: {
             resizeMode: 'contain',
-            alignItems: 'center', 
             alignSelf: 'center'
           },
           label: {
             fontWeight: 'bold',
-            marginTop: 30,
             textAlign: "center",
           },
           middleContainer: {
