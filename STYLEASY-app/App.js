@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { View, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator, DrawerItem, DrawerItemList } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerItemList } from "@react-navigation/drawer";
 import { onAuthStateChanged } from "firebase/auth";
 import { Ionicons } from '@expo/vector-icons';
 
@@ -30,11 +30,11 @@ const AuthenticatedUserProvider = ({ children }) => {
       {children}
     </AuthenticatedUserContext.Provider>
   );
-};
+}
 
 function AuthStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
@@ -64,11 +64,13 @@ function RootNavigator() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+    const unsubscribe = onAuthStateChanged(auth, 
+      async (authenticatedUser) => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
       setLoading(false);
-    });
-
+    }
+  );
+  
     return () => unsubscribe();
   }, [user]);
 
@@ -209,7 +211,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItemList {...props} />
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   drawerContent: {
@@ -225,4 +227,5 @@ const styles = StyleSheet.create({
   drawerIcon: {
     marginRight: 10,
   },
-});
+  }
+);
