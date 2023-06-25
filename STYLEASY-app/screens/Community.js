@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { signOut } from 'firebase/auth';
-import { auth, database } from '../config/firebase';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { signOut } from "firebase/auth";
+import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
-import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  onSnapshot,
+  getDoc,
+} from "firebase/firestore";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -16,7 +28,7 @@ const Community = () => {
   const [username, setUsername] = useState("");
 
   const onSignOut = () => {
-    signOut(auth).catch(error => console.log(error));
+    signOut(auth).catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -24,28 +36,38 @@ const Community = () => {
       headerLeft: () => (
         <TouchableOpacity
           style={{
-            marginLeft: 10
+            marginLeft: 10,
           }}
           onPress={() => navigation.goBack()}
         >
-          <AntDesign name="arrowleft" size={24} color={colors.black} style={{ marginLeft: 10 }} />
+          <AntDesign
+            name="arrowleft"
+            size={24}
+            color={colors.black}
+            style={{ marginLeft: 10 }}
+          />
         </TouchableOpacity>
       ),
       headerRight: () => (
         <TouchableOpacity
           style={{
-            marginRight: 10
+            marginRight: 10,
           }}
           onPress={onSignOut}
         >
-          <AntDesign name="logout" size={24} color={colors.black} style={{ marginRight: 10 }} />
+          <AntDesign
+            name="logout"
+            size={24}
+            color={colors.black}
+            style={{ marginRight: 10 }}
+          />
         </TouchableOpacity>
-      )
+      ),
     });
   }, [navigation]);
 
   const handleChatPress = (user) => {
-    navigation.navigate('Chat', { user });
+    navigation.navigate("Chat", { user });
   };
 
   const getInitials = (name) => {
@@ -53,15 +75,17 @@ const Community = () => {
     if (splitName.length === 1) {
       return splitName[0].charAt(0);
     } else {
-      return splitName[0].charAt(0) + splitName[splitName.length - 1].charAt(0);
+      return (
+        splitName[0].charAt(0) + splitName[splitName.length - 1].charAt(0)
+      );
     }
   };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const querySnapshot = await getDocs(collection(database, 'users'));
-        const userList = querySnapshot.docs.map(doc => doc.data());
+        const querySnapshot = await getDocs(collection(database, "users"));
+        const userList = querySnapshot.docs.map((doc) => doc.data());
         setUsers(userList);
         const user = auth.currentUser;
         const userId = user.uid;
@@ -72,11 +96,11 @@ const Community = () => {
           setUsername(userData.username);
         }
       } catch (error) {
-        console.log('Error fetching users:', error);
+        console.log("Error fetching users:", error);
       }
     };
 
-    const unsubscribe = onSnapshot(collection(database, 'users'), () => {
+    const unsubscribe = onSnapshot(collection(database, "users"), () => {
       fetchUsers();
     });
 
@@ -85,13 +109,20 @@ const Community = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Home")}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("Home")}
+      >
         <AntDesign
           name="arrowleft"
           size={windowWidth * 0.06}
           style={styles.backButtonIcon}
         />
       </TouchableOpacity>
+      <Text style={styles.communityText}>COMMUNITY</Text>
+      <View style={styles.allUsersContainer}>
+        <Text style={styles.allUsersText}>CHATS</Text>
+      </View>
 
       {users.map((user, index) => (
         <TouchableOpacity
@@ -119,39 +150,54 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
   },
+  communityText: {
+    textAlign: "center",
+    fontSize: windowWidth * 0.1,
+    fontWeight: "bold",
+    marginBottom: 50,
+  },
+  allUsersContainer: {
+    marginLeft: 20,
+    marginBottom: 10,
+  },
+  allUsersText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
   chatButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: colors.gray
+    borderBottomColor: colors.gray,
   },
   profilePicture: {
     width: 40,
     height: 40,
     borderRadius: 20,
     marginRight: 12,
-    backgroundColor: 'pink',
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: "pink",
+    justifyContent: "center",
+    alignItems: "center",
   },
   initials: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-    textTransform: 'uppercase'
+    fontWeight: "bold",
+    color: "white",
+    textTransform: "uppercase",
   },
   chatContent: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   username: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   lastMessage: {
-    color: colors.gray
+    color: colors.gray,
   },
   backButton: {
     flexDirection: "row",
@@ -165,9 +211,14 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: "black",
-    fontSize: windowWidth * 0.04,
+    fontSize: windowWidth * 0.05,
   },
 });
+
+
+
+
+
 
 
 
