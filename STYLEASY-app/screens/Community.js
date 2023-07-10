@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   Dimensions,
+  Image,
 } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth, database } from "../config/firebase";
@@ -131,7 +132,14 @@ const Community = () => {
           onPress={() => handleChatPress(user)}
         >
           <View style={styles.profilePicture}>
-            <Text style={styles.initials}>{getInitials(user.username)}</Text>
+            {user.profilePicture ? (
+              <Image
+                source={{ uri: user.profilePicture }}
+                style={styles.profilePictureImage}
+              />
+            ) : (
+              <Text style={styles.initials}>{getInitials(user.username)}</Text>
+            )}
           </View>
           <View style={styles.chatContent}>
             <Text style={styles.username}>{user.username}</Text>
@@ -182,6 +190,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  profilePictureImage: {
+    width: 40,
+    height:40,
+    borderRadius: 20,
+  },
   initials: {
     fontSize: 18,
     fontWeight: "bold",
@@ -214,6 +227,10 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.05,
   },
 });
+
+
+
+
 
 
 

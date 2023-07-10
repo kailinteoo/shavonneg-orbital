@@ -45,8 +45,7 @@ const Login = () => {
                     if (password === storedPassword) {
                         console.log("Login success");
 
-                        
-
+                    
                     } else {
                         Alert.alert("Login error", "Invalid email or password");
                     }
