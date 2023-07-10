@@ -32,6 +32,7 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 }
 
+
 function AuthStack() {
   return (
     <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { auth, database } from '../config/firebase';
+import { auth, database, updateEmail, updatePassword } from '../config/firebase';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,6 +45,8 @@ export default function UpdateProfile() {
 
   const handleUpdateProfile = async () => {
     try {
+
+      // Update the user's profile in Firestore
       const userDocRef = doc(database, 'users', userId);
       await updateDoc(userDocRef, {
         username: username,
@@ -61,7 +63,6 @@ export default function UpdateProfile() {
       console.log('Error updating profile:', error);
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -156,3 +157,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+
