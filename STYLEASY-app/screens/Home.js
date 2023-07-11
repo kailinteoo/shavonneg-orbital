@@ -13,8 +13,6 @@ import { storage } from '../config/firebase'; // Assuming you have a separate Fi
 
 
 
-
-
 const Home = () => {
 
     const navigation = useNavigation();
