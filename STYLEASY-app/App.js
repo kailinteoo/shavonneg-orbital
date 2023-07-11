@@ -17,6 +17,9 @@ import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import UpdateProfile from "./screens/UpdateProfile";
+import Current from "./screens/Current";
+import Daily from "./screens/Daily";
+import Newly from "./screens/Newly";
 import Settings from "./screens/Settings";
 import { auth } from "./config/firebase";
 
@@ -58,6 +61,17 @@ function CommunityStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Community" component={Community} />
       <Stack.Screen name="Chat" component={Chat} />
+    </Stack.Navigator>
+  );
+}
+
+function CollectionStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Collection" component={Collection} />
+      <Stack.Screen name="Current" component={Current} />
+      <Stack.Screen name="Newly" component={Newly} />
+      <Stack.Screen name="Daily" component={Daily} />
     </Stack.Navigator>
   );
 }
@@ -138,7 +152,7 @@ function RootNavigator() {
           />
           <Drawer.Screen
             name="Collection"
-            component={Collection}
+            component={CollectionStack}
             options={{
               drawerIcon: ({ focused, color, size }) => (
                 <Ionicons

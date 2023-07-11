@@ -20,9 +20,6 @@ import colors from "../colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
-import Current from "../screens/Current";
-import Daily from "../screens/Daily";
-import Newly from "../screens/Newly";
 
 
 const Collection = () => {
