@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Switch, Text, Dimensions, TouchableOpacity, Slider } from "react-native";
+import { View, StyleSheet, Switch, Text, Dimensions, TouchableOpacity, Slider} from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc } from "firebase/firestore";
 import { database } from "../config/firebase";
+
 
 const Settings = ({ navigation }) => {
   const insets = useSafeAreaInsets();

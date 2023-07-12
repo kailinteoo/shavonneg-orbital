@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import {
@@ -8,14 +8,14 @@ import {
   orderBy,
   query,
   onSnapshot,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { storage } from '../config/firebase'; // Assuming you have a separate Firebase configuration file
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -25,7 +25,8 @@ export default function Chat({ route }) {
   const [username, setUsername] = useState("");
   const navigation = useNavigation();
 
-  const { user } = route.params;
+  const { userId, username: chatUsername } = route.params;
+  const chatId = `${auth?.currentUser?.uid}_${userId}`;
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -33,6 +34,7 @@ export default function Chat({ route }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      title: chatUsername,
       headerRight: () => (
         <TouchableOpacity
           style={{
@@ -54,23 +56,24 @@ export default function Chat({ route }) {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const userDocRef = collection(database, "users", user.userId);
-        const userDocSnapshot = await getDocs(userDocRef);
-        const userData = userDocSnapshot.docs[0].data();
+        const userDocRef = doc(database, "users", userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+        const userData = userDocSnapshot.data();
         if (userData) {
           setUsername(userData.username);
         }
       } catch (error) {
-        console.log('Error fetching username:', error);
+        console.log("Error fetching username:", error);
       }
     };
 
     fetchUsername();
-  }, [user]);
+  }, [userId]);
 
   useLayoutEffect(() => {
-    const collectionRef = collection(database, "chats");
-    const q = query(collectionRef, orderBy("createdAt", "desc"));
+    const chatDocRef = doc(database, "privateChats", chatId);
+    const messagesCollectionRef = collection(chatDocRef, "messages");
+    const q = query(messagesCollectionRef, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setMessages(
@@ -83,41 +86,50 @@ export default function Chat({ route }) {
       );
     });
     return unsubscribe;
-  }, []);
+  }, [chatId]);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
+  const onSend = useCallback(
+    (messages = []) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
 
-    const { _id, createdAt, text, user } = messages[0];
-    addDoc(collection(database, "chats"), {
-      _id,
-      createdAt,
-      text,
-      user,
-    });
-  }, []);
+      const { _id, createdAt, text, user } = messages[0];
+      const chatDocRef = doc(database, "privateChats", chatId);
+      const messagesCollectionRef = collection(chatDocRef, "messages");
+
+      addDoc(messagesCollectionRef, {
+        _id,
+        createdAt,
+        text,
+        user,
+      });
+    },
+    [chatId]
+  );
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Community")}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("Community")}
+      >
         <AntDesign
           name="arrowleft"
           size={windowWidth * 0.06}
           style={styles.backButtonIcon}
         />
       </TouchableOpacity>
-      
+
       <View style={styles.usernameContainer}>
-        <Text style={styles.usernameText}>CHAT {username}</Text>
+        <Text style={styles.usernameText}>{chatUsername}</Text>
       </View>
 
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: auth?.currentUser?.email,
+          _id: auth?.currentUser?.uid,
           avatar: "https://i.pravatar.cc/300",
         }}
         messagesContainerStyle={{
@@ -157,7 +169,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-
-
-
