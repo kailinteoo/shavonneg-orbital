@@ -16,7 +16,7 @@ export default function Community({ navigation }) {
       headerLeft: () => (
         <TouchableOpacity
           style={{
-            marginLeft: 10,
+            marginLeft: 10.
           }}
           onPress={() => navigation.goBack()}
         >
