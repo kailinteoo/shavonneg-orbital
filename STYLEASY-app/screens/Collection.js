@@ -10,27 +10,29 @@ import {
   ImageBackground,
   Dimensions,
   ScrollView,
-  Alert,i
+  Alert,
 } from "react-native";
 import { signOut } from "firebase/auth";
-import { auth, database } from "../config/firebase";
+import { auth } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { firebaseConfig } from '../config/firebase';
 
 const Collection = () => {
   const navigation = useNavigation();
   const { width, height } = Dimensions.get("window");
-  const [images, setImages] = useState([]);
-  
+  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [uploadedImageURLs, setUploadedImageURLs] = useState([]);
+
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
   };
-  
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
@@ -46,17 +48,7 @@ const Collection = () => {
       ),
     });
   }, [navigation, width]);
-  
-  // Get the device screen dimensions
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-  const buttonSize = width * 0.4; // Adjust the button size based on the screen width
-  const textSize = width * 0.1; // Adjust the text size based on the screen width
-  const marginTopPercentage = 0.08; // Adjust the desired percentage for the gap above the text
-  const marginTop = height * marginTopPercentage; // Calculate the margin-top based on the screen height
-  const textFontSize = windowWidth * 0.04;
-  const textHeight = windowHeight * 0.2;
-  
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -67,7 +59,7 @@ const Collection = () => {
       }
     })();
   }, []);
-  
+
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -76,62 +68,90 @@ const Collection = () => {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     console.log(result);
-  
+
     if (!result.cancelled) {
       const selectedImages = result.selected.map((asset) => asset.uri);
-      setImages((prevImages) => [...prevImages, ...selectedImages]);
+      setUploadedImageURLs([]); // Reset uploaded image URLs
+      setSelectedCollection(null); // Reset selected collection
       handleSaveToCategory(result.selected);
     }
   };
-  
+
   const handleSaveToCategory = (selectedImages) => {
     Alert.alert(
       'Save to Category',
       'Choose a category to save the photo',
       [
-        { text: 'Current', onPress: () => saveToCategory('current', selectedImages) },
-        { text: 'Newly', onPress: () => saveToCategory('newly', selectedImages) },
-        { text: 'Daily', onPress: () => saveToCategory('daily', selectedImages) },
+        { text: 'Current', onPress: () => saveToCategory('Current', selectedImages) },
+        { text: 'Newly', onPress: () => saveToCategory('Newly', selectedImages) },
+        { text: 'Daily', onPress: () => saveToCategory('Daily', selectedImages) },
       ],
       { cancelable: true }
     );
   };
-  
+
   const saveToCategory = async (category, selectedImages) => {
+    setSelectedCollection(category); // Set the selected collection
+
     console.log(`Saving ${selectedImages.length} images to ${category} category`);
-  
+
     const storage = getStorage();
-    const newlyFolderRef = ref(storage, 'newly'); // Reference to the "newly" folder in storage
-  
+    const categoryFolderRef = ref(storage, category); // Reference to the selected category folder in storage
+
     try {
-      // Save each selected image to the "newly" folder
+      // Save each selected image to the selected category folder and Firestore
       for (const imageUri of selectedImages) {
         if (typeof imageUri !== 'string') {
           console.log('Invalid image URI:', imageUri);
           continue;
         }
-  
+
         const imageFileName = imageUri.substring(imageUri.lastIndexOf('/') + 1); // Get the file name from the URI
-        const imageRef = ref(newlyFolderRef, imageFileName);
-  
+        const imageRef = ref(categoryFolderRef, imageFileName);
+
         // Upload the image to the storage
-        await uploadString(imageRef, imageUri, 'data_url');
-        
+        const uploadTask = uploadBytes(imageRef, imageUri);
+
         // Get the download URL of the uploaded image
-        const downloadURL = await getDownloadURL(imageRef);
-  
-        // Log the download URL or perform any other operations with it
+        const downloadURL = await getDownloadURL(uploadTask.ref);
+
+        // Save the photo URL to Firestore
+        await savePhotoToFirestore(downloadURL);
+
+        // Update the uploaded image URLs state
+        setUploadedImageURLs((prevURLs) => [...prevURLs, downloadURL]);
+
         console.log('Download URL:', downloadURL);
       }
-  
+
       console.log(`Saved ${selectedImages.length} images to ${category} category`);
     } catch (error) {
       console.log('Error saving images:', error);
     }
-  };  
-  
+  };
+
+  const savePhotoToFirestore = async (photoUrl) => {
+    try {
+      const db = getFirestore();
+      const photosCollectionRef = collection(db, 'Wardrobe');
+      await addDoc(photosCollectionRef, { url: photoUrl });
+      console.log('Photo saved to Firestore');
+    } catch (error) {
+      console.log('Error saving photo to Firestore:', error);
+    }
+  };
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+  const buttonSize = width * 0.4;
+  const textSize = width * 0.1;
+  const marginTopPercentage = 0.08;
+  const marginTop = height * marginTopPercentage;
+  const textFontSize = windowWidth * 0.04;
+  const textHeight = windowHeight * 0.2;
+
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
@@ -140,39 +160,46 @@ const Collection = () => {
             COLLECTION
           </Text>
         </View>
-  
+
         <View style={styles.gap} />
-  
+
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={[styles.CurrentFav, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Current")}>
             <ImageBackground source={require('../assets/current.png')} style={styles.buttonImage}></ImageBackground>
             <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>CURRENT FAV</Text>
           </TouchableOpacity>
-  
+
           <View style={styles.buttonGap} />
-  
+
           <TouchableOpacity style={[styles.NewlySaved, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Newly")}>
             <ImageBackground source={require('../assets/newly.png')} style={styles.buttonImage}></ImageBackground>
             <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>NEWLY SAVED</Text>
           </TouchableOpacity>
         </View>
-  
+
         <TouchableOpacity style={[styles.Daily, { width: width * 0.82, height: buttonSize }]} onPress={() => navigation.navigate("Daily")}>
           <ImageBackground source={require('../assets/daily.png')} style={styles.buttonImage}></ImageBackground>
           <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>DAILY OUTFIT</Text>
         </TouchableOpacity>
-        
+
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Button title="Pick images from camera roll" onPress={pickImages} />
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-          </View>
+          {selectedCollection && (
+            <Text style={styles.selectedCollectionText}>Selected Collection: {selectedCollection}</Text>
+          )}
+          {uploadedImageURLs.length > 0 && (
+            <View style={styles.uploadedImagesContainer}>
+              <Text style={styles.uploadedImagesTitle}>Uploaded Images:</Text>
+              {uploadedImageURLs.map((imageUrl, index) => (
+                <Image key={index} source={{ uri: imageUrl }} style={styles.uploadedImage} />
+              ))}
+            </View>
+          )}
         </View>
-  
-      </SafeAreaView> 
-    </ScrollView>   
+      </SafeAreaView>
+    </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -205,7 +232,7 @@ const styles = StyleSheet.create({
     width: 10,
   },
   gap: {
-    height: 80, // Adjust the height as needed
+    height: 80,
   },
   buttonText: {
     position: "absolute",
@@ -213,7 +240,25 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: "black",
     fontWeight: "bold",
-    fontSize: 15, // Adjust the font size as needed
+    fontSize: 15,
+  },
+  selectedCollectionText: {
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  uploadedImagesContainer: {
+    marginTop: 20,
+  },
+  uploadedImagesTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  uploadedImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 10,
   },
 });
 
