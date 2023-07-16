@@ -17,9 +17,9 @@ import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import UpdateProfile from "./screens/UpdateProfile";
-import Current from "./screens/Current";
-import Daily from "./screens/Daily";
-import Newly from "./screens/Newly";
+import Tops from "./screens/Tops";
+import Bottoms from "./screens/Bottoms";
+import Shoes from "./screens/Shoes";
 import Settings from "./screens/Settings";
 import { auth } from "./config/firebase";
 
@@ -69,9 +69,9 @@ function CollectionStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Collection" component={Collection} />
-      <Stack.Screen name="Current" component={Current} />
-      <Stack.Screen name="Newly" component={Newly} />
-      <Stack.Screen name="Daily" component={Daily} />
+      <Stack.Screen name="Tops" component={Tops} />
+      <Stack.Screen name="Shoes" component={Shoes} />
+      <Stack.Screen name="Bottoms" component={Bottoms} />
     </Stack.Navigator>
   );
 }

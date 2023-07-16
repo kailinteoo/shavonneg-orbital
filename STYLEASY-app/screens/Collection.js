@@ -21,13 +21,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { firebaseConfig } from '../config/firebase';
+import { database } from "../config/firebase";
 
 const Collection = () => {
   const navigation = useNavigation();
   const { width, height } = Dimensions.get("window");
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [uploadedImageURLs, setUploadedImageURLs] = useState([]);
+  const [currentImages, setTopImages] = useState([]);
+  const [newlyImages, setShoesImages] = useState([]);
+  const [dailyImages, setBottomImages] = useState([]);
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -69,13 +72,11 @@ const Collection = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       const selectedImages = result.selected.map((asset) => asset.uri);
       setUploadedImageURLs([]); // Reset uploaded image URLs
       setSelectedCollection(null); // Reset selected collection
-      handleSaveToCategory(result.selected);
+      handleSaveToCategory(selectedImages);
     }
   };
 
@@ -84,9 +85,9 @@ const Collection = () => {
       'Save to Category',
       'Choose a category to save the photo',
       [
-        { text: 'Current', onPress: () => saveToCategory('Current', selectedImages) },
-        { text: 'Newly', onPress: () => saveToCategory('Newly', selectedImages) },
-        { text: 'Daily', onPress: () => saveToCategory('Daily', selectedImages) },
+        { text: 'Tops', onPress: () => saveToCategory('tops', selectedImages) },
+        { text: 'Bottoms', onPress: () => saveToCategory('newly', selectedImages) },
+        { text: 'Daily', onPress: () => saveToCategory('daily', selectedImages) },
       ],
       { cancelable: true }
     );
@@ -94,8 +95,6 @@ const Collection = () => {
 
   const saveToCategory = async (category, selectedImages) => {
     setSelectedCollection(category); // Set the selected collection
-
-    console.log(`Saving ${selectedImages.length} images to ${category} category`);
 
     const storage = getStorage();
     const categoryFolderRef = ref(storage, category); // Reference to the selected category folder in storage
@@ -118,12 +117,19 @@ const Collection = () => {
         const downloadURL = await getDownloadURL(uploadTask.ref);
 
         // Save the photo URL to Firestore
-        await savePhotoToFirestore(downloadURL);
+        await savePhotoToFirestore(downloadURL, category);
+
+        // Update the corresponding category's array with the uploaded image URL
+        if (category === 'top') {
+          setTopImages((prevImages) => [...prevImages, downloadURL]);
+        } else if (category === 'bottom') {
+          setBottomImages((prevImages) => [...prevImages, downloadURL]);
+        } else if (category === 'shoes') {
+          setShoesImages((prevImages) => [...prevImages, downloadURL]);
+        }
 
         // Update the uploaded image URLs state
         setUploadedImageURLs((prevURLs) => [...prevURLs, downloadURL]);
-
-        console.log('Download URL:', downloadURL);
       }
 
       console.log(`Saved ${selectedImages.length} images to ${category} category`);
@@ -132,10 +138,9 @@ const Collection = () => {
     }
   };
 
-  const savePhotoToFirestore = async (photoUrl) => {
+  const savePhotoToFirestore = async (photoUrl, category) => {
     try {
-      const db = getFirestore();
-      const photosCollectionRef = collection(db, 'Wardrobe');
+      const photosCollectionRef = collection(database, category);
       await addDoc(photosCollectionRef, { url: photoUrl });
       console.log('Photo saved to Firestore');
     } catch (error) {
@@ -164,22 +169,22 @@ const Collection = () => {
         <View style={styles.gap} />
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={[styles.CurrentFav, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Current")}>
+          <TouchableOpacity style={[styles.CurrentFav, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Tops")}>
             <ImageBackground source={require('../assets/current.png')} style={styles.buttonImage}></ImageBackground>
-            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>CURRENT FAV</Text>
+            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>TOPS</Text>
           </TouchableOpacity>
 
           <View style={styles.buttonGap} />
 
-          <TouchableOpacity style={[styles.NewlySaved, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Newly")}>
+          <TouchableOpacity style={[styles.NewlySaved, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Shoes")}>
             <ImageBackground source={require('../assets/newly.png')} style={styles.buttonImage}></ImageBackground>
-            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>NEWLY SAVED</Text>
+            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>SHOES</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={[styles.Daily, { width: width * 0.82, height: buttonSize }]} onPress={() => navigation.navigate("Daily")}>
+        <TouchableOpacity style={[styles.Daily, { width: width * 0.82, height: buttonSize }]} onPress={() => navigation.navigate("Bottoms")}>
           <ImageBackground source={require('../assets/daily.png')} style={styles.buttonImage}></ImageBackground>
-          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>DAILY OUTFIT</Text>
+          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>BOTTOMS</Text>
         </TouchableOpacity>
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
