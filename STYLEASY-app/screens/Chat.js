@@ -20,13 +20,19 @@ import colors from "../colors";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
+const getChatId = (currentUserId, otherUserId) => {
+  const sortedIds = [currentUserId, otherUserId].sort();
+  return `${sortedIds[0]}_${sortedIds[1]}`;
+};
+
 export default function Chat({ route }) {
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
   const navigation = useNavigation();
 
   const { userId, username: chatUsername } = route.params;
-  const chatId = `${auth?.currentUser?.uid}_${userId}`;
+  const currentUserId = auth?.currentUser?.uid;
+  const chatId = getChatId(currentUserId, userId);
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -70,39 +76,40 @@ export default function Chat({ route }) {
     fetchUsername();
   }, [userId]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const chatDocRef = doc(database, "privateChats", chatId);
     const messagesCollectionRef = collection(chatDocRef, "messages");
     const q = query(messagesCollectionRef, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setMessages(
-        snapshot.docs.map((doc) => ({
+      const receivedMessages = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
           _id: doc.id,
-          createdAt: doc.data().createdAt.toDate(),
-          text: doc.data().text,
-          user: doc.data().user,
-        }))
-      );
+          createdAt: data.createdAt.toDate(),
+          text: data.text,
+          user: data.user,
+        };
+      });
+
+      setMessages(receivedMessages);
     });
+
     return unsubscribe;
   }, [chatId]);
 
   const onSend = useCallback(
-    (messages = []) => {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
-      );
+    async (newMessages = []) => {
+      const newMessage = newMessages[0];
 
-      const { _id, createdAt, text, user } = messages[0];
       const chatDocRef = doc(database, "privateChats", chatId);
       const messagesCollectionRef = collection(chatDocRef, "messages");
 
-      addDoc(messagesCollectionRef, {
-        _id,
-        createdAt,
-        text,
-        user,
+      await addDoc(messagesCollectionRef, {
+        _id: newMessage._id,
+        createdAt: newMessage.createdAt,
+        text: newMessage.text,
+        user: newMessage.user,
       });
     },
     [chatId]
@@ -127,9 +134,9 @@ export default function Chat({ route }) {
 
       <GiftedChat
         messages={messages}
-        onSend={(messages) => onSend(messages)}
+        onSend={(newMessages) => onSend(newMessages)}
         user={{
-          _id: auth?.currentUser?.uid,
+          _id: currentUserId,
           avatar: "https://i.pravatar.cc/300",
         }}
         messagesContainerStyle={{

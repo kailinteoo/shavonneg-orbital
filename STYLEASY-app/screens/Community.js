@@ -3,12 +3,48 @@ import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, Dimensions }
 import { collection, getDocs, query } from "firebase/firestore";
 import { database } from "../config/firebase";
 import colors from "../colors";
+import { AntDesign } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Community({ navigation }) {
   const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{
+            marginLeft: 10.
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <AntDesign
+            name="arrowleft"
+            size={24}
+            color={colors.black}
+            style={{ marginLeft: 10 }}
+          />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          style={{
+            marginRight: 10,
+          }}
+          onPress={onSignOut}
+        >
+          <AntDesign
+            name="logout"
+            size={24}
+            color={colors.black}
+            style={{ marginRight: 10 }}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -63,6 +99,16 @@ export default function Community({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("Home")}
+      >
+        <AntDesign
+          name="arrowleft"
+          size={windowWidth * 0.06}
+          style={styles.backButtonIcon}
+        />
+      </TouchableOpacity>
       <Text style={styles.title}>COMMUNITY</Text>
       <FlatList
         data={users}
