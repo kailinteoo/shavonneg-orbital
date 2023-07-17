@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
+
+
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -36,6 +38,12 @@ const Profile = () => {
           setUsername(userData.username);
           setName(userData.name);
           setProfilePicture(userData.profilePicture);
+
+          const storedProfilePictureURI = await AsyncStorage.getItem('profilePictureURI');
+          if (storedProfilePictureURI) {
+          setProfilePicture(storedProfilePictureURI);
+          }
+
         } else {
           console.log("User document not found.");
         }
@@ -63,10 +71,6 @@ const Profile = () => {
       .catch((error) => console.log("Error logging out:", error));
   };
 
-  const handleSettings = () => {
-    navigation.navigate("Settings");
-  };
-
   const handleAccessSavedItems = () => {
     navigation.navigate("Collection");
   };
@@ -85,9 +89,11 @@ const Profile = () => {
       quality: 0.5,
     });
 
-    if (!result.cancelled) {
-      setProfilePicture(result.uri);
+    if (!result.canceled) {
+      setProfilePicture(result.assets[0].uri);
+      await AsyncStorage.setItem('profilePictureURI', result.assets[0].uri);
     }
+    
   };
 
   const logoSize = Math.min(windowWidth * 0.3, windowHeight * 0.3);
@@ -115,9 +121,6 @@ const Profile = () => {
       </View>
       <TouchableOpacity onPress={handleUpdateProfile} style={[styles.button, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Update Profile</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSettings} style={[styles.button, { width: buttonWidth }]}>
-        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Settings</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout} style={[styles.button, styles.logoutButton, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, styles.logoutButtonText, { fontSize: buttonTextSize }]}>Logout</Text>
