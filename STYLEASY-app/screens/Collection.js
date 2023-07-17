@@ -28,9 +28,9 @@ const Collection = () => {
   const { width, height } = Dimensions.get("window");
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [uploadedImageURLs, setUploadedImageURLs] = useState([]);
-  const [currentImages, setTopImages] = useState([]);
-  const [newlyImages, setShoesImages] = useState([]);
-  const [dailyImages, setBottomImages] = useState([]);
+  const [TopsImages, setTopImages] = useState([]);
+  const [BottomsImages, setBottomImages] = useState([]);
+  const [ShoesImages, setShoeImages] = useState([]);
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -39,6 +39,16 @@ const Collection = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{
+            marginLeft: width * 0.03, // Adjust the margin based on the screen width
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <AntDesign name="arrowleft" size={24} color={colors.black} />
+        </TouchableOpacity>
+      ),
       headerRight: () => (
         <TouchableOpacity
           style={{
@@ -72,7 +82,7 @@ const Collection = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       const selectedImages = result.selected.map((asset) => asset.uri);
       setUploadedImageURLs([]); // Reset uploaded image URLs
       setSelectedCollection(null); // Reset selected collection
@@ -85,9 +95,9 @@ const Collection = () => {
       'Save to Category',
       'Choose a category to save the photo',
       [
-        { text: 'Tops', onPress: () => saveToCategory('tops', selectedImages) },
-        { text: 'Bottoms', onPress: () => saveToCategory('newly', selectedImages) },
-        { text: 'Daily', onPress: () => saveToCategory('daily', selectedImages) },
+        { text: 'Tops', onPress: () => saveToCategory('Tops', selectedImages) },
+        { text: 'Bottoms', onPress: () => saveToCategory('Bottoms', selectedImages) },
+        { text: 'Shoes', onPress: () => saveToCategory('Shoes', selectedImages) },
       ],
       { cancelable: true }
     );
@@ -120,12 +130,12 @@ const Collection = () => {
         await savePhotoToFirestore(downloadURL, category);
 
         // Update the corresponding category's array with the uploaded image URL
-        if (category === 'top') {
+        if (category === 'Tops') {
           setTopImages((prevImages) => [...prevImages, downloadURL]);
-        } else if (category === 'bottom') {
+        } else if (category === 'Bottoms') {
           setBottomImages((prevImages) => [...prevImages, downloadURL]);
-        } else if (category === 'shoes') {
-          setShoesImages((prevImages) => [...prevImages, downloadURL]);
+        } else if (category === 'Shoes') {
+          setShoeImages((prevImages) => [...prevImages, downloadURL]);
         }
 
         // Update the uploaded image URLs state
@@ -169,22 +179,22 @@ const Collection = () => {
         <View style={styles.gap} />
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={[styles.CurrentFav, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Tops")}>
+          <TouchableOpacity style={[styles.Tops, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Tops")}>
             <ImageBackground source={require('../assets/current.png')} style={styles.buttonImage}></ImageBackground>
             <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>TOPS</Text>
           </TouchableOpacity>
 
           <View style={styles.buttonGap} />
 
-          <TouchableOpacity style={[styles.NewlySaved, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Shoes")}>
+          <TouchableOpacity style={[styles.Bottoms, { width: buttonSize, height: buttonSize }]} onPress={() => navigation.navigate("Bottoms")}>
             <ImageBackground source={require('../assets/newly.png')} style={styles.buttonImage}></ImageBackground>
-            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>SHOES</Text>
+            <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>BOTTOMS</Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={[styles.Daily, { width: width * 0.82, height: buttonSize }]} onPress={() => navigation.navigate("Bottoms")}>
+        <TouchableOpacity style={[styles.Shoes, { width: width * 0.82, height: buttonSize }]} onPress={() => navigation.navigate("Shoes")}>
           <ImageBackground source={require('../assets/daily.png')} style={styles.buttonImage}></ImageBackground>
-          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>BOTTOMS</Text>
+          <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>SHOES</Text>
         </TouchableOpacity>
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -222,11 +232,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 20,
   },
-  NewlySaved: {
+  Tops: {},
+  Bottoms: {},
+  Shoes: {
     marginRight: 10,
   },
-  CurrentFav: {},
-  Daily: {},
   buttonImage: {
     flex: 1,
     width: undefined,
@@ -268,3 +278,7 @@ const styles = StyleSheet.create({
 });
 
 export default Collection;
+
+
+
+
