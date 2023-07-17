@@ -197,20 +197,6 @@ const Collection = () => {
           <Text style={[styles.buttonText, { fontSize: textFontSize, marginTop: textHeight }]}>SHOES</Text>
         </TouchableOpacity>
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Button title="Pick images from camera roll" onPress={pickImages} />
-          {selectedCollection && (
-            <Text style={styles.selectedCollectionText}>Selected Collection: {selectedCollection}</Text>
-          )}
-          {uploadedImageURLs.length > 0 && (
-            <View style={styles.uploadedImagesContainer}>
-              <Text style={styles.uploadedImagesTitle}>Uploaded Images:</Text>
-              {uploadedImageURLs.map((imageUrl, index) => (
-                <Image key={index} source={{ uri: imageUrl }} style={styles.uploadedImage} />
-              ))}
-            </View>
-          )}
-        </View>
       </SafeAreaView>
     </ScrollView>
   );

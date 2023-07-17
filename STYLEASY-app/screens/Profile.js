@@ -63,10 +63,6 @@ const Profile = () => {
       .catch((error) => console.log("Error logging out:", error));
   };
 
-  const handleSettings = () => {
-    navigation.navigate("Settings");
-  };
-
   const handleAccessSavedItems = () => {
     navigation.navigate("Collection");
   };
@@ -126,14 +122,11 @@ const Profile = () => {
       <TouchableOpacity onPress={handleUpdateProfile} style={[styles.button, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Update Profile</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSettings} style={[styles.button, { width: buttonWidth }]}>
-        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Settings</Text>
+      <TouchableOpacity onPress={handleAccessSavedItems} style={[styles.button, { width: buttonWidth }]}>
+        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Access Saved Items</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout} style={[styles.button, styles.logoutButton, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, styles.logoutButtonText, { fontSize: buttonTextSize }]}>Logout</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleAccessSavedItems} style={[styles.button, { width: buttonWidth }]}>
-        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Access Saved Items</Text>
       </TouchableOpacity>
     </View>
   );
