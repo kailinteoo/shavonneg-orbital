@@ -1,41 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from "react-native";
 import { collection, query, getDocs } from "firebase/firestore";
 import { database } from "../config/firebase";
+import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
 
-const Current = () => {
-  const [currentImages, setCurrentImages] = useState([]);
+const Tops = () => {
+  const navigation = useNavigation();
+  const [TopsImages, setTopsImages] = useState([]);
+  const { width, height } = Dimensions.get("window");
 
   useEffect(() => {
-    const fetchCurrentImages = async () => {
+    const fetchTopsImages = async () => {
       try {
-        const currentCollectionRef = collection(database, "current");
-        const currentSnapshot = await getDocs(currentCollectionRef);
-        const currentImagesData = [];
-        currentSnapshot.forEach((doc) => {
-          currentImagesData.push(doc.data().url);
+        const TopsCollectionRef = collection(database, "Tops");
+        const TopsSnapshot = await getDocs(TopsCollectionRef);
+        const TopsImagesData = [];
+        TopsSnapshot.forEach((doc) => {
+          TopsImagesData.push(doc.data().url);
         });
-        setCurrentImages(currentImagesData);
+        setTopsImages(TopsImagesData);
       } catch (error) {
-        console.log("Error fetching current images:", error);
+        console.log("Error fetching Tops images:", error);
       }
     };
 
-    fetchCurrentImages();
+    fetchTopsImages();
   }, []);
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      {currentImages.length > 0 ? (
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="arrow-left" size={24} color="black" />
+      </TouchableOpacity>
+      {TopsImages.length > 0 ? (
         <FlatList
-          data={currentImages}
+          data={TopsImages}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
-            <Image source={{ uri: item }} style={styles.image} />
+            <Image source={{ uri: item }} style={[styles.image, { width: width * 0.8, height: width * 0.8 }]} />
           )}
         />
       ) : (
-        <Text>No current images available.</Text>
+        <Text style={styles.noImagesText}>No Tops images available.</Text>
       )}
     </View>
   );
@@ -47,11 +58,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 10,
+    padding: 10,
+  },
   image: {
-    width: 200,
-    height: 200,
     marginVertical: 10,
+  },
+  noImagesText: {
+    fontSize: 18,
+    marginTop: 20,
   },
 });
 
-export default Current;
+export default Tops;
+
