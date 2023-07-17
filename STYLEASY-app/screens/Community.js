@@ -56,11 +56,13 @@ export default function Community({ navigation }) {
           username: doc.data().username,
           profilePicture: doc.data().profilePicture,
         }));
+        console.log("Fetched user data:", userData); // Log the retrieved user data
         setUsers(userData);
       } catch (error) {
         console.log("Error fetching users:", error);
       }
     };
+    
 
     fetchUsers();
   }, []);
@@ -156,6 +158,12 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: windowWidth * 0.06,
     fontWeight: "bold",
+  },
+  avatar: {
+    width: windowWidth * 0.14,
+    height: windowWidth * 0.14,
+    borderRadius: windowWidth * 0.07,
+    marginRight: windowWidth * 0.03,
   },
   username: {
     fontSize: windowWidth * 0.04,
