@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "rea
 import { collection, getDocs } from "firebase/firestore";
 import { auth, database } from "../config/firebase";
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const FittingRoom = () => {
+  const navigation = useNavigation();
   const [topsImages, setTopsImages] = useState([]);
   const [bottomsImages, setBottomsImages] = useState([]);
   const [shoesImages, setShoesImages] = useState([]);
@@ -58,6 +60,10 @@ const FittingRoom = () => {
     setOutfit({ top: null, bottom: null, shoes: null });
   };
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const imageSize = Math.min(windowWidth * 0.5, windowHeight * 0.2);
@@ -65,6 +71,9 @@ const FittingRoom = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={[styles.headerText, { fontSize }]}>FITTING ROOM</Text>
       {outfit.top && outfit.bottom && outfit.shoes ? (
         <View style={styles.outfitContainer}>
@@ -99,6 +108,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 10,
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 10,
+    padding: 10,
   },
   headerText: {
     fontWeight: "bold",

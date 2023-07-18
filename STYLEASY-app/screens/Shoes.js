@@ -33,6 +33,11 @@ const Shoes = () => {
     fetchShoesImages();
   }, []);
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -80,6 +85,9 @@ const Shoes = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={[styles.headerText, { fontSize: textSize }]}>SHOES COLLECTION</Text>
       <View style={styles.imageContainer}>
         {shoesImages.length > 0 ? (
@@ -148,7 +156,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 70,
+    top: 50,
     left: 10,
     padding: 10,
   },

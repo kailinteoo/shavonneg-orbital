@@ -33,6 +33,10 @@ const Bottoms = () => {
     fetchBottomsImages();
   }, []);
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -80,6 +84,9 @@ const Bottoms = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={[styles.headerText, { fontSize: textSize }]}>BOTTOMS COLLECTION</Text>
       <View style={styles.imageContainer}>
         {bottomsImages.length > 0 ? (
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 70,
+    top: 50,
     left: 10,
     padding: 10,
   },

@@ -16,6 +16,7 @@ import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../colors";
+import { Feather } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -121,8 +122,8 @@ export default function Chat({ route }) {
         style={styles.backButton}
         onPress={() => navigation.navigate("Community")}
       >
-        <AntDesign
-          name="arrowleft"
+        <Feather
+          name="chevron-left"
           size={windowWidth * 0.06}
           style={styles.backButtonIcon}
         />

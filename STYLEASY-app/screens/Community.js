@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, Dimensions }
 import { collection, getDocs, query } from "firebase/firestore";
 import { database } from "../config/firebase";
 import colors from "../colors";
+import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
@@ -105,8 +106,8 @@ export default function Community({ navigation }) {
         style={styles.backButton}
         onPress={() => navigation.navigate("Home")}
       >
-        <AntDesign
-          name="arrowleft"
+        <Feather
+          name="chevron-left"
           size={windowWidth * 0.06}
           style={styles.backButtonIcon}
         />

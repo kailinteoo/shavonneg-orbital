@@ -22,6 +22,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { database } from "../config/firebase";
+import { Feather } from "@expo/vector-icons";
 
 const Collection = () => {
   const navigation = useNavigation();
@@ -88,6 +89,10 @@ const Collection = () => {
       setSelectedCollection(null); // Reset selected collection
       handleSaveToCategory(selectedImages);
     }
+  };
+
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
   const handleSaveToCategory = (selectedImages) => {
@@ -170,6 +175,9 @@ const Collection = () => {
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Feather name="chevron-left" size={24} color="black" />
+      </TouchableOpacity>
         <View style={{ marginTop }}>
           <Text style={[styles.collectionText, { fontSize: textSize }]}>
             COLLECTION
@@ -260,6 +268,12 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 10,
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 10,
+    padding: 10,
   },
 });
 
