@@ -33,9 +33,6 @@ const Shoes = () => {
     fetchShoesImages();
   }, []);
 
-  const handleGoBack = () => {
-    navigation.navigate("Collection");
-  };
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -84,9 +81,6 @@ const Shoes = () => {
   return (
     <View style={styles.container}>
       <Text style={[styles.headerText, { fontSize: textSize }]}>SHOES COLLECTION</Text>
-      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
       <View style={styles.imageContainer}>
         {shoesImages.length > 0 ? (
           <FlatList

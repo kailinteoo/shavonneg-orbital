@@ -33,9 +33,6 @@ const Tops = () => {
     fetchTopsImages();
   }, []);
 
-  const handleGoBack = () => {
-    navigation.navigate("Collection");
-  };
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -84,9 +81,6 @@ const Tops = () => {
   return (
     <View style={styles.container}>
       <Text style={[styles.headerText, { fontSize: textSize }]}>TOPS COLLECTION</Text>
-      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="arrow-left" size={24} color="black" />
-      </TouchableOpacity>
       <View style={styles.imageContainer}>
         {topsImages.length > 0 ? (
           <FlatList
