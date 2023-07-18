@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, database } from "../config/firebase";
 import { Feather } from "@expo/vector-icons";
@@ -58,24 +58,35 @@ const FittingRoom = () => {
     setOutfit({ top: null, bottom: null, shoes: null });
   };
 
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
+  const imageSize = Math.min(windowWidth * 0.5, windowHeight * 0.2);
+  const fontSize = Math.min(windowWidth * 0.04, windowHeight * 0.05);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>FITTING ROOM</Text>
+      <Text style={[styles.headerText, { fontSize }]}>FITTING ROOM</Text>
       {outfit.top && outfit.bottom && outfit.shoes ? (
         <View style={styles.outfitContainer}>
-          <Image source={{ uri: outfit.top }} style={styles.outfitImage} />
-          <Image source={{ uri: outfit.bottom }} style={styles.outfitImage} />
-          <Image source={{ uri: outfit.shoes }} style={styles.outfitImage} />
+          <View style={[styles.outfitImage, { width: imageSize, height: imageSize }]}>
+            <Image source={{ uri: outfit.top }} style={styles.imageFrame} />
+          </View>
+          <View style={[styles.outfitImage, { width: imageSize, height: imageSize }]}>
+            <Image source={{ uri: outfit.bottom }} style={styles.imageFrame} />
+          </View>
+          <View style={[styles.outfitImage, { width: imageSize, height: imageSize }]}>
+            <Image source={{ uri: outfit.shoes }} style={styles.imageFrame} />
+          </View>
         </View>
       ) : (
-        <Text style={styles.noOutfitText}>No outfit generated</Text>
+        <Text style={[styles.noOutfitText, { fontSize }]}>No outfit generated</Text>
       )}
       <TouchableOpacity style={styles.generateButton} onPress={handleGenerateOutfit}>
-        <Text style={styles.generateButtonText}>Generate Outfit</Text>
+        <Text style={[styles.generateButtonText, { fontSize }]}>Generate Outfit</Text>
       </TouchableOpacity>
       {outfit.top && outfit.bottom && outfit.shoes && (
         <TouchableOpacity style={styles.resetButton} onPress={handleResetOutfit}>
-          <Text style={styles.resetButtonText}>Reset Outfit</Text>
+          <Text style={[styles.resetButtonText, { fontSize }]}>Reset Outfit</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -91,21 +102,24 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: "bold",
-    fontSize: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   outfitContainer: {
     alignItems: "center",
     marginBottom: 20,
   },
   outfitImage: {
-    width: 200,
-    height: 200,
     resizeMode: "cover",
     marginVertical: 10,
+    borderWidth: 2,
+    borderColor: "#C3B1E1",
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  imageFrame: {
+    flex: 1,
   },
   noOutfitText: {
-    fontSize: 16,
     marginBottom: 20,
   },
   generateButton: {
@@ -116,7 +130,6 @@ const styles = StyleSheet.create({
   generateButtonText: {
     color: "#ffffff",
     fontWeight: "bold",
-    fontSize: 16,
   },
   resetButton: {
     marginTop: 10,
@@ -127,7 +140,6 @@ const styles = StyleSheet.create({
   resetButtonText: {
     color: "#ffffff",
     fontWeight: "bold",
-    fontSize: 16,
   },
 });
 
