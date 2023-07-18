@@ -54,17 +54,30 @@ const FittingRoom = () => {
     return null;
   };
 
+  const handleResetOutfit = () => {
+    setOutfit({ top: null, bottom: null, shoes: null });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>FITTING ROOM</Text>
-      <View style={styles.outfitContainer}>
-        <Image source={{ uri: outfit.top }} style={styles.outfitImage} />
-        <Image source={{ uri: outfit.bottom }} style={styles.outfitImage} />
-        <Image source={{ uri: outfit.shoes }} style={styles.outfitImage} />
-      </View>
+      {outfit.top && outfit.bottom && outfit.shoes ? (
+        <View style={styles.outfitContainer}>
+          <Image source={{ uri: outfit.top }} style={styles.outfitImage} />
+          <Image source={{ uri: outfit.bottom }} style={styles.outfitImage} />
+          <Image source={{ uri: outfit.shoes }} style={styles.outfitImage} />
+        </View>
+      ) : (
+        <Text style={styles.noOutfitText}>No outfit generated</Text>
+      )}
       <TouchableOpacity style={styles.generateButton} onPress={handleGenerateOutfit}>
         <Text style={styles.generateButtonText}>Generate Outfit</Text>
       </TouchableOpacity>
+      {outfit.top && outfit.bottom && outfit.shoes && (
+        <TouchableOpacity style={styles.resetButton} onPress={handleResetOutfit}>
+          <Text style={styles.resetButtonText}>Reset Outfit</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -91,12 +104,27 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     marginVertical: 10,
   },
+  noOutfitText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
   generateButton: {
     backgroundColor: "#7b68ee",
     padding: 10,
     borderRadius: 10,
   },
   generateButtonText: {
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  resetButton: {
+    marginTop: 10,
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 10,
+  },
+  resetButtonText: {
     color: "#ffffff",
     fontWeight: "bold",
     fontSize: 16,
