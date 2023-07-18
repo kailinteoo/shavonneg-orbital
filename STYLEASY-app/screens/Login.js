@@ -32,31 +32,31 @@ const Login = () => {
     }, []);
 
     const onHandleLogin = async () => {
-        if (email !== "" && password !== "") {
-            try {
-                const usersCollectionRef = collection(database, "users"); // Assuming 'users' is the collection name in Firestore
-                const q = query(usersCollectionRef, where("email", "==", email));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    const userData = querySnapshot.docs[0].data();
-                    const storedPassword = userData.password; // Assuming the password field is named 'password' in Firestore
-
-                    if (password === storedPassword) {
-                        console.log("Login success");
-
-                    
-                    } else {
-                        Alert.alert("Login error", "Invalid email or password");
-                    }
-                } else {
-                    Alert.alert("Login error", "Invalid email or password");
-                }
-            } catch (error) {
-                console.log("Error retrieving user data from Firestore:", error);
+        if (email !== '' && password !== '') {
+          try {
+            const usersCollectionRef = collection(database, 'users');
+            const q = query(usersCollectionRef, where('email', '==', email));
+            const querySnapshot = await getDocs(q);
+      
+            if (!querySnapshot.empty) {
+              const userData = querySnapshot.docs[0].data();
+              const storedPassword = userData.password;
+      
+              if (password === storedPassword) {
+                console.log('Login success');
+                navigation.navigate('Home'); // Add this line to navigate to the home page
+              } else {
+                Alert.alert('Login error', 'Invalid email or password');
+              }
+            } else {
+              Alert.alert('Login error', 'Invalid email or password');
             }
+          } catch (error) {
+            console.log('Error retrieving user data from Firestore:', error);
+          }
         }
-    };
+      };
+      
 
     return (
         <View style={styles.container}>

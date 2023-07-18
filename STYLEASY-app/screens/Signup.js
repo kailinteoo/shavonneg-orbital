@@ -38,17 +38,25 @@ const Signup = ({ navigation }) => {
 
   const registerUser = async (username, profilePicture) => {
     try {
-      // Upload profile picture to Firebase Storage and get the download URL
-      const profilePictureRef = storage.ref().child(`profilePictures/${profilePicture.name}`);
-      await profilePictureRef.put(profilePicture);
-      const profilePictureUrl = await profilePictureRef.getDownloadURL();
+      // Convert profile picture to a Blob object
+      const processedData = new Blob([profilePicture], { type: 'image/jpeg' });
+  
+      // Generate a unique filename for the profile picture
+      const fileName = `profilePictures/${Date.now()}`;
+  
+      // Upload the profile picture to Firebase Storage and get the download URL
+      const uploadTask = storage.ref().child(fileName).put(processedData);
+      const snapshot = await uploadTask;
+  
+      // Get the download URL of the uploaded image
+      const profilePictureUrl = await snapshot.ref.getDownloadURL();
   
       // Create user document in the "users" collection
       const userRef = collection(database, 'users');
       await addDoc(userRef, {
         username,
         profilePicture: profilePictureUrl,
-        name, 
+        name,
         password,
         email,
       });
@@ -60,6 +68,7 @@ const Signup = ({ navigation }) => {
       console.error('Error registering user:', error);
     }
   };
+  
 
   const handleSignUp = () => {
     if (email !== "" && username !== "" && password !== "" && confirmPassword !== "") {
