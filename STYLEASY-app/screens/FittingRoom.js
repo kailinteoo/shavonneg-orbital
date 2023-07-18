@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions, Alert } from "react-native";
-import { collection, addDoc, query, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+} from "react-native";
+import {
+  collection,
+  addDoc,
+  query,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import { auth, database } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 
 const FittingRoom = () => {
   const navigation = useNavigation();
@@ -18,7 +35,12 @@ const FittingRoom = () => {
       try {
         const currentUser = auth.currentUser;
         if (currentUser) {
-          const userImagesCollectionRef = collection(database, "users", currentUser.uid, "shoes");
+          const userImagesCollectionRef = collection(
+            database,
+            "users",
+            currentUser.uid,
+            "shoes"
+          );
           const userImagesSnapshot = await getDocs(userImagesCollectionRef);
           const shoesImagesData = [];
           userImagesSnapshot.forEach((doc) => {
@@ -40,37 +62,55 @@ const FittingRoom = () => {
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access the camera roll is required!');
+    if (status !== "granted") {
+      alert("Permission to access the camera roll is required!");
       return;
     }
-  
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.cancelled) {
       const selectedImage = result.assets[0];
       const currentUser = auth.currentUser;
-  
+
       if (currentUser) {
-        const userImagesCollectionRef = collection(database, "users", currentUser.uid, "shoes");
-        const imageRef = await addDoc(userImagesCollectionRef, { url: selectedImage.uri });
-        setShoesImages(prevImages => [...prevImages, { id: imageRef.id, url: selectedImage.uri }]);
+        const userImagesCollectionRef = collection(
+          database,
+          "users",
+          currentUser.uid,
+          "shoes"
+        );
+        const imageRef = await addDoc(userImagesCollectionRef, {
+          url: selectedImage.uri,
+        });
+        setShoesImages((prevImages) => [
+          ...prevImages,
+          { id: imageRef.id, url: selectedImage.uri },
+        ]);
       }
     }
   };
-  
+
   const handleRemoveImage = async (imageId) => {
     try {
       const currentUser = auth.currentUser;
       if (currentUser) {
-        const userImageDocRef = doc(database, "users", currentUser.uid, "shoes", imageId);
+        const userImageDocRef = doc(
+          database,
+          "users",
+          currentUser.uid,
+          "shoes",
+          imageId
+        );
         await deleteDoc(userImageDocRef);
-        setShoesImages(prevImages => prevImages.filter(image => image.id !== imageId));
+        setShoesImages((prevImages) =>
+          prevImages.filter((image) => image.id !== imageId)
+        );
       }
     } catch (error) {
       console.log("Error removing image:", error);
@@ -90,7 +130,9 @@ const FittingRoom = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.headerText, { fontSize: textSize }]}>FITTING ROOM</Text>
+      <Text style={[styles.headerText, { fontSize: textSize }]}>
+        FITTING ROOM
+      </Text>
       <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
         <Feather name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
@@ -104,7 +146,9 @@ const FittingRoom = () => {
           </View>
         ) : (
           <View style={styles.noRandomImageContainer}>
-            <Text style={styles.noRandomImageText}>Click "Generate Random Image" to see a random picture</Text>
+            <Text style={styles.noRandomImageText}>
+              Click "Generate Random Image" to see a random picture
+            </Text>
           </View>
         )}
         {shoesImages.length > 0 && (
@@ -125,20 +169,15 @@ const FittingRoom = () => {
                 ]}
                 onPress={() => handleRemoveImage(item.id)}
               >
-                <Image
-                  source={{ uri: item.url }}
-                  style={styles.image}
-                />
+                <Image source={{ uri: item.url }} style={styles.image} />
                 <TouchableOpacity
                   style={styles.removeButton}
-                  onPress={() => Alert.alert(
-                    "Remove Image",
-                    "Are you sure you want to remove this image?",
-                    [
+                  onPress={() =>
+                    Alert.alert("Remove Image", "Are you sure you want to remove this image?", [
                       { text: "Cancel", style: "cancel" },
                       { text: "Remove", style: "destructive", onPress: () => handleRemoveImage(item.id) },
-                    ]
-                  )}
+                    ])
+                  }
                 >
                   <Feather name="trash-2" size={18} color="white" />
                 </TouchableOpacity>
@@ -150,7 +189,10 @@ const FittingRoom = () => {
       <TouchableOpacity style={styles.uploadButton} onPress={handleSelectImage}>
         <Text style={styles.uploadButtonText}>Upload Image</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.generateButton} onPress={handleGenerateRandomImage}>
+      <TouchableOpacity
+        style={styles.generateButton}
+        onPress={handleGenerateRandomImage}
+      >
         <Text style={styles.generateButtonText}>Generate Random Image</Text>
       </TouchableOpacity>
     </View>
