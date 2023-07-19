@@ -85,9 +85,6 @@ const Shoes = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="chevron-left" size={24} color="black" />
-      </TouchableOpacity>
       <Text style={[styles.headerText, { fontSize: textSize }]}>SHOES COLLECTION</Text>
       <View style={styles.imageContainer}>
         {shoesImages.length > 0 ? (

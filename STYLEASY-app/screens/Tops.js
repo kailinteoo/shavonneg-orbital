@@ -84,9 +84,6 @@ const Tops = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="chevron-left" size={24} color="black" />
-      </TouchableOpacity>
       <Text style={[styles.headerText, { fontSize: textSize }]}>TOPS COLLECTION</Text>
       <View style={styles.imageContainer}>
         {topsImages.length > 0 ? (
