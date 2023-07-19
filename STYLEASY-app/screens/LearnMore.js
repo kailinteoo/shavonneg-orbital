@@ -7,14 +7,21 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const images = [
-  { id: 1, source: require('../assets/L1.png'), header: 'Step 1: Click on "Collection"', text: 'TEXT 1' },
-  { id: 2, source: require('../assets/L2.png'), header: 'Step 2: Click on "Tops"', text: 'TEXT 2' },
-  { id: 3, source: require('../assets/L3.png'), header: 'Step 3: Upload image', text: 'TEXT 3' },
-  { id: 4, source: require('../assets/L4.png'), header: 'Step 4: Choose a image', text: 'TEXT 4' },
-  { id: 5, source: require('../assets/L5.png'), header: 'Step 5: Click on "Choose"', text: 'TEXT 5' },
-  { id: 6, source: require('../assets/L6.png'), header: 'Step 6: Delete icon', text: 'TEXT 6' },
-  { id: 7, source: require('../assets/L7.png'), header: 'Step 7: Click on "Fitting Room"', text: 'TEXT 7' },
-  { id: 8, source: require('../assets/L8.png'), header: 'Step 8: Generate Random image', text: 'TEXT 8' },
+  { id: 0, source: require('../assets/L0.png'), header: ''},
+  { id: 1, source: require('../assets/L1.png'), header: 'Step 1.1: Click on "Collection"'},
+  { id: 2, source: require('../assets/L2.png'), header: 'Step 1.2: Click on "Tops"'},
+  { id: 3, source: require('../assets/L3.png'), header: 'Step 1.3: Upload image'},
+  { id: 4, source: require('../assets/L4.png'), header: 'Step 1.4: Choose a image',},
+  { id: 5, source: require('../assets/L5.png'), header: 'Step 1.5: Click on "Choose"'},
+  { id: 6, source: require('../assets/L6.png'), header: 'Step 1.6: Delete icon', text: 'To remove the image' },
+  { id: 7-1, source: require('../assets/L7-1.png'), header: ''},
+  { id: 7, source: require('../assets/L7.png'), header: 'Step 2.1: Click on "Fitting Room"' },
+  { id: 8, source: require('../assets/L8.png'), header: 'Step 2.2: Generate image' },
+  { id: 9, source: require('../assets/L9.png'), header: 'Step 2.3: Mix and Match', text: 'Press the "Generate Outfit" to generate a new outfit' },
+  { id: 10-1, source: require('../assets/L10-1.png'), header:'' },
+  { id: 10, source: require('../assets/L10.png'), header: 'STEP 3.1. Sidebar > Camera'},
+  { id: 11, source: require('../assets/L11.png'), header: 'STEP 3.2. Click on "Tops"', text: 'You can select any categories to save the photo to' },
+  { id: 12, source: require('../assets/L12.png'), header: 'STEP 3.3. Saved in "Tops"', text: 'The photo will be saved in the categories without being stored in your phone gallery' },
 ];
 
 const App = () => {
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'purple',
     borderRadius: 5,
-    overflow: 'hidden',
+    overflow: 'absolute',
   },
   image: {
     width: '100%',
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 10,
+    position: 'center',
   },
   text: {
     fontSize: 16,
