@@ -83,9 +83,16 @@ const Signup = ({ navigation }) => {
               .then(() => {
                 const name = user.displayName;
                 const userDocRef = doc(database, "users", user.uid);
-                registerUser(username, profilePicture);
-                console.log("Sign up success");
-
+  
+                // Remove the duplicate call to registerUser
+                registerUser(username, profilePicture)
+                  .then(() => {
+                    console.log("Sign up success");
+                  })
+                  .catch((error) => {
+                    console.error("Error registering user:", error);
+                  });
+  
                 setDoc(userDocRef, {
                   name: name,
                   username: username,
@@ -93,23 +100,20 @@ const Signup = ({ navigation }) => {
                   email: email,
                 })
                   .then(() => {
-                    // Call registerUser function here
-                    registerUser(username, profilePicture);
-                    console.log("Sign up success");
-
+                    console.log("User document created successfully");
                   })
                   .catch((error) => {
-                    console.log("Error creating user document:", error);
+                    console.error("Error creating user document:", error);
                     Alert.alert("Signup error", error.message);
                   });
               })
               .catch((error) => {
-                console.log("Error updating profile:", error);
+                console.error("Error updating profile:", error);
                 Alert.alert("Signup error", error.message);
               });
           })
           .catch((error) => {
-            console.log("Error during sign up:", error);
+            console.error("Error during sign up:", error);
             Alert.alert("Signup error", error.message);
           });
       } else {
@@ -120,9 +124,6 @@ const Signup = ({ navigation }) => {
     }
   };
   
-
-  
-
   return (
     <View style={styles.container}>
       <View />
