@@ -13,7 +13,7 @@ const images = [
   { id: 3, source: require('../assets/L3.png'), header: 'Step 1.3: Upload image'},
   { id: 4, source: require('../assets/L4.png'), header: 'Step 1.4: Choose a image',},
   { id: 5, source: require('../assets/L5.png'), header: 'Step 1.5: Click on "Choose"'},
-  { id: 6, source: require('../assets/L6.png'), header: 'Step 1.6: Delete icon', text: 'To remove the image' },
+  { id: 6, source: require('../assets/L6.png'), header: 'Step 1.6: Delete image', text: 'Slide right to navigate back to "Collection" page' },
   { id: 7-1, source: require('../assets/L7-1.png'), header: ''},
   { id: 7, source: require('../assets/L7.png'), header: 'Step 2.1: Click on "Fitting Room"' },
   { id: 8, source: require('../assets/L8.png'), header: 'Step 2.2: Generate image' },
