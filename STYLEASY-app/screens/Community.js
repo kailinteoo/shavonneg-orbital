@@ -72,16 +72,14 @@ export default function Community({ navigation }) {
     const { id, username, profilePicture } = item;
 
     const renderAvatar = () => {
-      if (profilePicture) {
-        return <Image source={{ uri: profilePicture }} style={styles.avatar} />;
-      } else {
+
         const initials = username ? username.charAt(0).toUpperCase() : "";
         return (
           <View style={styles.avatarContainer}>
             <Text style={styles.avatarInitials}>{initials}</Text>
           </View>
         );
-      }
+      
     };
 
     return (
@@ -177,3 +175,6 @@ const styles = StyleSheet.create({
     marginVertical: windowHeight * 0.00001,
   },
 });
+
+
+

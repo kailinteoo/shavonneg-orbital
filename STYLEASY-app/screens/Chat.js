@@ -26,6 +26,10 @@ const getChatId = (currentUserId, otherUserId) => {
   return `${sortedIds[0]}_${sortedIds[1]}`;
 };
 
+const getInitials = (username) => {
+  return username ? username.charAt(0).toUpperCase() : "";
+};
+
 export default function Chat({ route }) {
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
@@ -89,7 +93,10 @@ export default function Chat({ route }) {
           _id: doc.id,
           createdAt: data.createdAt.toDate(),
           text: data.text,
-          user: data.user,
+          user: {
+            _id: data.user._id,
+            name: data.user.name,
+          },
         };
       });
 
@@ -110,10 +117,13 @@ export default function Chat({ route }) {
         _id: newMessage._id,
         createdAt: newMessage.createdAt,
         text: newMessage.text,
-        user: newMessage.user,
+        user: {
+          _id: currentUserId,
+          name: username,
+        },
       });
     },
-    [chatId]
+    [chatId, currentUserId, username]
   );
 
   return (
@@ -134,15 +144,32 @@ export default function Chat({ route }) {
       </View>
 
       <GiftedChat
-        messages={messages}
-        onSend={(newMessages) => onSend(newMessages)}
-        user={{
-          _id: currentUserId,
-          avatar: "https://i.pravatar.cc/300",
-        }}
-        messagesContainerStyle={{
-          backgroundColor: "#fff",
-        }}
+  messages={messages}
+  onSend={(newMessages) => onSend(newMessages)}
+  user={{
+    _id: currentUserId,
+    name: username, // Add the username to display your own sender's name
+  }}
+  messagesContainerStyle={{
+    backgroundColor: "#fff",
+  }}
+  renderAvatar={(props) => {
+    const { currentMessage } = props;
+    const { user } = currentMessage;
+
+    // Get the sender's initials of the other user (not yourself)
+    if (user._id !== currentUserId) {
+      const senderInitials = getInitials(chatUsername);
+      return (
+        <View style={styles.avatarContainer}>
+          <Text style={styles.avatarInitials}>{senderInitials}</Text>
+        </View>
+      );
+    }
+
+    // Return null if it's your own message (to hide the avatar bubble)
+    return null;
+  }}
       />
     </View>
   );
@@ -174,6 +201,20 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     fontSize: 20,
+    fontWeight: "bold",
+  },
+  // New styles for custom avatar
+  avatarContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "pink",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarInitials: {
+    color: colors.white,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
