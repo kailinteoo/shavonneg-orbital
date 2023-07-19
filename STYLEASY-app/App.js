@@ -36,7 +36,6 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 }
 
-
 function AuthStack() {
   return (
     <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
@@ -87,7 +86,7 @@ function RootNavigator() {
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, []); // Removed [user] dependency from useEffect, as it is not needed
 
   if (loading) {
     return (
@@ -103,12 +102,8 @@ function RootNavigator() {
         <Drawer.Navigator
           screenOptions={{
             headerShown: false,
-          }}
-          drawerContentOptions={{
-            // You can customize the styling of the drawer items here
-            // For example, you can set the activeTintColor and inactiveTintColor
-            activeTintColor: '#7b68ee',
-            inactiveTintColor: '#000',
+            drawerActiveTintColor: '#7b68ee',
+            drawerInactiveTintColor: '#000',
           }}
           drawerContent={(props) => <CustomDrawerContent {...props} />}
         >
@@ -126,6 +121,90 @@ function RootNavigator() {
               ),
             }}
           />
+          <Drawer.Screen
+            name="LearnMore"
+            component={LearnMore}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'book' : 'book-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Collection"
+            component={CollectionStack}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'albums' : 'albums-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="FittingRoom"
+            component={FittingRoom}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'shirt' : 'shirt-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Camera"
+            component={Camera}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'camera' : 'camera-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Community"
+            component={CommunityStack}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'people' : 'people-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Profile"
+            component={ProfileStack}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'person' : 'person-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
           {/* ...Other screens */}
         </Drawer.Navigator>
       ) : (
@@ -135,6 +214,7 @@ function RootNavigator() {
   );
 }
 
+// ...Your other components and styles...
 
 export default function App() {
   return (
@@ -166,5 +246,4 @@ const styles = StyleSheet.create({
   drawerIcon: {
     marginRight: 10,
   },
-  }
-);
+});
