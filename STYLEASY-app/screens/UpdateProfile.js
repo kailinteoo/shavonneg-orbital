@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { auth, database, updateEmail, updatePassword } from '../config/firebase';
+import { auth, database } from '../config/firebase'; // Assuming you have the Firebase Auth instance properly set up
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { sendPasswordResetEmail as sendResetEmail } from 'firebase/auth';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -30,7 +31,6 @@ export default function UpdateProfile() {
           const userData = userDocSnapshot.data();
           setUsername(userData.username);
           setName(userData.name);
-          setPassword(userData.password);
           setEmail(userData.email);
         } else {
           console.log('User document not found.');
@@ -42,16 +42,23 @@ export default function UpdateProfile() {
 
     fetchUserProfile();
   }, []);
+  
+  const sendPasswordResetEmail = async () => {
+    try {
+      await sendResetEmail(auth, email); // Use the renamed function here
+      console.log('Password reset email sent successfully!');
+    } catch (error) {
+      console.log('Error sending password reset email:', error);
+    }
+  };
 
   const handleUpdateProfile = async () => {
     try {
-
       // Update the user's profile in Firestore
       const userDocRef = doc(database, 'users', userId);
       await updateDoc(userDocRef, {
         username: username,
         name: name,
-        password: password,
       });
 
       console.log('Profile updated successfully!');
@@ -89,16 +96,6 @@ export default function UpdateProfile() {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Change Password</Text>
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Enter your new password"
-            placeholderTextColor={colors.placeholder}
-          />
-        </View>
-        <View style={styles.inputContainer}>
           <Text style={styles.label}>Confirm by Email</Text>
           <TextInput
             style={styles.input}
@@ -108,6 +105,9 @@ export default function UpdateProfile() {
             placeholderTextColor={colors.placeholder}
           />
         </View>
+        <TouchableOpacity style={styles.button} onPress={() => sendPasswordResetEmail()}>
+          <Text style={styles.buttonText}>Send Password Reset Email</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleUpdateProfile}>
           <Text style={styles.buttonText}>Update Profile</Text>
         </TouchableOpacity>
@@ -157,5 +157,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-
