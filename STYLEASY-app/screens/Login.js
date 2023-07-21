@@ -16,17 +16,19 @@ const Login = () => {
     useEffect(() => {
         const getUserPassword = async () => {
             try {
-                const usersCollectionRef = collection(database, "users");
-                const querySnapshot = await where(usersCollectionRef, "email", "==", email);
-                if (!querySnapshot.empty) {
-                    const userData = querySnapshot.docs[0].data();
-                    const newPassword = userData.password; // Assuming the password field is named 'password' in Firestore
-                    setPassword(newPassword);
-                }
+              const usersCollectionRef = collection(database, "users");
+              const q = query(usersCollectionRef, where("email", "==", email));
+              const querySnapshot = await getDocs(q);
+              if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
+                const newPassword = userData.password; // Assuming the password field is named 'password' in Firestore
+                setPassword(newPassword);
+              }
             } catch (error) {
-                console.log("Error retrieving user password from Firestore:", error);
+              console.log("Error retrieving user password from Firestore:", error);
             }
-        };
+          };
+          
 
         getUserPassword();
     }, []);

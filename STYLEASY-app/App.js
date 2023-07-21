@@ -81,6 +81,7 @@ function RootNavigator() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+      console.log("User state changed:", authenticatedUser);
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
       setLoading(false);
     });
