@@ -29,6 +29,7 @@
     "expo-media-library": "~15.0.0",
     "expo-permissions": "~14.0.0",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.15.6",
     "firebase": "^9.23.0",
     "npx": "^10.2.2",
     "react": "18.1.0",
