@@ -17,6 +17,10 @@ import LearnMore from "./screens/LearnMore";
 import Profile from "./screens/Profile";
 import Camera from "./screens/Camera";
 import UpdateProfile from "./screens/UpdateProfile";
+import Tops from "./screens/Tops";
+import Bottoms from "./screens/Bottoms";
+import Shoes from "./screens/Shoes";
+import Settings from "./screens/Settings";
 import { auth } from "./config/firebase";
 
 const Stack = createStackNavigator();
@@ -34,7 +38,7 @@ const AuthenticatedUserProvider = ({ children }) => {
 
 function AuthStack() {
   return (
-    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
@@ -46,6 +50,7 @@ function ProfileStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   );
 }
@@ -59,20 +64,30 @@ function CommunityStack() {
   );
 }
 
+function CollectionStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Collection" component={Collection} />
+      <Stack.Screen name="Tops" component={Tops} />
+      <Stack.Screen name="Shoes" component={Shoes} />
+      <Stack.Screen name="Bottoms" component={Bottoms} />
+    </Stack.Navigator>
+  );
+}
+
 function RootNavigator() {
   const { user, setUser } = useContext(AuthenticatedUserContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, 
-      async (authenticatedUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+      console.log("User state changed:", authenticatedUser);
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
       setLoading(false);
-    }
-  );
-  
+    });
+
     return () => unsubscribe();
-  }, [user]);
+  }, []); // Removed [user] dependency from useEffect, as it is not needed
 
   if (loading) {
     return (
@@ -88,6 +103,8 @@ function RootNavigator() {
         <Drawer.Navigator
           screenOptions={{
             headerShown: false,
+            drawerActiveTintColor: '#7b68ee',
+            drawerInactiveTintColor: '#000',
           }}
           drawerContent={(props) => <CustomDrawerContent {...props} />}
         >
@@ -98,6 +115,34 @@ function RootNavigator() {
               drawerIcon: ({ focused, color, size }) => (
                 <Ionicons
                   name={focused ? 'home' : 'home-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="LearnMore"
+            component={LearnMore}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'book' : 'book-outline'}
+                  size={size}
+                  color={color}
+                  style={styles.drawerIcon}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Collection"
+            component={CollectionStack}
+            options={{
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons
+                  name={focused ? 'albums' : 'albums-outline'}
                   size={size}
                   color={color}
                   style={styles.drawerIcon}
@@ -134,20 +179,6 @@ function RootNavigator() {
             }}
           />
           <Drawer.Screen
-            name="Collection"
-            component={Collection}
-            options={{
-              drawerIcon: ({ focused, color, size }) => (
-                <Ionicons
-                  name={focused ? 'albums' : 'albums-outline'}
-                  size={size}
-                  color={color}
-                  style={styles.drawerIcon}
-                />
-              ),
-            }}
-          />
-          <Drawer.Screen
             name="Community"
             component={CommunityStack}
             options={{
@@ -162,22 +193,8 @@ function RootNavigator() {
             }}
           />
           <Drawer.Screen
-            name="LearnMore"
-            component={LearnMore}
-            options={{
-              drawerIcon: ({ focused, color, size }) => (
-                <Ionicons
-                  name={focused ? 'book' : 'book-outline'}
-                  size={size}
-                  color={color}
-                  style={styles.drawerIcon}
-                />
-              ),
-            }}
-          />
-          <Drawer.Screen 
-            name="Profile" 
-            component={ProfileStack} 
+            name="Profile"
+            component={ProfileStack}
             options={{
               drawerIcon: ({ focused, color, size }) => (
                 <Ionicons
@@ -189,6 +206,7 @@ function RootNavigator() {
               ),
             }}
           />
+          {/* ...Other screens */}
         </Drawer.Navigator>
       ) : (
         <AuthStack />
@@ -196,6 +214,8 @@ function RootNavigator() {
     </NavigationContainer>
   );
 }
+
+// ...Your other components and styles...
 
 export default function App() {
   return (
@@ -227,5 +247,4 @@ const styles = StyleSheet.create({
   drawerIcon: {
     marginRight: 10,
   },
-  }
-);
+});

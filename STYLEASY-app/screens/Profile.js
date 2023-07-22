@@ -6,6 +6,8 @@ import { View, Image, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { Dimensions } from "react-native";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -16,8 +18,8 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("Loading..."); // Set initial value to indicate loading
-  
+  const [username, setUsername] = useState("Loading...");
+  const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -33,10 +35,10 @@ const Profile = () => {
           setEmail(userData.email);
           setUsername(userData.username);
           setName(userData.name);
+          setProfilePicture(userData.profilePicture);
         } else {
           console.log("User document not found.");
         }
-        setUsername(userData.username); // Set the username outside the if block
       } catch (error) {
         console.log("Error fetching user profile:", error);
       }
@@ -61,12 +63,37 @@ const Profile = () => {
       .catch((error) => console.log("Error logging out:", error));
   };
 
-  const handleSettings = () => {
-    navigation.navigate("Settings");
-  };
-
   const handleAccessSavedItems = () => {
     navigation.navigate("Collection");
+  };
+
+  const handleSelectProfilePicture = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access the camera roll is required!');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
+
+    if (!result.canceled) {
+      setProfilePicture(result.assets[0].uri);
+
+      const user = auth.currentUser;
+      const userId = user.uid;
+      const userDocRef = doc(database, "users", userId);
+
+      try {
+        await updateDoc(userDocRef, { profilePicture: result.assets[0].uri });
+      } catch (error) {
+        console.log("Error updating user profile picture:", error);
+      }
+    }
   };
 
   const logoSize = Math.min(windowWidth * 0.3, windowHeight * 0.3);
@@ -76,23 +103,30 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image
-          source={require("../assets/newly.png")}
-          style={[styles.profileImage, { width: logoSize, height: logoSize }]}
-        />
-        <Text style={styles.name}> Username: {username}</Text>
+        <TouchableOpacity onPress={handleSelectProfilePicture}>
+          <View style={[styles.profileImage, { width: logoSize, height: logoSize }]}>
+            {profilePicture ? (
+              <Image source={{ uri: profilePicture }} style={[styles.profileImage, { width: logoSize, height: logoSize }]} />
+            ) : (
+              <>
+                <Image source={require("../assets/profilepic.png")} style={[styles.profileImage, { width: logoSize, height: logoSize }]} />
+                <View style={styles.cameraIconContainer}>
+                  <FontAwesome name="camera" size={20} color="#ffffff" />
+                </View>
+              </>
+            )}
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.name}>Username: {username}</Text>
       </View>
       <TouchableOpacity onPress={handleUpdateProfile} style={[styles.button, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Update Profile</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSettings} style={[styles.button, { width: buttonWidth }]}>
-        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Settings</Text>
+      <TouchableOpacity onPress={handleAccessSavedItems} style={[styles.button, { width: buttonWidth }]}>
+        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Access Saved Items</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout} style={[styles.button, styles.logoutButton, { width: buttonWidth }]}>
         <Text style={[styles.buttonText, styles.logoutButtonText, { fontSize: buttonTextSize }]}>Logout</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleAccessSavedItems} style={[styles.button, { width: buttonWidth }]}>
-        <Text style={[styles.buttonText, { fontSize: buttonTextSize }]}>Access Saved Items</Text>
       </TouchableOpacity>
     </View>
   );
@@ -104,8 +138,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingTop: 100,
-    backgroundColor: "#e6e6fa", // Light mode background
-    fontFamily: "Helvetica", // Sans-serif font
+    backgroundColor: "#e6e6fa",
+    fontFamily: "Helvetica",
   },
   profileContainer: {
     alignItems: "center",
@@ -114,16 +148,24 @@ const styles = StyleSheet.create({
   profileImage: {
     borderRadius: 50,
   },
+  cameraIconContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 50,
+    padding: 5,
+  },
   name: {
     marginTop: 15,
     fontSize: 15,
     fontWeight: "bold",
-    color: "#000000", // Light mode text color
+    color: "#000000",
   },
   button: {
     marginBottom: 10,
     paddingVertical: 15,
-    backgroundColor: "#7b68ee", // Purple button color
+    backgroundColor: "#7b68ee",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -134,15 +176,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   buttonText: {
-    color: "#ffffff", // White button text color
+    color: "#ffffff",
     fontWeight: "bold",
-    fontFamily: "Helvetica", // Sans-serif font
+    fontFamily: "Helvetica",
   },
   logoutButton: {
-    backgroundColor: "#7b68ee", // Purple button color
+    backgroundColor: "#7b68ee",
   },
   logoutButtonText: {
-    color: "#ffffff", // White button text color
+    color: "#ffffff",
   },
 });
 

@@ -1,42 +1,23 @@
 import React, { useState, useEffect } from "react";
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
-import { signOut } from "firebase/auth";
-import { auth, database } from "../config/firebase";
-import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
+import { collection, getDocs, query } from "firebase/firestore";
+import { database } from "../config/firebase";
 import colors from "../colors";
-import {
-  collection,
-  getDocs,
-  doc,
-  onSnapshot,
-  getDoc,
-} from "firebase/firestore";
+import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const Community = () => {
-  const navigation = useNavigation();
+export default function Community({ navigation }) {
   const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState("");
-
-  const onSignOut = () => {
-    signOut(auth).catch((error) => console.log(error));
-  };
 
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableOpacity
           style={{
-            marginLeft: 10,
+            marginLeft: 10.
           }}
           onPress={() => navigation.goBack()}
         >
@@ -66,46 +47,56 @@ const Community = () => {
     });
   }, [navigation]);
 
-  const handleChatPress = (user) => {
-    navigation.navigate("Chat", { user });
-  };
-
-  const getInitials = (name) => {
-    const splitName = name.toUpperCase().split(" ");
-    if (splitName.length === 1) {
-      return splitName[0].charAt(0);
-    } else {
-      return (
-        splitName[0].charAt(0) + splitName[splitName.length - 1].charAt(0)
-      );
-    }
-  };
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const querySnapshot = await getDocs(collection(database, "users"));
-        const userList = querySnapshot.docs.map((doc) => doc.data());
-        setUsers(userList);
-        const user = auth.currentUser;
-        const userId = user.uid;
-        const userDocRef = doc(database, "users", userId);
-        const userDocSnapshot = await getDoc(userDocRef);
-        const userData = userDocSnapshot.data();
-        if (userData) {
-          setUsername(userData.username);
-        }
+        const usersQuery = query(collection(database, "users"));
+        const usersSnapshot = await getDocs(usersQuery);
+        const userData = usersSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          username: doc.data().username,
+          profilePicture: doc.data().profilePicture,
+        }));
+        console.log("Fetched user data:", userData); // Log the retrieved user data
+        setUsers(userData);
       } catch (error) {
         console.log("Error fetching users:", error);
       }
     };
+    
 
-    const unsubscribe = onSnapshot(collection(database, "users"), () => {
-      fetchUsers();
-    });
-
-    return () => unsubscribe();
+    fetchUsers();
   }, []);
+
+  const renderUserItem = ({ item }) => {
+    const { id, username, profilePicture } = item;
+
+    const renderAvatar = () => {
+
+        const initials = username ? username.charAt(0).toUpperCase() : "";
+        return (
+          <View style={styles.avatarContainer}>
+            <Text style={styles.avatarInitials}>{initials}</Text>
+          </View>
+        );
+      
+    };
+
+    return (
+      <TouchableOpacity
+        style={styles.userItem}
+        onPress={() =>
+          navigation.navigate("Chat", {
+            userId: id,
+            username,
+          })
+        }
+      >
+        {renderAvatar()}
+        <Text style={styles.username}>{username}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -113,115 +104,77 @@ const Community = () => {
         style={styles.backButton}
         onPress={() => navigation.navigate("Home")}
       >
-        <AntDesign
-          name="arrowleft"
+        <Feather
+          name="chevron-left"
           size={windowWidth * 0.06}
           style={styles.backButtonIcon}
         />
       </TouchableOpacity>
-      <Text style={styles.communityText}>COMMUNITY</Text>
-      <View style={styles.allUsersContainer}>
-        <Text style={styles.allUsersText}>CHATS</Text>
-      </View>
-
-      {users.map((user, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.chatButton}
-          onPress={() => handleChatPress(user)}
-        >
-          <View style={styles.profilePicture}>
-            <Text style={styles.initials}>{getInitials(user.username)}</Text>
-          </View>
-          <View style={styles.chatContent}>
-            <Text style={styles.username}>{user.username}</Text>
-            <Text style={styles.lastMessage}>{user.lastMessage}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+      <Text style={styles.title}>COMMUNITY</Text>
+      <FlatList
+        data={users}
+        keyExtractor={(item) => item.id}
+        renderItem={renderUserItem}
+        contentContainerStyle={styles.userList}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+      />
     </View>
   );
-};
-
-export default Community;
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    backgroundColor: colors.background,
+    paddingTop: windowHeight * 0.1,
+    paddingHorizontal: windowWidth * 0.05,
   },
-  communityText: {
+  title: {
+    fontSize: windowWidth * 0.08,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: colors.textPrimary,
     textAlign: "center",
-    fontSize: windowWidth * 0.1,
-    fontWeight: "bold",
-    marginBottom: 50,
   },
-  allUsersContainer: {
-    marginLeft: 20,
-    marginBottom: 10,
+  userList: {
+    flexGrow: 1,
   },
-  allUsersText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    textDecorationLine: "underline",
-  },
-  chatButton: {
+  userItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray,
+    paddingVertical: windowHeight * 0.02,
   },
-  profilePicture: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 12,
+  avatarContainer: {
+    width: windowWidth * 0.14,
+    height: windowWidth * 0.14,
+    borderRadius: windowWidth * 0.07,
+    marginRight: windowWidth * 0.03,
     backgroundColor: "pink",
     justifyContent: "center",
     alignItems: "center",
   },
-  initials: {
-    fontSize: 18,
+  avatarInitials: {
+    color: colors.white,
+    fontSize: windowWidth * 0.06,
     fontWeight: "bold",
-    color: "white",
-    textTransform: "uppercase",
   },
-  chatContent: {
-    flex: 1,
-    justifyContent: "center",
+  avatar: {
+    width: windowWidth * 0.14,
+    height: windowWidth * 0.14,
+    borderRadius: windowWidth * 0.07,
+    marginRight: windowWidth * 0.03,
   },
   username: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: windowWidth * 0.04,
+    marginLeft: windowWidth * 0.03,
+    color: colors.textPrimary,
   },
-  lastMessage: {
-    color: colors.gray,
-  },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: windowWidth * 0.02,
-    marginTop: windowHeight * 0.02,
-    marginBottom: windowHeight * 0.02,
-  },
-  backButtonIcon: {
-    marginRight: windowWidth * 0.02,
-  },
-  backButtonText: {
-    color: "black",
-    fontSize: windowWidth * 0.05,
+  separator: {
+    height: 1,
+    backgroundColor: colors.lightGray,
+    marginVertical: windowHeight * 0.00001,
   },
 });
-
-
-
-
-
-
-
-
 
 
 

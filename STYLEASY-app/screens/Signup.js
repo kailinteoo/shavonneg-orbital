@@ -38,17 +38,25 @@ const Signup = ({ navigation }) => {
 
   const registerUser = async (username, profilePicture) => {
     try {
-      // Upload profile picture to Firebase Storage and get the download URL
-      const profilePictureRef = storage.ref().child(`profilePictures/${profilePicture.name}`);
-      await profilePictureRef.put(profilePicture);
-      const profilePictureUrl = await profilePictureRef.getDownloadURL();
+      // Convert profile picture to a Blob object
+      const processedData = new Blob([profilePicture], { type: 'image/jpeg' });
+  
+      // Generate a unique filename for the profile picture
+      const fileName = `profilePictures/${Date.now()}`;
+  
+      // Upload the profile picture to Firebase Storage and get the download URL
+      const uploadTask = storage.ref().child(fileName).put(processedData);
+      const snapshot = await uploadTask;
+  
+      // Get the download URL of the uploaded image
+      const profilePictureUrl = await snapshot.ref.getDownloadURL();
   
       // Create user document in the "users" collection
       const userRef = collection(database, 'users');
       await addDoc(userRef, {
         username,
         profilePicture: profilePictureUrl,
-        name, 
+        name,
         password,
         email,
       });
@@ -60,6 +68,7 @@ const Signup = ({ navigation }) => {
       console.error('Error registering user:', error);
     }
   };
+  
 
   const handleSignUp = () => {
     if (email !== "" && username !== "" && password !== "" && confirmPassword !== "") {
@@ -74,9 +83,16 @@ const Signup = ({ navigation }) => {
               .then(() => {
                 const name = user.displayName;
                 const userDocRef = doc(database, "users", user.uid);
-                registerUser(username, profilePicture);
-                console.log("Sign up success");
-
+  
+                // Remove the duplicate call to registerUser
+                registerUser(username, profilePicture)
+                  .then(() => {
+                    console.log("Sign up success");
+                  })
+                  .catch((error) => {
+                    console.error("Error registering user:", error);
+                  });
+  
                 setDoc(userDocRef, {
                   name: name,
                   username: username,
@@ -84,23 +100,20 @@ const Signup = ({ navigation }) => {
                   email: email,
                 })
                   .then(() => {
-                    // Call registerUser function here
-                    registerUser(username, profilePicture);
-                    console.log("Sign up success");
-
+                    console.log("User document created successfully");
                   })
                   .catch((error) => {
-                    console.log("Error creating user document:", error);
+                    console.error("Error creating user document:", error);
                     Alert.alert("Signup error", error.message);
                   });
               })
               .catch((error) => {
-                console.log("Error updating profile:", error);
+                console.error("Error updating profile:", error);
                 Alert.alert("Signup error", error.message);
               });
           })
           .catch((error) => {
-            console.log("Error during sign up:", error);
+            console.error("Error during sign up:", error);
             Alert.alert("Signup error", error.message);
           });
       } else {
@@ -111,9 +124,6 @@ const Signup = ({ navigation }) => {
     }
   };
   
-
-  
-
   return (
     <View style={styles.container}>
       <View />
